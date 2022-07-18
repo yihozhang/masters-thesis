@@ -1,0 +1,74 @@
+
+\documentclass [11pt, proquest] {uwthesis}[2020/02/24]
+ 
+%
+% The following line would print the thesis in a postscript font 
+
+\usepackage{natbib}
+\def\bibpreamble{\protect\addcontentsline{toc}{chapter}{Bibliography}}
+
+\setcounter{tocdepth}{1}  % Print the chapter and sections to the toc
+ 
+\begin{document}
+
+\prelimpages
+
+\Title{The Suitability of the \LaTeX\ Text Formatter\\
+  for Thesis Preparation by Technical and\\
+  Non-technical Degree Candidates}
+\Author{Jim Fox}
+\Year{1995}
+\Program{IT Infrastructure}
+
+\Chair{Name of Chairperson}{Title of Chair}{Department of Chair}
+\Signature{First committee member}
+\Signature{Next committee member}
+\Signature{etc}
+
+\copyrightpage
+
+\titlepage  
+
+
+\setcounter{page}{-1}
+\abstract{%
+
+}
+ 
+\tableofcontents
+\listoffigures
+%\listoftables  % I have no tables
+
+\chapter*{Glossary}      % starred form omits the `chapter x'
+\addcontentsline{toc}{chapter}{Glossary}
+\thispagestyle{plain}
+%
+% \begin{glossary}
+ 
+% \end{glossary}
+
+\acknowledgments{% \vskip2pc
+  % {\narrower\noindent
+  The author wishes to express sincere appreciation to
+  University of Washington, where he has had the opportunity
+  to work with the \TeX\ formatting system,
+  and to the author of \TeX, Donald Knuth, {\it il miglior fabbro}.
+  % \par}
+}
+
+\dedication{\begin{center}to my dear wife, Joanna\end{center}}
+
+\textpages
+ 
+% ========== Chapter 1
+ 
+\chapter {Introduction}
+ 
+
+\section{The Purpose of This Sample Thesis}
+
+\LaTeX \cite{book}
+
+\bibliographystyle{plain}
+\bibliography{main}
+\end{document}
