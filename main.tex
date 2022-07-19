@@ -50,10 +50,10 @@
 
 \acknowledgments{% \vskip2pc
   % {\narrower\noindent
-  The author wishes to express sincere appreciation to
-  University of Washington, where he has had the opportunity
-  to work with the \TeX\ formatting system,
-  and to the author of \TeX, Donald Knuth, {\it il miglior fabbro}.
+  % The author wishes to express sincere appreciation to
+  % University of Washington, where he has had the opportunity
+  % to work with the \TeX\ formatting system,
+  % and to the author of \TeX, Donald Knuth, {\it il miglior fabbro}.
   % \par}
 }
 
@@ -61,14 +61,13 @@
 
 \textpages
  
-% ========== Chapter 1
- 
-\chapter {Introduction}
- 
-
-\section{The Purpose of This Sample Thesis}
-
-\LaTeX \cite{book}
+\input{chapters/01-intro.tex}
+\input{chapters/02-non-relational.tex}
+\input{chapters/03-eqsat-in-egg.tex}
+% \input{chapters/04-gogi.tex}
+% \input{chapters/05-formal.tex}
+% \input{chapters/06-eval.tex}
+\input{chapters/07-related-works.tex}
 
 \bibliographystyle{plain}
 \bibliography{main}
