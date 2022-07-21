@@ -7,13 +7,73 @@
 \usepackage{natbib}
 \def\bibpreamble{\protect\addcontentsline{toc}{chapter}{Bibliography}}
 
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\usepackage{hyperref}
+\usepackage{url}
+
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+% \hypersetup{
+%   pdftitle={A Trick that Makes Classical E-Matching Faster},
+%   pdfauthor={Yihong Zhang},
+%   hidelinks}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+
 \setcounter{tocdepth}{1}  % Print the chapter and sections to the toc
- 
-\include{macros.tex}
+
+\input{macros.tex}
 
 \begin{document}
 
-\prelimpages
+% \prelimpages
 
 \Title{Towards a Relational E-graph}
 \Author{Yihong Zhang}
@@ -21,32 +81,19 @@
 \Program{Computer Science \& Engineering}
 \Programtext{}
 \textofChair{}
-% \Chair{Name of Chairperson}{Title of Chair}{Department of Chair}
 \Signature{Professor Zachary Tatlock}
-% \Signature{Next committee member}
-% \Signature{etc}
 
-\copyrightpage
+% \copyrightpage
+% \titlepage  
 
-\titlepage  
-
-
-\setcounter{page}{-1}
+% \setcounter{page}{-1}
 \abstract{%
 
 }
  
-\tableofcontents
-\listoffigures
-%\listoftables  % I have no tables
-
-\chapter*{Glossary}      % starred form omits the `chapter x'
-\addcontentsline{toc}{chapter}{Glossary}
-\thispagestyle{plain}
-%
-% \begin{glossary}
- 
-% \end{glossary}
+% \tableofcontents
+% \listoffigures
+% \listoftables  % I have no tables
 
 \acknowledgments{% \vskip2pc
   % {\narrower\noindent
@@ -57,18 +104,20 @@
   % \par}
 }
 
-\dedication{\begin{center}to my dear wife, Joanna\end{center}}
+\dedication{\begin{center}to Jiawei\end{center}}
 
 \textpages
  
-\input{chapters/01-intro.tex}
+% \input{chapters/01-intro.tex}
 \input{chapters/02-non-relational.tex}
-\input{chapters/03-eqsat-in-egg.tex}
+% \input{chapters/03-eqsat-in-egg.tex}
+% egg-lite
 % \input{chapters/04-gogi.tex}
 % \input{chapters/05-formal.tex}
 % \input{chapters/06-eval.tex}
-\input{chapters/07-related-works.tex}
+% \input{chapters/07-related-works.tex}
 
-\bibliographystyle{plain}
+\bibliographystyle{ACM-Reference-Format}
 \bibliography{main}
+
 \end{document}

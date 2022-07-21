@@ -1,76 +1,1138 @@
- 
-Bibtex (bib) file for the thesis style document.
- 
-@string{Knuth="Donald E. Knuth"}
- 
-@book{book,
-   author = knuth,
-   title = "The {\TeX} book",
-   publisher = "Addison-Wesley",
-   year = 1984}
- 
-@book{Tbook,
-   author = knuth,
-   title = "{\TeX}: The Program",
-   publisher = "Addison-Wesley",
-   year = 1986}
- 
-@book{Metafont,
-   author = knuth,
-   title = "The Metafont book",
-   publisher = "Addison-Wesley",
-   year = 1986}
- 
-@book{CMT,
-   author = knuth,
-   title = "Computer Modern Typefaces",
-   publisher = "Addison-Wesley",
-   year = 1986}
- 
-@book{Lbook,
-   author = "Leslie Lamport",
-   title = "{\LaTeX}: A Document Preparation System",
-   edition = "2nd",
-   publisher = "Addison-Wesley",
-   year = 1994}
- 
-@book{companion,
-   author = "M{ichel} Goossens and F{rank} Mittelbach and A{lexander} Samarin",
-   title = "The {\LaTeX} Companion",
-   publisher = "Addison-Wesley",
-   year = 1994}
- 
-@article{TUG:h-l,
-  author = "Editor",
-  title = "Hyphenation Exception Log",
-  journal = "TUGboat",
-  volume = 7,
-  number = 3,
-  year = 1986,
-  pages = "145"}
- 
- 
-@book{Hamlet,
-   author = "William Shakespeare",
-   title = "Hamlet",
-   publisher = "F.S.~Crofts~\&~Co., Inc.",
-   address = "NY",
-   year = 1946,
-   note = "Act~I, Scene~3, Lines~70-72, are apropos."}
- 
-Following author fields is not standard
-@book{JTeX,
-   author = "{Spivak, M.D., Ph.D.}",
-   title = "The Joy of {\TeX}",
-   publisher = "American Mathematical Society",
-   address = "RI",
-   year = 1986}
- 
-@book{PCTeX,
-   author = "{Spivak, M.D., Ph.D.}",
-   title = "PC{\TeX}\ Manual",
-   publisher = "Personal {\TeX}, Inc.",
-   address = "CA",
-   year = 1985}
- 
- 
+@inproceedings{wcoj-survey,
+  author    = {Ngo, Hung Q.},
+  title     = {Worst-Case Optimal Join Algorithms: Techniques, Results, and Open Problems},
+  year      = {2018},
+  isbn      = {9781450347068},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3196959.3196990},
+  doi       = {10.1145/3196959.3196990},
+  abstract  = {Worst-case optimal join algorithms are the class of join algorithms whose runtime match the worst-case output size of a given join query. While the first provably worse-case optimal join algorithm was discovered relatively recently, the techniques and results surrounding these algorithms grow out of decades of research from a wide range of areas, intimately connecting graph theory, algorithms, information theory, constraint satisfaction, database theory, and geometric inequalities. These ideas are not just paperware: in addition to academic project implementations, two variations of such algorithms are the work-horse join algorithms of commercial database and data analytics engines. This paper aims to be a brief introduction to the design and analysis of worst-case optimal join algorithms. We discuss the key techniques for proving runtime and output size bounds. We particularly focus on the fascinating connection between join algorithms and information theoretic inequalities, and the idea of how one can turn a proof into an algorithm. Finally, we conclude with a representative list of fundamental open problems in this area.},
+  booktitle = {Proceedings of the 37th ACM SIGMOD-SIGACT-SIGAI Symposium on Principles of Database Systems},
+  pages     = {111–124},
+  numpages  = {14},
+  keywords  = {entropy, polymatroid, inequality, join algorithm, worst-case optimal},
+  location  = {Houston, TX, USA},
+  series    = {SIGMOD/PODS '18}
+}
+
+@inproceedings{doop,
+  author    = {Antoniadis, Tony and Triantafyllou, Konstantinos and Smaragdakis, Yannis},
+  title     = {Porting Doop to Souffl\'{e}: A Tale of Inter-Engine Portability for Datalog-Based Analyses},
+  year      = {2017},
+  isbn      = {9781450350723},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3088515.3088522},
+  doi       = {10.1145/3088515.3088522},
+  abstract  = {We detail our experience of porting the static analysis framework to the recently introduced Datalog engine. The port addresses the idiosynchrasies of the Datalog dialects involved (w.r.t. the type system, value construction, and fact updates) and differences in the runtime systems (w.r.t. parallelism, transactional execution, and optimization methodologies). The overall porting effort is interesting in many ways: as an instance of the benefits of specifying static analyses declaratively, gaining benefits (e.g., parallelism) from a mere porting to a new runtime system; as a study of the effort required to migrate a substantial Datalog codebase (of several thousand rules) to a different dialect. By exploiting shared-memory parallelism, the version of the framework achieves speedups of up to 4x, over already high single-threaded performance.},
+  booktitle = {Proceedings of the 6th ACM SIGPLAN International Workshop on State Of the Art in Program Analysis},
+  pages     = {25–30},
+  numpages  = {6},
+  keywords  = {Points-to analysis, Doop, Datalog},
+  location  = {Barcelona, Spain},
+  series    = {SOAP 2017}
+}
+
+@misc{Glean,
+  title        = {{Glean} System for collecting, deriving and querying facts about source code},
+  howpublished = {\url{https://glean.software}},
+  note         = {Accessed: 2021-10-12}
+}
+
+@inproceedings{avgustinov2016ql,
+  title        = {QL: Object-oriented queries on relational data},
+  author       = {Avgustinov, Pavel and De Moor, Oege and Jones, Michael Peyton and Sch{\"a}fer, Max},
+  booktitle    = {30th European Conference on Object-Oriented Programming (ECOOP 2016)},
+  year         = {2016},
+  organization = {Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik}
+}
+
+@article{urma2013expressive,
+  title  = {Expressive and Scalable Source Code Queries with Graph Databases},
+  author = {Urma, Raoul-Gabriel and Mycroft, Alan},
+  year   = {2013}
+}
+
+@inproceedings{rummer2012matching,
+  title        = {E-matching with free variables},
+  author       = {R{\"u}mmer, Philipp},
+  booktitle    = {International Conference on Logic for Programming Artificial Intelligence and Reasoning},
+  pages        = {359--374},
+  year         = {2012},
+  organization = {Springer}
+}
+
+@article{moskal,
+  author     = {Moskal, Micha\l{} and \L{}opusza\'{n}ski, Jakub and Kiniry, Joseph R.},
+  title      = {E-Matching for Fun and Profit},
+  year       = {2008},
+  issue_date = {May, 2008},
+  publisher  = {Elsevier Science Publishers B. V.},
+  address    = {NLD},
+  volume     = {198},
+  number     = {2},
+  issn       = {1571-0661},
+  url        = {https://doi.org/10.1016/j.entcs.2008.04.078},
+  doi        = {10.1016/j.entcs.2008.04.078},
+  abstract   = {Efficient handling of quantifiers is crucial for solving software verification problems. E-matching algorithms are used in satisfiability modulo theories solvers that handle quantified formulas through instantiation. Two novel, efficient algorithms for solving the E-matching problem are presented and compared to a well-known algorithm described in the literature.},
+  journal    = {Electron. Notes Theor. Comput. Sci.},
+  month      = may,
+  pages      = {19–35},
+  numpages   = {17},
+  keywords   = {quantifier instantiation, SMT, E-matching}
+}
+
+@article{yannakakis,
+  author     = {Papadimitriou, Christos H. and Yannakakis, Mihalis},
+  title      = {On the Complexity of Database Queries},
+  year       = {1999},
+  issue_date = {June 1999},
+  publisher  = {Academic Press, Inc.},
+  address    = {USA},
+  volume     = {58},
+  number     = {3},
+  issn       = {0022-0000},
+  url        = {https://doi.org/10.1006/jcss.1999.1626},
+  doi        = {10.1006/jcss.1999.1626},
+  abstract   = {We revisit the issue of the complexity of database queries, in the
+                light of the recent parametric refinement of complexity
+                theory. We show that, if the query size (or the number of
+                variables in the query) is considered as a parameter, then the
+                relational calculus and its fragments (conjunctive queries,
+                positive queries) are classified at appropriate levels of the
+                so-called W hierarchy of Downey and Fellows. These results
+                strongly suggest that the query size is inherently in the
+                exponent of the data complexity of any query evaluation
+                algorithm, with the implication becoming stronger as the
+                expressibility of the query language increases. On the
+                positive side, we show that this exponential dependence can be
+                avoided for the extension of acyclic queries with (but not
+                &lt;) inequalities.},
+  journal    = {J. Comput. Syst. Sci.},
+  month      = jun,
+  pages      = {407–427},
+  numpages   = {21}
+}
+
+@inproceedings{szalinski,
+  author    = {Chandrakana Nandi and
+               Max Willsey and
+               Adam Anderson and
+               James R. Wilcox and
+               Eva Darulova and
+               Dan Grossman and
+               Zachary Tatlock},
+  editor    = {Alastair F. Donaldson and
+               Emina Torlak},
+  title     = {Synthesizing Structured {CAD} Models with Equality Saturation and
+               Inverse Transformations},
+  booktitle = {Proceedings of the 41st {ACM} {SIGPLAN} International Conference on
+               Programming Language Design and Implementation, {PLDI} 2020,
+               London, UK, June 15-20, 2020},
+  pages     = {31--44},
+  publisher = {{ACM}},
+  year      = {2020},
+  url       = {https://doi.org/10.1145/3385412.3386012},
+  doi       = {10.1145/3385412.3386012}
+}
+
+@inproceedings{tensat,
+  author    = {Yang, Yichen and Phothilimthana, Phitchaya and Wang, Yisu and Willsey, Max and Roy, Sudip and Pienaar, Jacques},
+  booktitle = {Proceedings of Machine Learning and Systems},
+  editor    = {A. Smola and A. Dimakis and I. Stoica},
+  pages     = {255--268},
+  title     = {Equality Saturation for Tensor Graph Superoptimization},
+  url       = {https://proceedings.mlsys.org/paper/2021/file/65ded5353c5ee48d0b7d48c591b8f430-Paper.pdf},
+  volume    = {3},
+  year      = {2021}
+}
+
+@article{datalog-survey,
+  author     = {Green, Todd J. and Huang, Shan Shan and Loo, Boon Thau and Zhou, Wenchao},
+  title      = {Datalog and Recursive Query Processing},
+  year       = {2013},
+  issue_date = {November 2013},
+  publisher  = {Now Publishers Inc.},
+  address    = {Hanover, MA, USA},
+  volume     = {5},
+  number     = {2},
+  issn       = {1931-7883},
+  url        = {https://doi.org/10.1561/1900000017},
+  doi        = {10.1561/1900000017},
+  abstract   = {In recent years, we have witnessed a revival of the use of recursive queries in a variety of emerging application domains such as data integration and exchange, information extraction, networking, and program anlysis. A popular language used for expressing these queries is Datalog. This paper surveys for a general audience the Datalog language, recursive query processing, and optimization techniques. This survey differs from prior surveys written in the eighties and nineties in its comprehensiveness of topics, its coverage of recent developments and applications, and its emphasis on features and techniques beyond "classical" Datalog which are vital for practical applications. Specifically, the topics covered include the core Datalog language and various extensions, semantics, query optimizations, magic-sets optimizations, incremental view maintenance, aggregates, negation, and types. We conclude the paper with a survey of recent systems and applications that use Datalog and recursive queries.},
+  journal    = {Found. Trends Databases},
+  month      = nov,
+  pages      = {105–195},
+  numpages   = {91}
+}
+
+@article{emptyheaded,
+  author     = {Aberger, Christopher R. and Lamb, Andrew and Tu, Susan and N\"{o}tzli, Andres and Olukotun, Kunle and R\'{e}, Christopher},
+  title      = {EmptyHeaded: A Relational Engine for Graph Processing},
+  year       = {2017},
+  issue_date = {November 2017},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {42},
+  number     = {4},
+  issn       = {0362-5915},
+  url        = {https://doi.org/10.1145/3129246},
+  doi        = {10.1145/3129246},
+  abstract   = {There are two types of high-performance graph processing engines: low- and high-level engines. Low-level engines (Galois, PowerGraph, Snap) provide optimized data structures and computation models but require users to write low-level imperative code, hence ensuring that efficiency is the burden of the user. In high-level engines, users write in query languages like datalog (SociaLite) or SQL (Grail). High-level engines are easier to use but are orders of magnitude slower than the low-level graph engines. We present EmptyHeaded, a high-level engine that supports a rich datalog-like query language and achieves performance comparable to that of low-level engines. At the core of EmptyHeaded’s design is a new class of join algorithms that satisfy strong theoretical guarantees, but have thus far not achieved performance comparable to that of specialized graph processing engines. To achieve high performance, EmptyHeaded introduces a new join engine architecture, including a novel query optimizer and execution engine that leverage single-instruction multiple data (SIMD) parallelism. With this architecture, EmptyHeaded outperforms high-level approaches by up to three orders of magnitude on graph pattern queries, PageRank, and Single-Source Shortest Paths (SSSP) and is an order of magnitude faster than many low-level baselines. We validate that EmptyHeaded competes with the best-of-breed low-level engine (Galois), achieving comparable performance on PageRank and at most 3\texttimes{} worse performance on SSSP. Finally, we show that the EmptyHeaded design can easily be extended to accommodate a standard resource description framework (RDF) workload, the LUBM benchmark. On the LUBM benchmark, we show that EmptyHeaded can compete with and sometimes outperform two high-level, but specialized RDF baselines (TripleBit and RDF-3X), while outperforming MonetDB by up to three orders of magnitude and LogicBlox by up to two orders of magnitude.},
+  journal    = {ACM Trans. Database Syst.},
+  month      = oct,
+  articleno  = {20},
+  numpages   = {44},
+  keywords   = {generalized hypertree decomposition, Worst-case optimal join, graph processing, single-instruction multiple data, GHD, SIMD}
+}
+
+
+@mastersthesis{eval-wcoj,
+  author    = {Andreas Amler},
+  title     = {Evaluation of Worst-Case Optimal Join
+               Algorithm},
+  publisher = {Department of Informatics,
+               Technische Universit\"at M\"unchen},
+  year      = {2017}
+}
+
+@article{egg,
+  author     = {Willsey, Max and Nandi, Chandrakana and Wang, Yisu Remy and Flatt, Oliver and Tatlock, Zachary and Panchekha, Pavel},
+  title      = {Egg: Fast and Extensible Equality Saturation},
+  year       = {2021},
+  issue_date = {January 2021},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {5},
+  number     = {POPL},
+  url        = {https://doi.org/10.1145/3434304},
+  doi        = {10.1145/3434304},
+  abstract   = {An e-graph efficiently represents a congruence relation over many expressions. Although they were originally developed in the late 1970s for use in automated theorem provers, a more recent technique known as equality saturation repurposes e-graphs to implement state-of-the-art, rewrite-driven compiler optimizations and program synthesizers. However, e-graphs remain unspecialized for this newer use case. Equality saturation workloads exhibit distinct characteristics and often require ad-hoc e-graph extensions to incorporate transformations beyond purely syntactic rewrites.  This work contributes two techniques that make e-graphs fast and extensible, specializing them to equality saturation. A new amortized invariant restoration technique called rebuilding takes advantage of equality saturation's distinct workload, providing asymptotic speedups over current techniques in practice. A general mechanism called e-class analyses integrates domain-specific analyses into the e-graph, reducing the need for ad hoc manipulation.  We implemented these techniques in a new open-source library called egg. Our case studies on three previously published applications of equality saturation highlight how egg's performance and flexibility enable state-of-the-art results across diverse domains.},
+  journal    = {Proc. ACM Program. Lang.},
+  month      = jan,
+  articleno  = {23},
+  numpages   = {29},
+  keywords   = {e-graphs, equality saturation}
+}
+
+@inproceedings{ematching-nph,
+  author    = {Kozen, Dexter},
+  title     = {Complexity of Finitely Presented Algebras},
+  year      = {1977},
+  isbn      = {9781450374095},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi-org.offcampus.lib.washington.edu/10.1145/800105.803406},
+  doi       = {10.1145/800105.803406},
+  abstract  = {An algebra A is finitely presented if there is a finite set G of generator symbols, a finite set O of operator symbols, and a finite set Γ of defining relations xΞy where x and y are well-formed terms over G and O, such that A is isomorphic to the free algebra on G and O modulo the congruence induced by Γ.The uniform word problem, the finiteness problem, the triviality problem (whether A is the one element algebra), and the subalgebra membership problem (whether a given element of A is contained in a finitely generated subalgebra of A) for finitely presented algebras are shown to be ≤mlog-complete for P. The schema satisfiability problem and schema validity problem are shown to be ≤mlog-complete for NP and co-NP, respectively. Finally, the problem of isomorphism of finitely presented algebras is shown to be polynomial time many-one equivalent to the problem of graph isomorphism.},
+  booktitle = {Proceedings of the Ninth Annual ACM Symposium on Theory of Computing},
+  pages     = {164–177},
+  numpages  = {14},
+  location  = {Boulder, Colorado, USA},
+  series    = {STOC '77}
+}
+
+@inproceedings{agm,
+  author    = {Atserias, Albert and Grohe, Martin and Marx, D\'{a}niel},
+  title     = {Size Bounds and Query Plans for Relational Joins},
+  year      = {2008},
+  isbn      = {9780769534367},
+  publisher = {IEEE Computer Society},
+  address   = {USA},
+  url       = {https://doi.org/10.1109/FOCS.2008.43},
+  doi       = {10.1109/FOCS.2008.43},
+  abstract  = {Relational joins are at the core of relational algebra, which in turn is the core of the standard database query language SQL. As their evaluation is expensive and very often dominated by the output size, it is an important task for database query optimisers to compute estimates on the size of joins and to find good execution plans for sequences of joins. We study these problems from a theoretical perspective, both in the worst-case model, and in an average-case model where the database is chosen according to a known probability distribution. In the former case, our first key observation is that the worst-case size of a query is characterised by the fractional edge cover number of its underlying hypergraph, a combinatorial parameter previously known to provide an upper bound. We complete the picture by proving a matching lower bound, and by showing that there exist queries for which the join-project plan suggested by the fractional edge cover approach may be substantially better than any join plan that does not use intermediate projections.},
+  booktitle = {Proceedings of the 2008 49th Annual IEEE Symposium on Foundations of Computer Science},
+  pages     = {739–748},
+  numpages  = {10},
+  series    = {FOCS '08}
+}
+
+@article{wcoj,
+  author     = {Ngo, Hung Q. and Porat, Ely and R\'{e}, Christopher and Rudra, Atri},
+  title      = {Worst-Case Optimal Join Algorithms},
+  year       = {2018},
+  issue_date = {March 2018},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {65},
+  number     = {3},
+  issn       = {0004-5411},
+  url        = {https://doi.org/10.1145/3180143},
+  doi        = {10.1145/3180143},
+  abstract   = {Efficient join processing is one of the most fundamental and well-studied tasks in database research. In this work, we examine algorithms for natural join queries over many relations and describe a new algorithm to process these queries optimally in terms of worst-case data complexity. Our result builds on recent work by Atserias, Grohe, and Marx, who gave bounds on the size of a natural join query in terms of the sizes of the individual relations in the body of the query. These bounds, however, are not constructive: they rely on Shearer’s entropy inequality, which is information-theoretic. Thus, the previous results leave open the question of whether there exist algorithms whose runtimes achieve these optimal bounds. An answer to this question may be interesting to database practice, as we show in this article that any project-join style plans, such as ones typically employed in a relational database management system, are asymptotically slower than the optimal for some queries. We present an algorithm whose runtime is worst-case optimal for all natural join queries. Our result may be of independent interest, as our algorithm also yields a constructive proof of the general fractional cover bound by Atserias, Grohe, and Marx without using Shearer’s inequality. This bound implies two famous inequalities in geometry: the Loomis-Whitney inequality and its generalization, the Bollob\'{a}s-Thomason inequality. Hence, our results algorithmically prove these inequalities as well. Finally, we discuss how our algorithm can be used to evaluate full conjunctive queries optimally, to compute a relaxed notion of joins and to optimally (in the worst-case) enumerate all induced copies of a fixed subgraph inside of a given large graph.},
+  journal    = {J. ACM},
+  month      = mar,
+  articleno  = {16},
+  numpages   = {40},
+  keywords   = {Loomis-Whitney inequality, fractional cover bound, Bollob\'{a}s-Thomason inequality, Join Algorithms}
+}
+
+@inproceedings{z3,
+  author    = {de Moura, Leonardo
+               and Bj{\o}rner, Nikolaj},
+  editor    = {Ramakrishnan, C. R.
+               and Rehof, Jakob},
+  title     = {Z3: An Efficient SMT Solver},
+  booktitle = {Tools and Algorithms for the Construction and Analysis of Systems},
+  year      = {2008},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {337--340},
+  abstract  = {Satisfiability Modulo Theories (SMT) problem is a decision problem for logical first order formulas with respect to combinations of background theories such as: arithmetic, bit-vectors, arrays, and uninterpreted functions. Z3 is a new and efficient SMT Solver freely available from Microsoft Research. It is used in various software verification and analysis applications.},
+  isbn      = {978-3-540-78800-3}
+}
+
+
+
+@inproceedings{cvc4,
+  author    = {Clark W. Barrett and
+               Christopher L. Conway and
+               Morgan Deters and
+               Liana Hadarean and
+               Dejan Jovanovic and
+               Tim King and
+               Andrew Reynolds and
+               Cesare Tinelli},
+  editor    = {Ganesh Gopalakrishnan and
+               Shaz Qadeer},
+  title     = {{CVC4}},
+  booktitle = {Computer Aided Verification - 23rd International Conference, {CAV}
+               2011, Snowbird, UT, USA, July 14-20, 2011. Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {6806},
+  pages     = {171--177},
+  publisher = {Springer},
+  year      = {2011},
+  url       = {https://doi.org/10.1007/978-3-642-22110-1\_14},
+  doi       = {10.1007/978-3-642-22110-1\_14},
+  biburl    = {https://dblp.org/rec/conf/cav/BarrettCDHJKRT11.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{proof-producing,
+  author    = {Nieuwenhuis, Robert and Oliveras, Albert},
+  title     = {Proof-Producing Congruence Closure},
+  year      = {2005},
+  isbn      = {3540255966},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  url       = {https://doi.org/10.1007/978-3-540-32033-3_33},
+  doi       = {10.1007/978-3-540-32033-3_33},
+  abstract  = {Many applications of congruence closure nowadays require the ability of recovering, among the thousands of input equations, the small subset that caused the equivalence of a given pair of terms. For this purpose, here we introduce an incremental congruence closure algorithm that has an additional $mathit{Explain}$ operation.First, two variations of union-find data structures with $mathit{Explain}$ are introduced. Then, these are applied inside a congruence closure algorithm with $mathit{Explain}$, where a k-step proof can be recovered in almost optimal time (quasi-linear in k), without increasing the overall O(n log n) runtime of the fastest known congruence closure algorithms.This non-trivial (ground) equational reasoning result has been quite intensively sought after (see, e.g., [SD99,dMRS04,KS04]), and moreover has important applications to verification.},
+  booktitle = {Proceedings of the 16th International Conference on Term Rewriting and Applications},
+  pages     = {453–468},
+  numpages  = {16},
+  location  = {Nara, Japan},
+  series    = {RTA'05}
+}
+
+@article{simplify,
+  author     = {Detlefs, David and Nelson, Greg and Saxe, James B.},
+  title      = {Simplify: A Theorem Prover for Program Checking},
+  year       = {2005},
+  issue_date = {May 2005},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {52},
+  number     = {3},
+  issn       = {0004-5411},
+  url        = {https://doi.org/10.1145/1066100.1066102},
+  doi        = {10.1145/1066100.1066102},
+  abstract   = {This article provides a detailed description of the automatic theorem prover Simplify, which is the proof engine of the Extended Static Checkers ESC/Java and ESC/Modula-3. Simplify uses the Nelson--Oppen method to combine decision procedures for several important theories, and also employs a matcher to reason about quantifiers. Instead of conventional matching in a term DAG, Simplify matches up to equivalence in an E-graph, which detects many relevant pattern instances that would be missed by the conventional approach. The article describes two techniques, error context reporting and error localization, for helping the user to determine the reason that a false conjecture is false. The article includes detailed performance figures on conjectures derived from realistic program-checking problems.},
+  journal    = {J. ACM},
+  month      = may,
+  pages      = {365–473},
+  numpages   = {109},
+  keywords   = {decision procedures, program checking, Theorem proving}
+}
+
+@article{tarjan,
+  author     = {Tarjan, Robert Endre},
+  title      = {Efficiency of a Good But Not Linear Set Union Algorithm},
+  year       = {1975},
+  issue_date = {April 1975},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {22},
+  number     = {2},
+  issn       = {0004-5411},
+  url        = {https://doi.org/10.1145/321879.321884},
+  doi        = {10.1145/321879.321884},
+  journal    = {J. ACM},
+  month      = apr,
+  pages      = {215–225},
+  numpages   = {11}
+}
+
+@inproceedings{semsearch,
+  author    = {Premtoon, Varot and Koppel, James and Solar-Lezama, Armando},
+  title     = {Semantic Code Search via Equational Reasoning},
+  year      = {2020},
+  isbn      = {9781450376136},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3385412.3386001},
+  doi       = {10.1145/3385412.3386001},
+  abstract  = {We present a new approach to semantic code search based on equational reasoning, and the Yogo tool implementing this approach. Our approach works by considering not only the dataflow graph of a function, but also the dataflow graphs of all equivalent functions reachable via a set of rewrite rules. In doing so, it can recognize an operation even if it uses alternate APIs, is in a different but mathematically-equivalent form, is split apart with temporary variables, or is interleaved with other code. Furthermore, it can recognize when code is an instance of some higher-level concept such as iterating through a file. Because of this, from a single query, Yogo can find equivalent code in multiple languages. Our evaluation further shows the utility of Yogo beyond code search: encoding a buggy pattern as a Yogo query, we found a bug in Oracle’s Graal compiler which had been missed by a hand-written static analyzer designed for that exact kind of bug. Yogo is built on the Cubix multi-language infrastructure, and currently supports Java and Python.},
+  booktitle = {Proceedings of the 41st ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  pages     = {1066–1082},
+  numpages  = {17},
+  keywords  = {equational reasoning, code search},
+  location  = {London, UK},
+  series    = {PLDI 2020}
+}
+
+@inproceedings{herbie,
+  author    = {Panchekha, Pavel and Sanchez-Stern, Alex and Wilcox, James R. and Tatlock, Zachary},
+  title     = {Automatically Improving Accuracy for Floating Point Expressions},
+  year      = {2015},
+  isbn      = {9781450334686},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2737924.2737959},
+  doi       = {10.1145/2737924.2737959},
+  abstract  = { Scientific and engineering applications depend on floating point arithmetic to approximate real arithmetic. This approximation introduces rounding error, which can accumulate to produce unacceptable results. While the numerical methods literature provides techniques to mitigate rounding error, applying these techniques requires manually rearranging expressions and understanding the finer details of floating point arithmetic. We introduce Herbie, a tool which automatically discovers the rewrites experts perform to improve accuracy. Herbie's heuristic search estimates and localizes rounding error using sampled points (rather than static error analysis), applies a database of rules to generate improvements, takes series expansions, and combines improvements for different input regions. We evaluated Herbie on examples from a classic numerical methods textbook, and found that Herbie was able to improve accuracy on each example, some by up to 60 bits, while imposing a median performance overhead of 40%. Colleagues in machine learning have used Herbie to significantly improve the results of a clustering algorithm, and a mathematical library has accepted two patches generated using Herbie. },
+  booktitle = {Proceedings of the 36th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  pages     = {1–11},
+  numpages  = {11},
+  keywords  = {program rewriting, numerical accuracy, Floating point},
+  location  = {Portland, OR, USA},
+  series    = {PLDI '15}
+}
+
+
+
+@article{spores,
+  author     = {Wang, Yisu Remy and Hutchison, Shana and Leang, Jonathan and Howe, Bill and Suciu, Dan},
+  title      = {SPORES: Sum-Product Optimization via Relational Equality Saturation for Large Scale Linear Algebra},
+  year       = {2020},
+  issue_date = {August 2020},
+  publisher  = {VLDB Endowment},
+  volume     = {13},
+  number     = {12},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3407790.3407799},
+  doi        = {10.14778/3407790.3407799},
+  abstract   = {Machine learning algorithms are commonly specified in linear algebra (LA). LA expressions can be rewritten into more efficient forms, by taking advantage of input properties such as sparsity, as well as program properties such as common subexpressions and fusible operators. The complex interaction among these properties' impact on the execution cost poses a challenge to optimizing compilers. Existing compilers resort to intricate heuristics that complicate the codebase and add maintenance cost, but fail to search through the large space of equivalent LA expressions to find the cheapest one. We introduce a general optimization technique for LA expressions, by converting the LA expressions into Relational Algebra (RA) expressions, optimizing the latter, then converting the result back to (optimized) LA expressions. The rewrite rules we design in this approach are complete, meaning that any equivalent LA expression is covered in the search space. The challenge is the major size of the search space, and we address this by adopting and extending a technique used in compilers, called equality saturation. Our optimizer, SPORES, uses rule sampling to quickly cover vast portions of the search space; it then uses a constraint solver to extract the optimal plan from the covered space, or alternatively uses a greedy algorithm to shorten compile time. We integrate SPORES into SystemML and validate it empirically across a spectrum of machine learning tasks; SPORES can derive all existing hand-coded optimizations in SystemML, and perform new optimizations that lead to up to 10X speedup.},
+  journal    = {Proc. VLDB Endow.},
+  month      = jul,
+  pages      = {1919–1932},
+  numpages   = {14}
+}
+
+@article{denaili,
+  author     = {Joshi, Rajeev and Nelson, Greg and Zhou, Yunhong},
+  title      = {Denali: A Practical Algorithm for Generating Optimal Code},
+  year       = {2006},
+  issue_date = {November 2006},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {28},
+  number     = {6},
+  issn       = {0164-0925},
+  url        = {https://doi.org/10.1145/1186632.1186633},
+  doi        = {10.1145/1186632.1186633},
+  abstract   = {This article presents a design for the Denali-2 superoptimizer, which will generate minimum-instruction-length machine code for realistic machine architectures using automatic theorem-proving technology: specifically, using E-graph matching (a technique for pattern matching in the presence of equality information) and Boolean satisfiability solving.This article presents a precise definition of the underlying automatic programming problem solved by the Denali-2 superoptimizer. It sketches the E-graph matching phase and presents a detailed exposition and proof of soundness of the reduction of the automatic programming problem to the Boolean satisfiability problem.},
+  journal    = {ACM Trans. Program. Lang. Syst.},
+  month      = nov,
+  pages      = {967–989},
+  numpages   = {23},
+  keywords   = {practical optimal code generation, code generation, Compilation}
+}
+
+@inproceedings{cc-in-tt,
+  author    = {Selsam, Daniel and Moura, Leonardo},
+  title     = {Congruence Closure in Intensional Type Theory},
+  year      = {2016},
+  isbn      = {9783319402284},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  url       = {https://doi.org/10.1007/978-3-319-40229-1_8},
+  doi       = {10.1007/978-3-319-40229-1_8},
+  abstract  = {Congruence closure procedures are used extensively in automated reasoning and are a core component of most satisfiability modulo theories solvers. However, no known congruence closure algorithms can support any of the expressive logics based on intensional type theory ITT, which form the basis of many interactive theorem provers. The main source of expressiveness in these logics is dependent types, and yet existing congruence closure procedures found in interactive theorem provers based on ITT do not handle dependent types at all and only work on the simply-typed subsets of the logics. Here we present an efficient and proof-producing congruence closure procedure that applies to every function in ITT no matter how many dependencies exist among its arguments, and that only relies on the commonly assumed uniqueness of identity proofs axiom. We demonstrate its usefulness by solving interesting verification problems involving functions with dependent types.},
+  booktitle = {Proceedings of the 8th International Joint Conference on Automated Reasoning - Volume 9706},
+  pages     = {99–115},
+  numpages  = {17}
+}
+
+@inproceedings{efficient-ematching,
+  author    = {de Moura, Leonardo
+               and Bj{\o}rner, Nikolaj},
+  editor    = {Pfenning, Frank},
+  title     = {Efficient E-Matching for SMT Solvers},
+  booktitle = {Automated Deduction -- CADE-21},
+  year      = {2007},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {183--198},
+  abstract  = {Satisfiability Modulo Theories (SMT) solvers have proven highly scalable, efficient and suitable for integrating theory reasoning. However, for numerous applications from program analysis and verification, the ground fragment is insufficient, as proof obligations often include quantifiers. A well known approach for quantifier reasoning uses a matching algorithm that works against an E-graph to instantiate quantified variables. This paper introduces algorithms that identify matches on E-graphs incrementally and efficiently. In particular, we introduce an index that works on E-graphs, called E-matching code trees that combine features of substitution and code trees, used in saturation based theorem provers. E-matching code trees allow performing matching against several patterns simultaneously. The code trees are combined with an additional index, called the inverted path index, which filters E-graph terms that may potentially match patterns when the E-graph is updated. Experimental results show substantial performance improvements over existing state-of-the-art SMT solvers.},
+  isbn      = {978-3-540-73595-3}
+}
+
+@phdthesis{nelson-thesis,
+  author    = {Nelson, Charles Gregory},
+  title     = {Techniques for Program Verification},
+  year      = {1980},
+  publisher = {Stanford University},
+  address   = {Stanford, CA, USA},
+  note      = {AAI8011683}
+}
+
+@inproceedings{eqsat,
+  author    = {Tate, Ross and Stepp, Michael and Tatlock, Zachary and Lerner, Sorin},
+  title     = {Equality Saturation: A New Approach to Optimization},
+  year      = {2009},
+  isbn      = {9781605583792},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/1480881.1480915},
+  doi       = {10.1145/1480881.1480915},
+  abstract  = {Optimizations in a traditional compiler are applied sequentially, with each optimization destructively modifying the program to produce a transformed program that is then passed to the next optimization. We present a new approach for structuring the optimization phase of a compiler. In our approach, optimizations take the form of equality analyses that add equality information to a common intermediate representation. The optimizer works by repeatedly applying these analyses to infer equivalences between program fragments, thus saturating the intermediate representation with equalities. Once saturated, the intermediate representation encodes multiple optimized versions of the input program. At this point, a profitability heuristic picks the final optimized program from the various programs represented in the saturated representation. Our proposed way of structuring optimizers has a variety of benefits over previous approaches: our approach obviates the need to worry about optimization ordering, enables the use of a global optimization heuristic that selects among fully optimized programs, and can be used to perform translation validation, even on compilers other than our own. We present our approach, formalize it, and describe our choice of intermediate representation. We also present experimental results showing that our approach is practical in terms of time and space overhead, is effective at discovering intricate optimization opportunities, and is effective at performing translation validation for a realistic optimizer.},
+  booktitle = {Proceedings of the 36th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+  pages     = {264–276},
+  numpages  = {13},
+  keywords  = {equality reasoning, compiler optimization, intermediate representation},
+  location  = {Savannah, GA, USA},
+  series    = {POPL '09}
+}
+
+@article{unionfind,
+  author     = {Tarjan, Robert Endre},
+  title      = {Efficiency of a Good But Not Linear Set Union Algorithm},
+  year       = 1975,
+  issue_date = {April 1975},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = 22,
+  number     = 2,
+  issn       = {0004-5411},
+  url        = {https://doi-org.offcampus.lib.washington.edu/10.1145/321879.321884},
+  doi        = {10.1145/321879.321884},
+  journal    = {J. ACM},
+  month      = apr,
+  pages      = {215–225},
+  numpages   = 11
+}
+
+@article{gj,
+  author     = {Ngo, Hung Q and R\'{e}, Christopher and Rudra, Atri},
+  title      = {Skew Strikes Back: New Developments in the Theory of Join Algorithms},
+  year       = {2014},
+  issue_date = {December 2013},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {42},
+  number     = {4},
+  issn       = {0163-5808},
+  url        = {https://doi.org/10.1145/2590989.2590991},
+  doi        = {10.1145/2590989.2590991},
+  journal    = {SIGMOD Rec.},
+  month      = feb,
+  pages      = {5–16},
+  numpages   = {12}
+}
+
+@article{ligra,
+  author     = {Shun, Julian and Blelloch, Guy E.},
+  title      = {Ligra: A Lightweight Graph Processing Framework for Shared Memory},
+  year       = {2013},
+  issue_date = {August 2013},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {48},
+  number     = {8},
+  issn       = {0362-1340},
+  url        = {https://doi.org/10.1145/2517327.2442530},
+  doi        = {10.1145/2517327.2442530},
+  abstract   = {There has been significant recent interest in parallel frameworks for processing graphs
+                due to their applicability in studying social networks, the Web graph, networks in
+                biology, and unstructured meshes in scientific simulation. Due to the desire to process
+                large graphs, these systems have emphasized the ability to run on distributed memory
+                machines. Today, however, a single multicore server can support more than a terabyte
+                of memory, which can fit graphs with tens or even hundreds of billions of edges. Furthermore,
+                for graph algorithms, shared-memory multicores are generally significantly more efficient
+                on a per core, per dollar, and per joule basis than distributed memory systems, and
+                shared-memory algorithms tend to be simpler than their distributed counterparts.In
+                this paper, we present a lightweight graph processing framework that is specific for
+                shared-memory parallel/multicore machines, which makes graph traversal algorithms
+                easy to write. The framework has two very simple routines, one for mapping over edges
+                and one for mapping over vertices. Our routines can be applied to any subset of the
+                vertices, which makes the framework useful for many graph traversal algorithms that
+                operate on subsets of the vertices. Based on recent ideas used in a very fast algorithm
+                for breadth-first search (BFS), our routines automatically adapt to the density of
+                vertex sets. We implement several algorithms in this framework, including BFS, graph
+                radii estimation, graph connectivity, betweenness centrality, PageRank and single-source
+                shortest paths. Our algorithms expressed using this framework are very simple and
+                concise, and perform almost as well as highly optimized code. Furthermore, they get
+                good speedups on a 40-core machine and are significantly more efficient than previously
+                reported results using graph frameworks on machines with many more cores.},
+  journal    = {SIGPLAN Not.},
+  month      = feb,
+  pages      = {135–146},
+  numpages   = {12},
+  keywords   = {parallel programming, graph algorithms, shared memory}
+}
+
+@article{snap,
+  author     = {Leskovec, Jure and Sosi\v{c}, Rok},
+  title      = {SNAP: A General-Purpose Network Analysis and Graph-Mining Library},
+  year       = {2016},
+  issue_date = {October 2016},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {8},
+  number     = {1},
+  issn       = {2157-6904},
+  url        = {https://doi.org/10.1145/2898361},
+  doi        = {10.1145/2898361},
+  abstract   = {Large networks are becoming a widely used abstraction for studying complex systems
+                in a broad set of disciplines, ranging from social-network analysis to molecular biology
+                and neuroscience. Despite an increasing need to analyze and manipulate large networks,
+                only a limited number of tools are available for this task.Here, we describe the Stanford
+                Network Analysis Platform (SNAP), a general-purpose, high-performance system that
+                provides easy-to-use, high-level operations for analysis and manipulation of large
+                networks. We present SNAP functionality, describe its implementational details, and
+                give performance benchmarks. SNAP has been developed for single big-memory machines,
+                and it balances the trade-off between maximum performance, compact in-memory graph
+                representation, and the ability to handle dynamic graphs in which nodes and edges
+                are being added or removed over time. SNAP can process massive networks with hundreds
+                of millions of nodes and billions of edges. SNAP offers over 140 different graph algorithms
+                that can efficiently manipulate large graphs, calculate structural properties, generate
+                regular and random graphs, and handle attributes and metadata on nodes and edges.
+                Besides being able to handle large graphs, an additional strength of SNAP is that
+                networks and their attributes are fully dynamic; they can be modified during the computation
+                at low cost. SNAP is provided as an open-source library in C++ as well as a module
+                in Python.We also describe the Stanford Large Network Dataset, a set of social and
+                information real-world networks and datasets, which we make publicly available. The
+                collection is a complementary resource to our SNAP software and is widely used for
+                development and benchmarking of graph analytics algorithms.},
+  journal    = {ACM Trans. Intell. Syst. Technol.},
+  month      = jul,
+  articleno  = {1},
+  numpages   = {20},
+  keywords   = {graph analytics, graphs, data mining, Networks, open-source software}
+}
+
+@inproceedings{powergraph,
+  author    = {Gonzalez, Joseph E. and Low, Yucheng and Gu, Haijie and Bickson, Danny and Guestrin, Carlos},
+  title     = {PowerGraph: Distributed Graph-Parallel Computation on Natural Graphs},
+  year      = {2012},
+  isbn      = {9781931971966},
+  publisher = {USENIX Association},
+  address   = {USA},
+  abstract  = {Large-scale graph-structured computation is central to tasks ranging from targeted
+               advertising to natural language processing and has led to the development of several
+               graph-parallel abstractions including Pregel and GraphLab. However, the natural graphs
+               commonly found in the real-world have highly skewed power-law degree distributions,
+               which challenge the assumptions made by these abstractions, limiting performance and
+               scalability.In this paper, we characterize the challenges of computation on natural
+               graphs in the context of existing graph-parallel abstractions. We then introduce the
+               PowerGraph abstraction which exploits the internal structure of graph programs to
+               address these challenges. Leveraging the PowerGraph abstraction we introduce a new
+               approach to distributed graph placement and representation that exploits the structure
+               of power-law graphs. We provide a detailed analysis and experimental evaluation comparing
+               PowerGraph to two popular graph-parallel systems. Finally, we describe three different
+               implementation strategies for PowerGraph and discuss their relative merits with empirical
+               evaluations on large-scale real-world problems demonstrating order of magnitude gains.},
+  booktitle = {Proceedings of the 10th USENIX Conference on Operating Systems Design and Implementation},
+  pages     = {17–30},
+  numpages  = {14},
+  location  = {Hollywood, CA, USA},
+  series    = {OSDI'12}
+}
+
+@inproceedings{socialite,
+  author    = {Seo, Jiwon and Guo, Stephen and Lam, Monica S.},
+  booktitle = {2013 IEEE 29th International Conference on Data Engineering (ICDE)},
+  title     = {SociaLite: Datalog extensions for efficient social network analysis},
+  year      = {2013},
+  volume    = {},
+  number    = {},
+  pages     = {278-289},
+  doi       = {10.1109/ICDE.2013.6544832}
+}
+
+@inproceedings{grail,
+  author    = {Jing Fan and
+               Adalbert Gerald Soosai Raj and
+               Jignesh M. Patel},
+  title     = {The Case Against Specialized Graph Analytics Engines},
+  booktitle = {Seventh Biennial Conference on Innovative Data Systems Research, {CIDR}
+               2015, Asilomar, CA, USA, January 4-7, 2015, Online Proceedings},
+  publisher = {www.cidrdb.org},
+  year      = {2015},
+  url       = {http://cidrdb.org/cidr2015/Papers/CIDR15\_Paper20.pdf},
+  timestamp = {Tue, 23 Mar 2021 15:37:10 +0100},
+  biburl    = {https://dblp.org/rec/conf/cidr/FanRP15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{nappa2019fast,
+  title        = {Fast Parallel Equivalence Relations in a Datalog Compiler},
+  author       = {Nappa, Patrick and Zhao, David and Suboti{\'c}, Pavle and Scholz, Bernhard},
+  booktitle    = {2019 28th International Conference on Parallel Architectures and Compilation Techniques (PACT)},
+  pages        = {82--96},
+  year         = {2019},
+  organization = {IEEE}
+}
+
+@online{mhedhbi19,
+  author        = {Amine Mhedhbi AND Semih Salihoglu},
+  title         = {{Optimizing Subgraph Queries by Combining Binary and
+                   Worst-Case Optimal Joins}},
+  year          = 2019,
+  archiveprefix = {arXiv},
+  eprint        = {1903.02076v2},
+  primaryclass  = {cs.DB}
+}
+
+@article{10.14778/3342263.3342643,
+  author     = {Mhedhbi, Amine and Salihoglu, Semih},
+  title      = {Optimizing Subgraph Queries by Combining Binary and Worst-Case Optimal Joins},
+  year       = {2019},
+  issue_date = {July 2019},
+  publisher  = {VLDB Endowment},
+  volume     = {12},
+  number     = {11},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3342263.3342643},
+  doi        = {10.14778/3342263.3342643},
+  abstract   = {We study the problem of optimizing subgraph queries using the new worst-case optimal
+                join plans. Worst-case optimal plans evaluate queries by matching one query vertex
+                at a time using multi-way intersections. The core problem in optimizing worst-case
+                optimal plans is to pick an ordering of the query vertices to match. We design a cost-based
+                optimizer that (i) picks efficient query vertex orderings for worst-case optimal plans;
+                and (ii) generates hybrid plans that mix traditional binary joins with worst-case
+                optimal style multiway intersections. Our cost metric combines the cost of binary
+                joins with a new cost metric called intersection-cost. The plan space of our optimizer
+                contains plans that are not in the plan spaces based on tree decompositions from prior
+                work. In addition to our optimizer, we describe an adaptive technique that changes
+                the orderings of the worst-case optimal subplans during query execution. We demonstrate
+                the effectiveness of the plans our optimizer picks and the effectiveness of the adaptive
+                technique through extensive experiments. Our optimizer is integrated into the Graphflow
+                DBMS.},
+  journal    = {Proc. VLDB Endow.},
+  month      = jul,
+  pages      = {1692–1704},
+  numpages   = {13}
+}
+@article{freitag,
+  author     = {Freitag, Michael and Bandle, Maximilian and Schmidt, Tobias and Kemper, Alfons and Neumann, Thomas},
+  title      = {Adopting Worst-Case Optimal Joins in Relational Database Systems},
+  year       = {2020},
+  issue_date = {August 2020},
+  publisher  = {VLDB Endowment},
+  volume     = {13},
+  number     = {12},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3407790.3407797},
+  doi        = {10.14778/3407790.3407797},
+  abstract   = {Worst-case optimal join algorithms are attractive from a theoretical point of view,
+                as they offer asymptotically better runtime than binary joins on certain types of
+                queries. In particular, they avoid enumerating large intermediate results by processing
+                multiple input relations in a single multi-way join. However, existing implementations
+                incur a sizable overhead in practice, primarily since they rely on suitable ordered
+                index structures on their input. Systems that support worst-case optimal joins often
+                focus on a specific problem domain, such as read-only graph analytic queries, where
+                extensive precomputation allows them to mask these costs.In this paper, we present
+                a comprehensive implementation approach for worst-case optimal joins that is practical
+                within general-purpose relational database management systems supporting both hybrid
+                transactional and analytical workloads. The key component of our approach is a novel
+                hash-based worst-case optimal join algorithm that relies only on data structures that
+                can be built efficiently during query execution. Furthermore, we implement a hybrid
+                query optimizer that intelligently and transparently combines both binary and multi-way
+                joins within the same query plan. We demonstrate that our approach far outperforms
+                existing systems when worst-case optimal joins are beneficial while sacrificing no
+                performance when they are not.},
+  journal    = {Proc. VLDB Endow.},
+  month      = jul,
+  pages      = {1891–1904},
+  numpages   = {14}
+}
+
+@inproceedings{DBLP:conf/vldb/CeriW91,
+  author    = {Stefano Ceri and Jennifer Widom},
+  title     = {Deriving Production Rules for Incremental View Maintenance},
+  year      = 1991,
+  booktitle = {17th International Conference on Very Large Data Bases,
+               September 3-6, 1991, Barcelona, Catalonia, Spain, Proceedings},
+  pages     = {577-589},
+  url       = {http://www.vldb.org/conf/1991/P577.PDF},
+  crossref  = {DBLP:conf/vldb/91},
+  timestamp = {Wed, 29 Mar 2017 16:45:24 +0200},
+  biburl    = {https://dblp.org/rec/conf/vldb/CeriW91.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@proceedings{DBLP:conf/vldb/91,
+  editor    = {Guy M. Lohman and
+               Am{\'{\i}}lcar Sernadas and
+               Rafael Camps},
+  title     = {17th International Conference on Very Large Data Bases, September
+               3-6, 1991, Barcelona, Catalonia, Spain, Proceedings},
+  publisher = {Morgan Kaufmann},
+  year      = {1991},
+  isbn      = {1-55860-150-3},
+  timestamp = {Fri, 09 Jul 2021 02:11:40 +0200},
+  biburl    = {https://dblp.org/rec/conf/vldb/91.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{DBLP:conf/sigmod/SalemBCL00,
+  author    = {Kenneth Salem and Kevin S. Beyer and Roberta Cochrane and
+               Bruce G. Lindsay},
+  title     = {How To Roll a Join: Asynchronous Incremental View
+               Maintenance},
+  year      = 2000,
+  booktitle = {Proceedings of the 2000 {ACM} {SIGMOD} International
+               Conference on Management of Data, May 16-18, 2000, Dallas,
+               Texas, {USA}},
+  pages     = {129-140},
+  doi       = {10.1145/342009.335393},
+  url       = {https://doi.org/10.1145/342009.335393},
+  crossref  = {DBLP:conf/sigmod/2000},
+  timestamp = {Fri, 12 Mar 2021 14:14:34 +0100},
+  biburl    = {https://dblp.org/rec/conf/sigmod/SalemBCL00.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@proceedings{DBLP:conf/sigmod/2000,
+  editor    = {Weidong Chen and
+               Jeffrey F. Naughton and
+               Philip A. Bernstein},
+  title     = {Proceedings of the 2000 {ACM} {SIGMOD} International Conference on
+               Management of Data, May 16-18, 2000, Dallas, Texas, {USA}},
+  publisher = {{ACM}},
+  year      = {2000},
+  url       = {https://doi.org/10.1145/342009},
+  doi       = {10.1145/342009},
+  isbn      = {1-58113-217-4},
+  timestamp = {Fri, 09 Jul 2021 02:12:21 +0200},
+  biburl    = {https://dblp.org/rec/conf/sigmod/2000.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{DBLP:conf/sigmod/ZhugeGHW95,
+  author    = {Yue Zhuge and Hector Garcia{-}Molina and Joachim Hammer and
+               Jennifer Widom},
+  title     = {View Maintenance in a Warehousing Environment},
+  year      = 1995,
+  booktitle = {Proceedings of the 1995 {ACM} {SIGMOD} International
+               Conference on Management of Data, San Jose, California, USA,
+               May 22-25, 1995},
+  pages     = {316-327},
+  doi       = {10.1145/223784.223848},
+  url       = {https://doi.org/10.1145/223784.223848},
+  crossref  = {DBLP:conf/sigmod/95},
+  timestamp = {Fri, 11 Jun 2021 16:41:40 +0200},
+  biburl    = {https://dblp.org/rec/conf/sigmod/ZhugeGHW95.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@proceedings{DBLP:conf/sigmod/95,
+  editor    = {Michael J. Carey and
+               Donovan A. Schneider},
+  title     = {Proceedings of the 1995 {ACM} {SIGMOD} International Conference on
+               Management of Data, San Jose, California, USA, May 22-25, 1995},
+  publisher = {{ACM} Press},
+  year      = {1995},
+  url       = {https://doi.org/10.1145/223784},
+  doi       = {10.1145/223784},
+  isbn      = {978-0-89791-731-5},
+  timestamp = {Fri, 09 Jul 2021 02:13:22 +0200},
+  biburl    = {https://dblp.org/rec/conf/sigmod/95.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+@article{Ruler,
+  author     = {Nandi, Chandrakana and Willsey, Max and Zhu, Amy and Wang, Yisu Remy and Saiki, Brett and Anderson, Adam and Schulz, Adriana and Grossman, Dan and Tatlock, Zachary},
+  title      = {Rewrite Rule Inference Using Equality Saturation},
+  year       = {2021},
+  issue_date = {October 2021},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {5},
+  number     = {OOPSLA},
+  url        = {https://doi.org/10.1145/3485496},
+  doi        = {10.1145/3485496},
+  abstract   = {Many compilers, synthesizers, and theorem provers rely on rewrite rules to simplify expressions or prove equivalences. Developing rewrite rules can be difficult: rules may be subtly incorrect, profitable rules are easy to miss, and rulesets must be rechecked or extended whenever semantics are tweaked. Large rulesets can also be challenging to apply: redundant rules slow down rule-based search and frustrate debugging. This paper explores how equality saturation, a promising technique that uses e-graphs to apply rewrite rules, can also be used to infer rewrite rules. E-graphs can compactly represent the exponentially large sets of enumerated terms and potential rewrite rules. We show that equality saturation efficiently shrinks both sets, leading to faster synthesis of smaller, more general rulesets. We prototyped these strategies in a tool dubbed Ruler. Compared to a similar tool built on CVC4, Ruler synthesizes 5.8\texttimes{} smaller rulesets 25\texttimes{} faster without compromising on proving power. In an end-to-end case study, we show Ruler-synthesized rules which perform as well as those crafted by domain experts, and addressed a longstanding issue in a popular open source tool.},
+  journal    = {Proc. ACM Program. Lang.},
+  month      = {oct},
+  articleno  = {119},
+  numpages   = {28},
+  keywords   = {Equality Saturation, Rewrite Rules, Program Synthesis}
+}
+
+@article{metatheory,
+  doi       = {10.21105/joss.03078},
+  url       = {https://doi.org/10.21105/joss.03078},
+  year      = {2021},
+  publisher = {The Open Journal},
+  volume    = {6},
+  number    = {59},
+  pages     = {3078},
+  author    = {Alessandro Cheli},
+  title     = {Metatheory.jl: Fast and Elegant Algebraic Computation in Julia with Extensible Equality Saturation},
+  journal   = {Journal of Open Source Software}
+}
+
+@misc{ego,
+  author = {Kiran Gopinathan},
+  title  = {Ego - E-graphs in OCaml},
+  year   = {2021},
+  url    = {https://github.com/verse-lab/ego}
+}
+
+@article{tarjan-congruence,
+  author     = {Downey, Peter J. and Sethi, Ravi and Tarjan, Robert Endre},
+  title      = {Variations on the Common Subexpression Problem},
+  year       = {1980},
+  issue_date = {Oct. 1980},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {27},
+  number     = {4},
+  issn       = {0004-5411},
+  url        = {https://doi.org/10.1145/322217.322228},
+  doi        = {10.1145/322217.322228},
+  journal    = {J. ACM},
+  month      = {oct},
+  pages      = {758–771},
+  numpages   = {14}
+}
+
+@article{unification-dual,
+  author    = {Paris C. Kanellakis and
+               Peter Z. Revesz},
+  title     = {On the Relationship of Congruence Closure and Unification},
+  journal   = {J. Symb. Comput.},
+  volume    = {7},
+  number    = {3/4},
+  pages     = {427--444},
+  year      = {1989},
+  url       = {https://doi.org/10.1016/S0747-7171(89)80018-5},
+  doi       = {10.1016/S0747-7171(89)80018-5},
+  timestamp = {Wed, 17 Feb 2021 08:56:59 +0100},
+  biburl    = {https://dblp.org/rec/journals/jsc/KanellakisR89.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{relational-ematching,
+  author     = {Zhang, Yihong and Wang, Yisu Remy and Willsey, Max and Tatlock, Zachary},
+  title      = {Relational E-Matching},
+  year       = {2022},
+  issue_date = {January 2022},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {6},
+  number     = {POPL},
+  url        = {https://doi.org/10.1145/3498696},
+  doi        = {10.1145/3498696},
+  abstract   = {We present a new approach to e-matching based on relational join; in particular, we apply recent database query execution techniques to guarantee worst-case optimal run time. Compared to the conventional backtracking approach that always searches the e-graph "top down", our new relational e-matching approach can better exploit pattern structure by searching the e-graph according to an optimized query plan. We also establish the first data complexity result for e-matching, bounding run time as a function of the e-graph size and output size. We prototyped and evaluated our technique in the state-of-the-art egg e-graph framework. Compared to a conventional baseline, relational e-matching is simpler to implement and orders of magnitude faster in practice.},
+  journal    = {Proc. ACM Program. Lang.},
+  month      = {jan},
+  articleno  = {35},
+  numpages   = {22},
+  keywords   = {Relational Join Algorithms, E-matching}
+}
+
+@inproceedings{prov-semiring,
+  author    = {Green, Todd J. and Karvounarakis, Grigoris and Tannen, Val},
+  title     = {Provenance Semirings},
+  year      = {2007},
+  isbn      = {9781595936851},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/1265530.1265535},
+  doi       = {10.1145/1265530.1265535},
+  abstract  = {We show that relational algebra calculations for incomplete databases, probabilistic databases, bag semantics and why-provenance are particular cases of the same general algorithms involving semirings. This further suggests a comprehensive provenance representation that uses semirings of polynomials. We extend these considerations to datalog and semirings of formal power series. We give algorithms for datalog provenance calculation as well as datalog evaluation for incomplete and probabilistic databases. Finally, we show that for some semirings containment of conjunctive queries is the same as for standard set semantics.},
+  booktitle = {Proceedings of the Twenty-Sixth ACM SIGMOD-SIGACT-SIGART Symposium on Principles of Database Systems},
+  pages     = {31–40},
+  numpages  = {10},
+  keywords  = {data provenance, data lineage, incomplete databases, formal power series, datalog, semirings, probabilistic databases},
+  location  = {Beijing, China},
+  series    = {PODS '07}
+}
+
+@inproceedings{bloom-lattice,
+  author    = {Neil Conway and
+               William R. Marczak and
+               Peter Alvaro and
+               Joseph M. Hellerstein and
+               David Maier},
+  title     = {Logic and lattices for distributed programming},
+  booktitle = {{ACM} Symposium on Cloud Computing, {SOCC} '12, San Jose, CA, USA,
+               October 14-17, 2012},
+  pages     = {1},
+  year      = {2012},
+  url       = {https://doi.org/10.1145/2391229.2391230},
+  doi       = {10.1145/2391229.2391230},
+  timestamp = {Tue, 06 Nov 2018 00:00:00 +0100},
+  biburl    = {https://dblp.org/rec/conf/cloud/ConwayMAHM12.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{bench-chase,
+  author    = {Benedikt, Michael and Konstantinidis, George and Mecca, Giansalvatore and Motik, Boris and Papotti, Paolo and Santoro, Donatello and Tsamoura, Efthymia},
+  title     = {Benchmarking the Chase},
+  year      = {2017},
+  isbn      = {9781450341981},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3034786.3034796},
+  doi       = {10.1145/3034786.3034796},
+  abstract  = {The chase is a family of algorithms used in a number of data management tasks, such as data exchange, answering queries under dependencies, query reformulation with constraints, and data cleaning. It is well established as a theoretical tool for understanding these tasks, and in addition a number of prototype systems have been developed. While individual chase-based systems and particular optimizations of the chase have been experimentally evaluated in the past, we provide the first comprehensive and publicly available benchmark---test infrastructure and a set of test scenarios---for evaluating chase implementations across a wide range of assumptions about the dependencies and the data. We used our benchmark to compare chase-based systems on data exchange and query answering tasks with one another, as well as with systems that can solve similar tasks developed in closely related communities. Our evaluation provided us with a number of new insights concerning the factors that impact the performance of chase implementations.},
+  booktitle = {Proceedings of the 36th ACM SIGMOD-SIGACT-SIGAI Symposium on Principles of Database Systems},
+  pages     = {37–52},
+  numpages  = {16},
+  keywords  = {chase},
+  location  = {Chicago, Illinois, USA},
+  series    = {PODS '17}
+}
+
+@inproceedings{flix,
+  author    = {Madsen, Magnus and Yee, Ming-Ho and Lhot\'{a}k, Ond\v{r}ej},
+  title     = {From Datalog to Flix: A Declarative Language for Fixed Points on Lattices},
+  year      = {2016},
+  isbn      = {9781450342612},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2908080.2908096},
+  doi       = {10.1145/2908080.2908096},
+  abstract  = { We present Flix, a declarative programming language for specifying and solving least fixed point problems, particularly static program analyses. Flix is inspired by Datalog and extends it with lattices and monotone functions. Using Flix, implementors of static analyses can express a broader range of analyses than is currently possible in pure Datalog, while retaining its familiar rule-based syntax. We define a model-theoretic semantics of Flix as a natural extension of the Datalog semantics. This semantics captures the declarative meaning of Flix programs without imposing any specific evaluation strategy. An efficient strategy is semi-naive evaluation which we adapt for Flix. We have implemented a compiler and runtime for Flix, and used it to express several well-known static analyses, including the IFDS and IDE algorithms. The declarative nature of Flix clearly exposes the similarity between these two algorithms. },
+  booktitle = {Proceedings of the 37th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+  pages     = {194–208},
+  numpages  = {15},
+  keywords  = {static analysis, logic programming, Datalog},
+  location  = {Santa Barbara, CA, USA},
+  series    = {PLDI '16}
+}
+
+@inbook{diospyros,
+  author    = {VanHattum, Alexa and Nigam, Rachit and Lee, Vincent T. and Bornholt, James and Sampson, Adrian},
+  title     = {Vectorization for Digital Signal Processors via Equality Saturation},
+  year      = {2021},
+  isbn      = {9781450383172},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3445814.3446707},
+  abstract  = {Applications targeting digital signal processors (DSPs) benefit from fast implementations of small linear algebra kernels. While existing auto-vectorizing compilers are effective at extracting performance from large kernels, they struggle to invent the complex data movements necessary to optimize small kernels. To get the best performance, DSP engineers must hand-write and tune specialized small kernels for a wide spectrum of applications and architectures. We present Diospyros, a search-based compiler that automatically finds efficient vectorizations and data layouts for small linear algebra kernels. Diospyros combines symbolic evaluation and equality saturation to vectorize computations with irregular structure. We show that a collection of Diospyros-compiled kernels outperform implementations from existing DSP libraries by 3.1\texttimes{} on average, that Diospyros can generate kernels that are competitive with expert-tuned code, and that optimizing these small kernels offers end-to-end speedup for a DSP application.},
+  booktitle = {Proceedings of the 26th ACM International Conference on Architectural Support for Programming Languages and Operating Systems},
+  pages     = {874–886},
+  numpages  = {13}
+}
+
+@inproceedings{souffle-eqrel,
+  title        = {Fast Parallel Equivalence Relations in a Datalog Compiler},
+  author       = {Nappa, Patrick and Zhao, David and Suboti{\'c}, Pavle and Scholz, Bernhard},
+  booktitle    = {2019 28th International Conference on Parallel Architectures and Compilation Techniques (PACT)},
+  pages        = {82--96},
+  year         = {2019},
+  organization = {IEEE}
+}
+
+@article{datalog-subsumption,
+  author     = {K\"{o}stler, Gerhard and Kiessling, Werner and Th\"{o}ne, Helmut and G\"{u}ntzer, Ulrich},
+  title      = {Fixpoint Iteration with Subsumption in Deductive Databases},
+  year       = {1995},
+  issue_date = {March 1995},
+  publisher  = {Kluwer Academic Publishers},
+  address    = {USA},
+  volume     = {4},
+  number     = {2},
+  issn       = {0925-9902},
+  url        = {https://doi.org/10.1007/BF00961871},
+  doi        = {10.1007/BF00961871},
+  journal    = {J. Intell. Inf. Syst.},
+  month      = {mar},
+  pages      = {123–148},
+  numpages   = {26},
+  keywords   = {heuristic search, aggregation, semantic query optimization, subsumption, deductive databases}
+}
+
+@inproceedings{datalogo,
+  author    = {Mahmoud Abo Khamis and
+               Hung Q. Ngo and
+               Reinhard Pichler and
+               Dan Suciu and
+               Yisu Remy Wang},
+  title     = {Convergence of Datalog over (Pre-) Semirings},
+  booktitle = {PODS'22: Proceedings of the 40th {ACM} {SIGMOD-SIGACT-SIGAI} Symposium
+               on Principles of Database Systems.}
+}
+
+@inproceedings{souffle,
+  author    = {Herbert Jordan and
+               Bernhard Scholz and
+               Pavle Subotic},
+  editor    = {Swarat Chaudhuri and
+               Azadeh Farzan},
+  title     = {Souffl{\'{e}}: On Synthesis of Program Analyzers},
+  booktitle = {Computer Aided Verification - 28th International Conference, {CAV}
+               2016, Toronto, ON, Canada, July 17-23, 2016, Proceedings, Part {II}},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {9780},
+  pages     = {422--430},
+  publisher = {Springer},
+  year      = {2016},
+  url       = {https://doi.org/10.1007/978-3-319-41540-6\_23},
+  doi       = {10.1007/978-3-319-41540-6\_23},
+  timestamp = {Tue, 14 May 2019 10:00:43 +0200},
+  biburl    = {https://dblp.org/rec/conf/cav/JordanSS16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@phdthesis{relational-ematching-thesis,
+  author = {Yihong Zhang},
+  school = {University of Washington},
+  title  = {Faster and Worst-Case Optimal E-Matching},
+  year   = {2021}
+}
+
+@misc{zucker-egraph-1,
+  title   = {E-graphs in Julia (Part I)},
+  url     = {https://www.philipzucker.com/egraph-1/},
+  author  = {Zucker, Philip},
+  year    = {2020},
+  urldate = {2022-07-21}
+} 
+
+@misc{zucker-egraph-2,
+  title  = {E-Graph Pattern Matching (Part II)},
+  url    = {https://www.philipzucker.com/egraph-2/},
+  author = {Zucker, Philip},
+  year   = {2020},
+  urldate = {2022-07-21}
+}
+
+@misc{egg-tutorial,
+  title  = {E-graphs in Julia (Part I)},
+  url    = {https://docs.rs/egg/latest/egg/tutorials/_01_background/index.html},
+  author = {Willsey, Max},
+  year   = {2020}
+}
+
+@misc{nonrelational-ematching-post,
+  author       = {Yihong Zhang},
+  url          = {http://effect.systems/blog/ematch-trick.html},
+  title        = {A Trick that Makes Classical E-Matching Faster},
+  year         = {2022}
+}
+
+@article{data-dep-for-opt-survey,
+  author    = {Jan Kossmann and
+               Thorsten Papenbrock and
+               Felix Naumann},
+  title     = {Data dependencies for query optimization: a survey},
+  journal   = {{VLDB} J.},
+  volume    = {31},
+  number    = {1},
+  pages     = {1--22},
+  year      = {2022},
+  url       = {https://doi.org/10.1007/s00778-021-00676-3},
+  doi       = {10.1007/s00778-021-00676-3},
+  timestamp = {Tue, 08 Feb 2022 10:42:03 +0100},
+  biburl    = {https://dblp.org/rec/journals/vldb/KossmannPN22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
