@@ -1,4 +1,4 @@
-\chapter{Optimizing non-relational e-matching}
+\chapter{Optimizing Non-relational E-matching}\label{chapter/nonrel-em}
 
 E-matching is an important procedure for many \egraph based applications,
  yet it is slow.
@@ -316,9 +316,9 @@ Moreover,
 It's also limited in the kind of join it is able to
  (conceptually) perform (only hash joins).
 However, 
- the author argue this trick is
- cute and integrates well
- with an existing non-relational e-graph framework.
+ it integrates well
+ with an existing non-relational e-graph framework,
+ which relational \ematching fails to achieve.
 
 \section{Query planning}\label{query-planning}
 
@@ -397,5 +397,3 @@ Compared to that Pull Request, which
  looking up terms that are grounded after substitution.
 Philip came up with this idea independently 
  as well\footnote{\url{https://github.com/egraphs-good/egg/pull/74\#issuecomment-818833367}}.
-
-% Mention multi-patterns as well.
