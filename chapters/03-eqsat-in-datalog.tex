@@ -1,0 +1,115 @@
+\chapter{Encoding E-graphs in Existing Datalog Systems}
+
+In \autoref{chapter/nonrel-em},
+ we discussed optimizations to make classical \ematching faster. 
+As we see, there are still many limitations to the classical \ematching algorithm
+ despite the proposed optimizations.
+Query plans are limited to certain special forms,
+ so many queries are asymptotically slower using classical \ematching.
+Moreover,
+ many advanced join algorithms (like the generic join algorithm) 
+ and optimizations (like ones using cardinality estimation) cannot be used
+ due to the fundamental restriction of its graph representation.
+To enjoy the highly efficient \ematching procedure and the provided theoretical guarantees,
+ we have to look back at the relational \ematching approach.
+However,
+ relational \ematching has the ``dual representation'' problem:
+While \ematching is performed on the relaitonal representation,
+ the graph representation is necessarily for standard \egraph operations
+ like congruence maintenance.
+Therefore,
+ both representations are needed and should be kept in sync
+ for relational \ematching to work.
+This can have nontrivial overhead \citep{relational-ematching}.
+
+A natural question to ask is, 
+ if keeping both representation is expensive, 
+ and efficient \ematching requires a relational representation,
+ can we keep only the relational representation?
+This way, 
+ we are doing not only \ematching relationally,
+ but also all other \egraph operations,
+ and the ultimate goal is to be able to run equality saturation
+ in this relational representation.
+Compared to the optimizations described in \autoref{chapter/nonrel-em},
+ this proposal is more radical,
+ as it challenges the well-accepted assumption that an e-\textit{egraph} is a graph.
+To implement this proposal, two key issues need to be addressed.
+First,
+ equality saturation uses equational rewrites to grow the \egraph,
+ so it is important to understand the semantics of rewrites 
+ in the relational representation.
+Second,
+ a key ingredient to \egraphs is the maintenance of its congruence invariant.
+Therefore,
+ a relational \egraph must be able to perform congruence maintenance as well.
+To address the first issue, 
+ we propose to encode \egraphs in Datalog.
+Datalog is a relational language with rigourous semantics and efficient evaluation algorithms,
+ where logic rules describe dependencies between relations.
+Logic rules in Datalog have the form $R(\ldots) :- R1(\ldots),\ldots,Rn(\ldots)$ and
+ operationally performs fixpoint-based rewrites but for relations.
+Moreover, both rewrites in \egraphs and logics rules in Datalog are non-destructive,
+ meaning that they do not remove original facts during the rewrites.
+Therefore,
+ it is tempting to encode \egraph rewrites in Datalog.
+
+This chapter introduces my experience encoding \egraph rewrites 
+ in two Datalog systems, namely Souffl\'e \citep{souffle} and Rel \citep{rel-doc}.
+Souffl\'e and Rel are different in many aspects, with different targeted use cases:
+ Souffl\'e focuses on applications like program analyses
+ and has a semantics very similar to the original Datalog,
+ with mild extensions like algebraic data types (ADTs),
+ built-in support for equivalence relations, and the choice operator.
+One of the most aggressive extension is perhaps
+ the newly added subsumption,
+ which allows the users to delete tuples 
+ when it is clear that they are subsumed by other more general tuples \citep{datalog-subsumption}.
+We will see subsumption is in fact critical in preventing the encoded \egraphs from blowup.
+Rel, in contrast, has more ambitious goals.
+While spiritually inspired by Datalog, 
+ Rel has a much more expressive front end language based on first-order logic.
+As an example, 
+ queries in Rel support universal quantifiers and existential quantifiers in arbitrary positions
+ (as long as the domain of the quantified variables are finitely enumerable).
+Moreover,
+ one important distinction between Souffl\'e and Rel is
+ that Rel supports recursive aggregates out of box.
+Rigourous theories are developed 
+ for sound programming with recursive aggregates in Rel \citep{datalogo-convergence},
+ yet to facilitate even more flexible general-purpose programming,
+ soundness are not enforced in practice.
+As a result,
+ one needs to be careful when using recursive aggregates in Rel,
+ to not violate properties like monotonicity.
+I use recursive aggregates in both encodings:
+ while Rel supports it out of box, 
+ for Souffl\'e, I explicitly disabled the stratification checker.
+Despite the wide use of recursive aggregates, the encoding is still sound,
+ because it is semantically clear that rewrites in an \egraph is monotonic.
+Moreover, in the encoding,
+ tuples are only removed when they are subsumed by a more canonicalized version of them.
+
+A key ingredient to making \egraph efficient is 
+ to keep only the canonical tuples.
+However, the encoding in both systems are not completely satisfying.
+For Souffl\'e with the subsumption extension,
+ a tuple can only be removed when it is able to find an evidence 
+ that this tuple is subsumed.
+For Rel, every iteration starts from scratch,
+ so the only way to remove tuples is 
+ to recompute all the facts in the current iteration while excluding the removed tuples,
+ which is indirect.
+Despite demonostrating the feasibility of encoding \egraphs in Datalog, 
+ both encodings are practically very slow.
+Constraint-Handlign Rules (CHR) \citep{chr} is a potential solution to this problem,
+ as its rules allows more flexible removal of tuples.
+Moreover,
+ the literature has investigated 
+ ways to encode the optimal implementation of union-find in CHR \citep{uf-chr},
+ which is perhaps the most critical step in encoding an \egraph.
+However, I did not pursue this way for a long time, 
+ since available implementations of CHR either misses important features,
+ or is obsure and difficult to use
+
+\section{Encoding E-graphs in Souffl\'e}
