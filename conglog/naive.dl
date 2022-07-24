@@ -1,0 +1,46 @@
+.type Id = Add {x : Id, y : Id}
+         | Var {n : number}
+
+.decl eql(x : Id, y : Id) eqrel
+.decl add(x : Id, y : Id, c : Id)
+.decl var(x : number, c : Id)
+
+.decl add_prep(x: Id, y : Id, c : Id)
+var(1, $Var(1)).
+var(2, $Var(2)).
+add_prep($Var(2), $Var(1), $Add($Var(2), $Var(1))).
+add_prep($Var(x + 1), id, $Add($Var(x + 1), id)), 
+ var(x + 1, $Var(x + 1))
+ :-
+ add_prep($Var(x), _, id),
+ x <= 3.
+
+add(x, y, c) :- add_prep(x, y, c).
+
+.output add
+
+eql(xy, yx),
+add(x, y, xy)
+ :- 
+ add(y, x, yx),
+ xy = $Add(x, y).
+
+eql(xy_z, x_yz), 
+ add(x, yz, x_yz), 
+ add(y, z, yz) 
+ :- 
+ add(x, y, xy), add(xy, z, xy_z),
+ yz = $Add(y, z), x_yz = $Add(x, yz).
+
+.decl leader(a : Id, b : Id)
+leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+
+.decl class(a : Id)
+class(a) :- leader(_, a).
+
+.decl root(a : Id)
+root(a) :- leader(a, $Add($Var(4), $Add($Var(3), $Add($Var(2), $Var(1))))).
+
+.output leader
+.output class
+.output root
