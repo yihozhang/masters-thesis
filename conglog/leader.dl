@@ -2,8 +2,8 @@
          | Var {n : number}
 
 .decl eql(x : Id, y : Id) eqrel
-.decl add(x : Id, y : Id, c : Id) btree_delete
-.decl var(x : number, c : Id) btree_delete
+.decl add(x : Id, y : Id, c : Id)
+.decl var(x : number, c : Id)
 
 .decl add_prep(x: Id, y : Id, c : Id)
 var(1, $Var(1)).
@@ -25,6 +25,10 @@ eql(x, x) :- add(_, _, x).
 eql(c1, c2) :- add(x, y, c1), add(x, y, c2), c1 != c2.
 eql(c1, c2) :- var(x, c1), var(x, c2), c1 != c2.
 
+// the semantics of equality
+add(x1, y1, c1) :- add(x, y, c), leader(x, x1), leader(y, y1), leader(c, c1).
+num(x, c1) :- add(x, c), leader(c, c1).
+
 // commutativity
 eql(xy, yx),
 add(x, y, xy)
@@ -40,41 +44,11 @@ eql(xy_z, x_yz),
  add(x, y, xy), add(xy, z, xy_z),
  yz = $Add(y, z), x_yz = $Add(x, yz).
 
-// canonize enodes
-add(x1, y1, c1) :- add(x, y, c), leader(x, x1), leader(y, y1), leader(c, c1).
-var(x, c1) :- var(x, c), leader(c, c1).
-
-add(x1, y1, c1) <= add(x2, y2, c2) :-
-    leader(x1, x2), leader(y1, y2), leader(c1, c2).
-    .plan 0:(1, 3, 4, 5, 2), 1:(1, 3, 4, 5, 2), 2:(1, 3, 4, 5, 2), 3:(1, 3, 4, 5, 2), 4:(1, 3, 4, 5, 2), 5:(1, 3, 4, 5, 2)
-var(x, c1) <= var(x, c2) :-
-    leader(c1, c2).
-leader(x, y1) <= leader(x, y2) :-
-    as(y1, number) <= as(y2, number).
-
-// improvement attempt:
-// add(x, y, c) <= add(x_min, y_min, c_min) :-
-//     x_min = min x_min : { eql(x, nx_min), x_min = as(nx_min, number) },
-//     y_min = min y_min : { eql(y, ny_min), y_min = as(ny_min, number) },
-//     c_min = min c_min : { eql(c, nc_min), c_min = as(nc_min, number) }.
-
-// // ordering for canonicalization
-// add(z, w, a) <= add(x, y, b) :- 
-//     // Only this works -- This may be a bug in the souffle compiler!!
-//     // E.g., at the time of comparing, eql has not populated equivalence for y and w
-//     eql(y, w),
-//     eql(x, z),
-//     // although this sounds to always hold by congruence, we need to add eql(a, b), because otherwise the chance that a and b get merged may be missed as a is subsumed.
-//     eql(a, b), 
-//     as(x, number) <= as(z, number), 
-//     as(y, number) <= as(w, number), 
-//     as(b, number) <= as(a, number).
-
 .decl leader(a : Id, b : Id)
 leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 
 .decl class(a : Id)
-class(b) :- eql(a, _), b = as(min b1 : { eql(a, b), b1 = as(b, number) }, Id).
+class(b) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 
 .decl root(i : number, a : Id)
 // (((1 + 2) + 3) + 4)
@@ -97,6 +71,11 @@ root(2, lx4321) :-
     add(lx43, lx2, x432), leader(x432, lx432),
     add(lx432, lx1, x4321), leader(x4321, lx4321).
 
+.output add
 .output leader
 .output class
 .output root
+
+// If recursive aggregates are efficiently supported
+// If the semiring semantics is used, the old tuples should be subsumed and there shouldn't be duplicates.
+// interaction of the union find and semiring semantics is not clear.

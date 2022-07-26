@@ -19,12 +19,27 @@ add(x, y, c) :- add_prep(x, y, c).
 
 .output add
 
+// populating the eql relation
+eql(x, x) :- var(_, x).
+eql(x, x) :- add(_, _, x).
+
+// congruence
+eql(c1, c2) :- add(x, y, c1), add(x, y, c2).
+eql(c1, c2) :- var(x, c1), var(x, c2).
+
+// the semantics of equality
+add(x1, y, c) :- add(x, y, c), eql(x, x1).
+add(x, y1, c) :- add(x, y, c), eql(y, y1).
+add(x, y, c1) :- add(x, y, c), eql(c, c1).
+
+// commutativity
 eql(xy, yx),
 add(x, y, xy)
- :- 
+ :-
  add(y, x, yx),
  xy = $Add(x, y).
 
+// associativity
 eql(xy_z, x_yz), 
  add(x, yz, x_yz), 
  add(y, z, yz) 
@@ -38,9 +53,11 @@ leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) 
 .decl class(a : Id)
 class(a) :- leader(_, a).
 
-.decl root(a : Id)
-root(a) :- leader(a, $Add($Var(4), $Add($Var(3), $Add($Var(2), $Var(1))))).
+.decl root(i : number, a : Id)
+root(1, a) :- leader($Add($Var(4), $Add($Var(3), $Add($Var(2), $Var(1)))), a).
+root(2, a) :- leader($Add($Var(1), $Add($Var(2), $Add($Var(3), $Var(4)))), a).
 
 .output leader
 .output class
 .output root
+.output add
