@@ -1,0 +1,1 @@
+For hack.dl, after compiling it with `compile.sh`, it is needed for the program to compile to remove all the occurrence of eqfind in arguments, etc, as well as the functors namespace.

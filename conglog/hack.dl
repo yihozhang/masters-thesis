@@ -1,3 +1,6 @@
+#define FIND(x) as(@eqfind(as(x, number)), Id)
+.functor eqfind(number):number
+
 .decl N(n : number)
 .input N(IO=file, filename="N.in")
 
@@ -53,32 +56,21 @@ add(x1, y1, c1) <= add(x2, y2, c2) :-
 var(x, c1) <= var(x, c2) :-
     leader(c1, c2).
 
-// improvement attempt:
-// add(x, y, c) <= add(x_min, y_min, c_min) :-
-//     x_min = min x_min : { eql(x, nx_min), x_min = as(nx_min, number) },
-//     y_min = min y_min : { eql(y, ny_min), y_min = as(ny_min, number) },
-//     c_min = min c_min : { eql(c, nc_min), c_min = as(nc_min, number) }.
-
-// // ordering for canonicalization
-// add(z, w, a) <= add(x, y, b) :- 
-//     // Only this works -- This may be a bug in the souffle compiler!!
-//     // E.g., at the time of comparing, eql has not populated equivalence for y and w
-//     eql(y, w),
-//     eql(x, z),
-//     // although this sounds to always hold by congruence, we need to add eql(a, b), because otherwise the chance that a and b get merged may be missed as a is subsumed.
-//     eql(a, b), 
-//     as(x, number) <= as(z, number), 
-//     as(y, number) <= as(w, number), 
-//     as(b, number) <= as(a, number).
-
 // This rule is very, very slow.
 .decl leader(a : Id, b : Id)
-leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+.decl ids(a : Id)
+ids(a) :- add(a, _, _).
+ids(a) :- add(_, a, _).
+ids(a) :- add(_, _, a).
+ids(a) :- var(_, a).
+leader(a, as(b, Id)) :- ids(a), a = FIND(a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+leader(a, b) :- ids(a), a != FIND(a), leader(FIND(a), b).
 leader(x, y1) <= leader(x, y2) :-
-    as(y1, number) <= as(y2, number).
+    eql(y1, y2),
+    y2 = FIND(y1).
 
 .decl class(a : Id)
-class(b) :- eql(a, _), b = as(min b1 : { eql(a, b), b1 = as(b, number) }, Id).
+class(b) :- leader(_, b).
 
 .decl root(i : number, a : Id)
 // (((1 + 2) + 3) + 4)

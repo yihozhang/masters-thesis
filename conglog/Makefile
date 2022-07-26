@@ -9,3 +9,7 @@ leader: leader.dl
 subsumption: subsumption.dl
 	mkdir -p subsumption
 	souffle --disable-transformers=SemanticChecker -Dsubsumption subsumption.dl
+
+hack: hack.dl
+	mkdir -p hack
+	souffle --disable-transformers=SemanticChecker -Dhack hack.dl

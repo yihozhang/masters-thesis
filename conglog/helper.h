@@ -1,0 +1,1 @@
+#define eqfind(x) rel_eql_e1be027843ac9bc5->ind.findNode(x)
