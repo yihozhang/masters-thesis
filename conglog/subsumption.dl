@@ -1,3 +1,6 @@
+.decl N(n : number)
+.input N(IO=file, filename="N.in")
+
 .type Id = Add {x : Id, y : Id}
          | Var {n : number}
 
@@ -13,7 +16,7 @@ add_prep($Var(x + 1), id, $Add($Var(x + 1), id)),
  var(x + 1, $Var(x + 1))
  :-
  add_prep($Var(x), _, id),
- x <= 3.
+ x <= n, N(n).
 
 add(x, y, c) :- add_prep(x, y, c).
 
@@ -70,6 +73,7 @@ leader(x, y1) <= leader(x, y2) :-
 //     as(y, number) <= as(w, number), 
 //     as(b, number) <= as(a, number).
 
+// This rule is very, very slow.
 .decl leader(a : Id, b : Id)
 leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 

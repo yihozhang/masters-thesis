@@ -1,3 +1,6 @@
+.decl N(n : number)
+.input N(IO=file, filename="N.in")
+
 .type Id = Add {x : Id, y : Id}
          | Var {n : number}
 
@@ -13,7 +16,7 @@ add_prep($Var(x + 1), id, $Add($Var(x + 1), id)),
  var(x + 1, $Var(x + 1))
  :-
  add_prep($Var(x), _, id),
- x <= 3.
+ x <= n, N(n).
 
 add(x, y, c) :- add_prep(x, y, c).
 
