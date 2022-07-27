@@ -351,9 +351,10 @@ When aggregations are stratified,
  this is fine because all the aggregations are ``one-shot'',
  while when aggregations are used recursively, 
  this means that the aggregations
- are not maintained incrementally 
+ are maintained non-incrementally 
  and will repeatedly perform linear scans.
-We half-address this issues with more hackings.
+This can be prohibitively expensive, 
+ and we half-address this issues with more hackings.
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
