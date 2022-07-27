@@ -175,7 +175,8 @@ We sketch some of these extensions that are used in our encoding below:
 \subsubsection*{Algebraic Data Types}
 Souffl\'e supports algebraic data types (ADTs) as columns.
 For example, the program below below declares 
- an Abstract Syntax Tree of our example in \autoref{fig:eqsat-example}
+ an Abstract Syntax Tree of the example in \autoref{fig:eqsat-example}
+ in Souffl\'e
  and populates the term $v_1+v_2$ in relation $R$:
 \begin{verbatim}
 .type Id = Add {x : Id, y : Id}
@@ -184,6 +185,52 @@ For example, the program below below declares
 R($Add($Var(1), $Var(2))).
 \end{verbatim}
 
+Internally, Souffl\'e keeps a record table for ADTs, 
+ where each tuple has a unique reference id, 
+ the branch id for its constructor, and
+ the field values.
+Therefore, 
+ the encoding is very similar to the one used 
+ in relational e-matching, with the difference being
+ in relational e-matching, different branches of an AST
+ is represented as different tables, 
+ not different ids within the same table.
+This encoding allows Souffl\'e to 
+ perform efficient join over ADTs.
+The reader may wonder 
+ why we still use ADTs while we can 
+ simulate the same features with 
+ the relational encoding 
+ \textit{a la} the relational \ematching paper.
+In fact,
+ we use both:
+ ADTs are specifically used in a skolemizing fashion,
+ i.e., we use ADTs as a handy way to creating new \eclass ids.
+For example, \verb|$Add(x, y)| represents the ``natural'' \eclass id
+ of the \enode with symbol \verb|Add| and children $x$ and $y$.
+Other approaches to creating new \eclass ids include 
+ using the hash of the \enodes, which we used for Rel.
+
+\def\eqrel{\texttt{eqrel}}
+
+\subsubsection*{Equivalence relations}
+Equivalence relations are widely used 
+ for different program analyses tasks, 
+ such as Bitcoin user group analysis \citep{anonymity-bitcoin} 
+ and points-to analyses \citep{multi-alaias-analysis,points-to-linear}.
+While directly writing these equivalence relations as
+ transitive, reflexive, symmetric rules are highly inefficient,
+ data structures like union find \citep{unionfind} can 
+ make reasoning about equivalence orders of magnititude faster.
+Motivated by this, Souffl\'e provides a built-in support for 
+ equivalence relations named \eqrel. 
+A relation declared as \eqrel{} will
+ always satisfy the equivalence rules 
+ and is implemented internally using union-find.
+\eqrel{} is designed to be highly parallelizing, 
+ and it compactly representes the equivalence relation
+ in linear space, while it takes up to quadratic space
+ to represent it directly.
 
 - introduce features
     - ASTs
