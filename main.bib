@@ -1178,7 +1178,25 @@
   number    = {1-2},
   journal   = {Theory and Practice of Logic Programming},
   publisher = {Cambridge University Press},
-  author    = {SCHRIJVERS, TOM and FRÜHWIRTH, THOM},
+  author    = {Schrijvers, Tom and Fr{\"u}hwirth, Thom},
   year      = {2006},
   pages     = {213–224}
+}
+
+@inproceedings{souffle-interpreter,
+  author    = {Hu, Xiaowen and Zhao, David and Jordan, Herbert and Scholz, Bernhard},
+  title     = {An Efficient Interpreter for Datalog by De-Specializing Relations},
+  year      = {2021},
+  isbn      = {9781450383912},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3453483.3454070},
+  doi       = {10.1145/3453483.3454070},
+  abstract  = {Datalog is becoming increasingly popular as a standard tool for a variety of use cases. Modern Datalog engines can achieve high performance by specializing data structures for relational operations. For example, the Datalog engine Souffl\'{e} achieves high performance with a synthesizer that specializes data structures for relations. However, the synthesizer cannot always be deployed, and a fast interpreter is required. This work introduces the design and implementation of the Souffl\'{e} Tree Interpreter (STI). Key for the performance of the STI is the support for fast operations on relations. We obtain fast operations by de-specializing data structures so that they can work in a virtual execution environment. Our new interpreter achieves a competitive performance slowdown between 1.32 and 5.67\texttimes{} when compared to synthesized code. If compile time overheads of the synthesizer are also considered, the interpreter can be 6.46\texttimes{} faster on average for the first run.},
+  booktitle = {Proceedings of the 42nd ACM SIGPLAN International Conference on Programming Language Design and Implementation},
+  pages     = {681–695},
+  numpages  = {15},
+  keywords  = {Datalog Engine, Interpreter Implementation, Static Data Structure},
+  location  = {Virtual, Canada},
+  series    = {PLDI 2021}
 }

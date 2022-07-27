@@ -14,6 +14,7 @@
 \usepackage{iftex}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{listings, listings-rust}
 
 \usepackage{xcolor}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -67,6 +68,8 @@
 
 
 \setcounter{tocdepth}{1}  % Print the chapter and sections to the toc
+
+\renewcommand{\chapterautorefname}{Chapter}
 
 \input{macros.tex}
 

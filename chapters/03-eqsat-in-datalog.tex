@@ -108,13 +108,96 @@ Moreover,
  the literature has investigated 
  ways to encode the optimal implementation of union-find in CHR \citep{uf-chr},
  which is perhaps the most critical step in encoding an \egraph.
-However, I did not pursue this way for a long time, 
- since available implementations of CHR either misses important features,
- or is obsure and difficult to use
+However, I did not pursue this approach for a long time, 
+ since as far as I am aware, available implementations of CHR either misses important features,
+ or is obsure and difficult to use.
+
+Through out this chapter, we will use a very classical equality saturation program,
+ namely associavity and communitativity of the $+$ operator, as our example.
+The (pseudo)code in \autoref{fig:eqsat-example} shows how this can be defined in a library like \egg.
+As a baseline, it takes less than one second for \egg to conclude that
+ $\sum_{i=1\ldots 8}v_i$ is in the same \eclass as $\sum_{i=8\ldots 1}v_i$.
+For our Datalog encoding,
+ we did not expect it to be as efficient as highly specialized \egraph frameworks like \egg.
+In fact, even the best encodings presented in this chapter
+ are not capable of proving the above equivalence,
+ although it is not unimaginable that a customized Datalog engine can be specialized
+ for our \egraph encodings and therefore more efficient.
+Moreover,
+ for each of our encodings,
+ it is either the case that there are more or less overheads 
+ that will not been seen in a sensible \egraph impelementation,
+ or we have to do some non-trivial hacking into the Datalog engine that 
+ the engine impelementers will be surprised about.
+Therefore, in some sense,
+ our attempts to encode \egraphs in Datalog is unsatisfactory.
+However, 
+ as we will see,
+ there are many joyful gems we will not be able to discover without these attempts.
+
+\begin{figure}
+\begin{lstlisting}[language=Rust, style=colouredRust]
+// Enum declaration
+define_language! {
+    enum Expr {
+        Add(Id, Id),
+        Var(i64),
+    }
+}
+// Rewrites
+let rewrites = vec![
+    rw!("(+ ?x ?y)" => "(+ ?y ?x)");
+    rw!("(+ (+ ?x ?y) ?z) => "(+ ?x (+ ?y ?z))");
+];
+\end{lstlisting}
+\caption{The example equality saturation program used in this chapter.}
+\label{fig:eqsat-example}
+\end{figure}
 
 \section{Encoding E-graphs in Souffl\'e}
 
-Introduce Souffle
+\subsection{Background}
+
+Souffl\'e is a modern, efficient Datalog engine 
+ that has wide applications in program analyses \citep{doop, souffle, souffle-interpreter}.
+While sticking to the dogma of monotonicity, 
+ Souffl\'e has been extended with a diverse range of extensions
+ to both make it easier to program program analyses tasks
+ and faster to run these tasks.
+These extensions are amenable to the core theory of Datalog 
+ (suppose the user does not break the assumptions)\footnote{With the exception
+ of termination guarantees of pure Datalog. 
+ Similar to programs in many other practical Datalog engines, 
+ Souffl\'e programs may not terminate
+ since they are allowed to populate new values, which is useful in practice.}.
+We sketch some of these extensions that are used in our encoding below:
+
+\subsubsection*{Algebraic Data Types}
+Souffl\'e supports algebraic data types (ADTs) as columns.
+For example, the program below below declares 
+ an Abstract Syntax Tree of our example in \autoref{fig:eqsat-example}
+ and populates the term $v_1+v_2$ in relation $R$:
+\begin{verbatim}
+.type Id = Add {x : Id, y : Id}
+    | Var {n : number}
+.decl R(Id).
+R($Add($Var(1), $Var(2))).
+\end{verbatim}
+
+
+- introduce features
+    - ASTs
+    - aggregates
+    - equivalence relation
+    - user-defined functors
+    - subsumption
+
+
+
+
+\section{Encoding E-graphs in Rel}
+
+\section{Encoding E-graphs in }
 
 thank Bernhard Scholz
 
