@@ -179,10 +179,10 @@ For example, the program below below declares
  in Souffl\'e
  and populates the term $v_1+v_2$ in relation $R$:
 \begin{verbatim}
-.type Id = Add {x : Id, y : Id}
-    | Var {n : number}
-.decl R(Id).
-R($Add($Var(1), $Var(2))).
+    .type Id = Add {x : Id, y : Id}
+        | Var {n : number}
+    .decl R(Id).
+    R($Add($Var(1), $Var(2))).
 \end{verbatim}
 
 Internally, Souffl\'e keeps a record table for ADTs, 
@@ -232,17 +232,130 @@ A relation declared as \eqrel{} will
  in linear space, while it takes up to quadratic space
  to represent it directly.
 
-- introduce features
-    - ASTs
-    - aggregates
-    - equivalence relation
-    - user-defined functors
-    - subsumption
+\subsubsection*{Subsumptions}
+Subsumption \citep{datalog-subsumption} is the idea that
+ when one tuple is subsumed by another tuple semantically,
+ it does not hurt to remove the subsumed tuples.
+For example, 
+ when computing the shortest paths between pairs of vertices in a graph,
+ one may only care about the shortest paths. 
+Consider the following Datalog program that computes the shortest path:
+\begin{verbatim}
+    p(x, y, c) :- e(x, y, c).
+    p(x, y, c) :- p(x, z, cp), e(z, y, ce), c = cp + ce.
+    sp(x, y, c) :- v(x), v(y), c = min c : p(x, y, c).
+\end{verbatim}
+This program will compute all possible paths between pairs of vertices,
+ before aggregating over the paths to derive the shortest paths.
+This is inefficient compared to the standard shortest path algorithms 
+ like Dijkstra's algorithm.
+Worst, when the graph contains (even positive) cycles, 
+ these rules may not terminate, 
+ because there are infinitely many paths.
+Subsumption addresses this issue 
+ by allowing the deletion of paths that are knwon to be not optimal,
+ i.e., those non-shortest paths:
+\begin{verbatim}
+    sp(x, y, c) :- e(x, y, c).
+    sp(x, y, c) :- sp(x, z, cp), e(z, y, ce), c = cp + ce.
+    sp(x, y, c1) <= sp(x, y, c2) :- c1 >= c2.
+\end{verbatim}
+The last rule defines a partial order on
+ \verb|sp| and says that tuple \verb|sp(x, y, c1)| 
+ will be subsumed by tuple \verb|sp(x, y, c2)| if
+ \verb|c1| is less than or equal to \verb|c2| 
+ (note subsumption is a reflexive relation).
+Operationally,
+ the ``reduced set'' will be computed 
+ after each iteration of evaluation according to
+ the subsumptive rules.
+\citet{datalog-subsumption} developed 
+ a rigourous theory of subsumptions in Datalog
+ and proved its soundness.
+Finally,
+ other approaches are proposed based on 
+ semirings \citep{datalogo,datalogo-convergence}
+ and lattices \citep{flix}.
+For example, the Rel language,
+ introduced in \autoref{section/rel},
+ is based on the semiring approach.
 
+In our encoding, we use subsumptions 
+ to remove obsolete information.
+For example,
+ \eclasses are being constantly merged, updated, and canonicalized,
+ which will cause \enodes to be canonicalized from time to time.
+This leads to the existence of multiple representations of
+ the same \enode, with only one being the canonical at any time.
+Keeping these stale \enodes will explode the \egraph.
+Instead,
+ we can define a partial order over the \egraphs
+ so that all stale \enodes are subsumed 
+ by their canonical version and 
+ let subsumptions to clean up the stale \enodes.
+We will discuss this in details in \autoref{todo}.
+ 
+\subsubsection*{User-defined functors}
+While Souffl\'e provides a rich set of primitive operators,
+ it further provides the flexibility by allowing the users
+ to bring their own functions, which Souffl\'e calls
+ user-defined functors.
+To declare a user-defined functor, 
+ the user defines its implementation in a C++ program and
+ link it during the execution of the Souffl\'e program.
+Some of the encodings use the user-defined functors 
+ to make \eqrel{} more flexible \citep{zucker-udf-1,zucker-udf-2}.
+Compared to the standard usage, 
+ we use the user-defined functors in a rather wild way, 
+ following \citep{zucker-udf-1} (\autoref{todo}).
 
+\subsubsection*{Aggregations}
+Finally, Souffl\'e supports stratified aggregations, 
+ which is a standard extension to Datalog.
+In other words, 
+ Souffl\'e accepts programs where 
+ aggregation operators like \texttt{max}, \texttt{min}, and \texttt{sum}
+ does not transitively refer to themselves (i.e., are not recursive).
+The stratification requirement is crucial to the soundness of the extension
+ because it guarantees that the rules are monotonic.
+Below is an example that does not satisfy the stratification:
+\begin{verbatim}
+    R(x) :- x = 1.
+    R(c + 1) :- c = max x : R(x)
+\end{verbatim}
+Aftr the first iteration, the database $D_1$ will contain only $R(1)$. 
+In the second iteration, because the second rule fires,
+ the database $D_2$ will be $\{R(1), R(2)\}$.
+However, in the third iteration,
+ the application of the second rule to $D_2$ will yield
+ $R(3)$, and $R(2)$ that used to exist in $D_2$ is now found nowhere,
+ which breaks monotonicity.
 
+That being said, there are Datalog programs that break monotonicity,
+ yet are still monotonic, at least semantically (e.g., one with subsumptions).
+Moreover, in our encoding, because it is semantically clear that 
+ \egraphs are growing in a monotonic way, we use recursive aggregations 
+ throughout.
+Souffl\'e does not support recursive aggregations by default,
+ so we pass the \verb|--disable-transformers=SemanticChecker|
+ flag to Souffl\'e to disable the semantic check.
+By doing this, 
+ we entered the dangerous land of Souffl\'e 
+ since all the assumptions checked by the semantic checker
+ could be violated.
+Moreover,
+ since the design of Souffl\'e does not expect
+ recursive use of aggregations,
+ aggregations are computed using linear scan.
+When aggregations are stratified,
+ this is fine because all the aggregations are ``one-shot'',
+ while when aggregations are used recursively, 
+ this means that the aggregations
+ are not maintained incrementally 
+ and will repeatedly perform linear scans.
+We half-address this issues with more hackings.
 
-\section{Encoding E-graphs in Rel}
+\section{Encoding E-graphs in Rel}\label{section/rel}
 
 \section{Encoding E-graphs in }
 
@@ -251,5 +364,3 @@ thank Bernhard Scholz
 thank Rel
 
 thank Phil for his blog posts
-
-thank Remy for his pure evil hack
