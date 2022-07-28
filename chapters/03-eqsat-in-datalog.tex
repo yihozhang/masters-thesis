@@ -1,5 +1,7 @@
 \chapter{Encoding E-graphs in Existing Datalog Systems}
 
+\section{Introduction}
+
 In \autoref{chapter/nonrel-em},
  we discussed optimizations to make classical \ematching faster. 
 As we see, there are still many limitations to the classical \ematching algorithm
@@ -113,7 +115,7 @@ However, I did not pursue this approach for a long time,
  or is obsure and difficult to use.
 
 Through out this chapter, we will use a very classical equality saturation program,
- namely associavity and communitativity of the $+$ operator, as our example.
+ namely associavity and commutativity of the $+$ operator, as our example.
 The (pseudo)code in \autoref{fig:eqsat-example} shows how this can be defined in a library like \egg.
 As a baseline, it takes less than one second for \egg to conclude that
  $\sum_{i=1\ldots 8}v_i$ is in the same \eclass as $\sum_{i=8\ldots 1}v_i$.
@@ -137,18 +139,18 @@ However,
 
 \begin{figure}
 \begin{lstlisting}[language=Rust, style=colouredRust]
-// Enum declaration
-define_language! {
-    enum Expr {
-        Add(Id, Id),
-        Var(i64),
+    // Enum declaration
+    define_language! {
+        enum Expr {
+            Add(Id, Id),
+            Var(i64),
+        }
     }
-}
-// Rewrites
-let rewrites = vec![
-    rw!("(+ ?x ?y)" => "(+ ?y ?x)");
-    rw!("(+ (+ ?x ?y) ?z) => "(+ ?x (+ ?y ?z))");
-];
+    // Rewrites
+    let rewrites = vec![
+        rw!("(+ ?x ?y)" => "(+ ?y ?x)");
+        rw!("(+ (+ ?x ?y) ?z) => "(+ ?x (+ ?y ?z))");
+    ];
 \end{lstlisting}
 \caption{The example equality saturation program used in this chapter.}
 \label{fig:eqsat-example}
@@ -354,7 +356,59 @@ When aggregations are stratified,
  are maintained non-incrementally 
  and will repeatedly perform linear scans.
 This can be prohibitively expensive, 
- and we half-address this issues with more hackings.
+ and we mitigate this issue with more hacking into Souff\'e's internals.
+
+TODO (summary of the section)
+
+\subsection{A Nai\"ve Encoding}
+
+% We start with a very nai\"ve encoding of \egraphs.
+Our first encoding is inspired by the denotation of \egraphs:
+ an \egraph represents a set of terms and a congruence relation over them.
+We can use the relational representation in the relational \ematching paper
+ to represent the set of terms, 
+ and use \eqrel{} to represent the congruence relation over terms.
+\begin{verbatim}
+    .type Id <: number
+    .decl add(I : Id, I : Id, id : Id)
+    .decl var(x : number, c : Id)
+    .decl eql(x : Id, y : Id) eqrel
+    add(y, x, yx), eql(xy, yx) 
+      :- add(x, y, xy), yx = ???.
+    add(x, yz, x_yz), add(y, z, yz) 
+      :- add(x, y, xy), add(xy, z, xy_z), 
+         yz = ???, x_yz = ???.
+\end{verbatim}
+Here we are using integers to represent e-class ids, 
+ but we run into an issue:
+ we do not know how to refer to the \eclass id
+ of (potentially) new ids.
+For example,
+ in the commutativity rule,
+ it is not obvious what value should we assign to \verb|yx|.
+% The reader may be tempted to write the commutativity as
+% \begin{verbatim}
+%     add(y, x, xy) :- add(x, y, xy).
+% \end{verbatim}
+% to denote $x+y$ and $y+x$ has the same \eclass id.
+% However, this is not correct.
+We took inspiration from skolemization and use ADTs 
+ to represent the natural \eclass id of the \enode,
+ e.g., the id of $x+y$ is \verb|$Add(x, y)|.
+\begin{verbatim}
+    .type Id = Add {x : Id, y : Id}
+             | Var {n : number}
+    .decl add(I : Id, I : Id, id : Id)
+    .decl var(x : number, c : Id)
+    .decl eql(x : Id, y : Id) eqrel
+    add(y, x, yx), eql(xy, yx) 
+      :- add(x, y, xy), yx = $Add(y, x).
+    add(x, yz, x_yz), add(y, z, yz) 
+      :- add(x, y, xy), add(xy, z, xy_z), 
+         yz = $Add(y, z) x_yz = $Add(x, yz).
+\end{verbatim}
+
+
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
