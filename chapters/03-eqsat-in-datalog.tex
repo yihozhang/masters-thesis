@@ -382,7 +382,7 @@ We can use the relational representation in the relational \ematching paper
 Here we are using integers to represent e-class ids, 
  but we run into an issue:
  we do not know how to refer to the \eclass id
- of (potentially) new ids.
+ of (potentially) new \eclasses.
 For example,
  in the commutativity rule,
  it is not obvious what value should we assign to \verb|yx|.
@@ -392,7 +392,9 @@ For example,
 % \end{verbatim}
 % to denote $x+y$ and $y+x$ has the same \eclass id.
 % However, this is not correct.
-We took inspiration from skolemization and use ADTs 
+One approach is to take the hash function of its children \eclass ids,
+ yet it may lead to collision (with a relatively small probability).
+Instead, we took inspiration from skolemization and use ADTs 
  to represent the natural \eclass id of the \enode,
  e.g., the id of $x+y$ is \verb|$Add(x, y)|.
 \begin{verbatim}
@@ -407,6 +409,13 @@ We took inspiration from skolemization and use ADTs
       :- add(x, y, xy), add(xy, z, xy_z), 
          yz = $Add(y, z) x_yz = $Add(x, yz).
 \end{verbatim}
+The above program describes the way we perform rewrites in Souffl\'e,
+ which is the basically the same idea accross all the encodings presented 
+ in this section.
+However, we also need rules to describe the full term space and 
+ the congruence closure: note that a term $f(x, y)$ is in the term space
+ if there exists $x',y'$ where $f(x', y')$ is in the term space and 
+ $x\cong x'\land y\cong y'$.
 
 
 
