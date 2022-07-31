@@ -115,7 +115,7 @@ However, I did not pursue this approach for a long time,
  or is obsure and difficult to use.
 
 Through out this chapter, we will use a very classical equality saturation program,
- namely associavity and commutativity of the $+$ operator, as our example.
+ namely associativity and commutativity of the $+$ operator, as our example.
 The (pseudo)code in \autoref{fig:eqsat-example} shows how this can be defined in a library like \egg.
 As a baseline, it takes less than one second for \egg to conclude that
  $\sum_{i=1\ldots 8}v_i$ is in the same \eclass as $\sum_{i=8\ldots 1}v_i$.
@@ -395,7 +395,7 @@ For example,
 One approach is to take the hash function of its children \eclass ids,
  yet it may lead to collision (with a relatively small probability).
 Instead, we took inspiration from skolemization and use ADTs 
- to represent the natural \eclass id of the \enode,
+ to represent the ``natural'' \eclass id of the \enode,
  e.g., the id of $x+y$ is \verb|$Add(x, y)|.
 \begin{verbatim}
     .type Id = Add {x : Id, y : Id}
@@ -410,14 +410,73 @@ Instead, we took inspiration from skolemization and use ADTs
          yz = $Add(y, z) x_yz = $Add(x, yz).
 \end{verbatim}
 The above program describes the way we perform rewrites in Souffl\'e,
- which is the basically the same idea accross all the encodings presented 
- in this section.
-However, we also need rules to describe the full term space and 
- the congruence closure: note that a term $f(x, y)$ is in the term space
- if there exists $x',y'$ where $f(x', y')$ is in the term space and 
- $x\cong x'\land y\cong y'$.
+ where the idea is general across the encodings presented in this section.
+
+However, this is not a complete \egraph implementation yet.
+First, it does not represent the whole term space, 
+ which will miss potential rule firing.
+For example, suppose the databse has \verb|{add(a, b, c1), add(c2, d, e), eql(c1, c2)}|,
+ because \verb|c1| and \verb|c2| are equivalent, 
+ the associativity rule should be fired.
+However, the rewrite rules does not syntactically match.
+There are two solutions in this na\"ve encoding.
+First, we can modify the rewrite rules, e.g.,
+ we can rewrite the associativity rule to be:
+\begin{verbatim}
+    add(x, yz, x_yz), add(y, z, yz) 
+      :- add(x, y, xy1), eql(xy1, xy2), add(xy2, z, xy_z), 
+         yz = $Add(y, z) x_yz = $Add(x, yz).
+\end{verbatim}
+Note that the \verb|eql| relation is quadratic in size,
+ so this rewrite rule will be drastically slower than the original one.
+Alternatively,
+ it is also possible to simply populate the whole term space, with the following rules.
+\begin{verbatim}
+    add(x1, y, c) :- add(x, y, c), eql(x, x1).
+    add(x, y1, c) :- add(x, y, c), eql(y, y1).
+    add(x, y, c1) :- add(x, y, c), eql(c, c1).
+    num(x, c1) :- num(x, c), eql(c, c1).
+\end{verbatim}
+As an (acyclic) \egraph can represent exponentially many terms,
+ this could be even slower.
+Finally, after fixing the above missed firing, there is one last missing piece:
+ \verb|eql| is not a congruence relation yet.
+For it to be congruent,
+ the following rules need to be added (assume we've populated the entire term space):
+\begin{verbatim}
+    eql(c1, c2) :- add(x, y, c1), add(x, y, c2).
+    eql(c1, c2) :- num(x, c1), num(x, c2).
+\end{verbatim}
+If the term space is not explicitly represented,
+ we could add one more indirection to our congruence rule 
+ via the \verb|eql| relation as
+ we did for rewrites:
+\begin{verbatim}
+    eql(c1, c2) :- add(x1, y1, c1), add(x2, y2, c2),
+                   eql(x1, x2), eql(y1, y2).
+\end{verbatim}
+
+\subsubsection{An Encoding with the Leader Relation}
+
+The na\"ive encoding is not really an \egraph.
+It is more like an explicit way of encoding the congruence relation
+ and rewrites over it.
+One thing that makes \egraph special (and efficient)
+ is the canonicalization of \enodes.
+In a valid \egraph, 
+ only canonicalized \enodes and \eclass will exist,
+ so there won't be two different representations of 
+ semantically equivalent \enodes and \eclasses.
+This enables efficient matching in \egraph, 
+ since we only need to match on the canonical representation.
+While in our na\"ive encoding, 
+ we need to either populate all possible representations of an \enode,
+ or we match with a layer of indirection.
+Therefore, 
+ a natural idea is to also do canonicalization in the Datalog encoding.
 
 
+% Looking back at the na\"ive encoding, one will notice
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
