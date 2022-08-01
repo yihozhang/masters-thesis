@@ -456,7 +456,7 @@ If the term space is not explicitly represented,
                    eql(x1, x2), eql(y1, y2).
 \end{verbatim}
 
-\subsubsection{An Encoding with the Leader Relation}
+\subsection{An Encoding with the Leader Relation}
 
 The na\"ive encoding is not really an \egraph.
 It is more like an explicit way of encoding the congruence relation
@@ -475,8 +475,23 @@ While in our na\"ive encoding,
 Therefore, 
  a natural idea is to also do canonicalization in the Datalog encoding.
 
+To canonicalize, we first need to pick a canonical id for each \eclass.
+Here, we pick the canonical id to be the min of all ids in this \eclass
+ and call it the leader. The leader relation can be straightforwardly defined
+ as follows:
+\begin{verbatim}
+    .decl ids(a : Id)
+    ids(a) :- add(_, _, a).
+    ids(a) :- var(_, a).
 
-% Looking back at the na\"ive encoding, one will notice
+    .decl leader(a : Id, b : Id)
+    // TODO: I'm stuck here. eql(a, _) seems unnecessary, but changing it to ids is buggy.
+    leader(a, as(b, Id)) :- 
+        eql(a, _), 
+        b = min b1 : { eql(a, b), b1 = as(b, number) }.
+\end{verbatim}
+
+\subsection{Optimizing leader relations with subsumptions}
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
