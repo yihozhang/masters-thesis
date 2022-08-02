@@ -48,10 +48,10 @@ eql(xy_z, x_yz),
  yz = $Add(y, z), x_yz = $Add(x, yz).
 
 .decl leader(a : Id, b : Id)
-leader(a, as(b, Id)) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+leader(a, as(b, Id)) :- eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 
 .decl class(a : Id)
-class(b) :- eql(a, _), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+class(b) :- eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 
 .decl root(i : number, a : Id)
 // (((1 + 2) + 3) + 4)

@@ -137,24 +137,25 @@ However,
  as we will see,
  there are many joyful gems we will not be able to discover without these attempts.
 
-\begin{figure}
-\begin{lstlisting}[language=Rust, style=colouredRust]
-    // Enum declaration
-    define_language! {
-        enum Expr {
-            Add(Id, Id),
-            Var(i64),
-        }
+\begin{lstlisting}[
+language=Rust, 
+style=colouredRust, 
+caption={The example equality saturation program used in this chapter.}
+label={fig:eqsat-example}
+]
+// Enum declaration
+define_language! {
+    enum Expr {
+        Add(Id, Id),
+        Var(i64),
     }
-    // Rewrites
-    let rewrites = vec![
-        rw!("(+ ?x ?y)" => "(+ ?y ?x)");
-        rw!("(+ (+ ?x ?y) ?z) => "(+ ?x (+ ?y ?z))");
-    ];
+}
+// Rewrites
+let rewrites = vec![
+    rw!("(+ ?x ?y)" => "(+ ?y ?x)");
+    rw!("(+ (+ ?x ?y) ?z) => "(+ ?x (+ ?y ?z))");
+];
 \end{lstlisting}
-\caption{The example equality saturation program used in this chapter.}
-\label{fig:eqsat-example}
-\end{figure}
 
 \section{Encoding E-graphs in Souffl\'e}
 
@@ -461,9 +462,11 @@ If the term space is not explicitly represented,
 The na\"ive encoding is not really an \egraph.
 It is more like an explicit way of encoding the congruence relation
  and rewrites over it.
-One thing that makes \egraph special (and efficient)
- is the canonicalization of \enodes.
-In a valid \egraph, 
+An \egraph is a particular data structure that 
+ makes the congruence relation efficient.
+To make the congruence relation highly efficient,
+ \egraph aggressively canonicalizes its \enodes:
+In a valid \egraph,
  only canonicalized \enodes and \eclass will exist,
  so there won't be two different representations of 
  semantically equivalent \enodes and \eclasses.
@@ -476,22 +479,70 @@ Therefore,
  a natural idea is to also do canonicalization in the Datalog encoding.
 
 To canonicalize, we first need to pick a canonical id for each \eclass.
-Here, we pick the canonical id to be the min of all ids in this \eclass
- and call it the leader. The leader relation can be straightforwardly defined
+There are several ways of doing it.
+The design choices we considered include using timestamps and hash values.
+While timestamps are more or less hacky and hash functions may 
+ cause collisions\footnote{Nonetheless, we use hash functions in our Rel encoding,
+ given the probability of collision is very low.}
+Here, we pick the canonical id to be the min of all ids in this \eclass,
+ which we call the leader. 
+The relation that maps an arbitrary id to its leader can be straightforwardly defined
  as follows:
 \begin{verbatim}
-    .decl ids(a : Id)
-    ids(a) :- add(_, _, a).
-    ids(a) :- var(_, a).
-
     .decl leader(a : Id, b : Id)
-    // TODO: I'm stuck here. eql(a, _) seems unnecessary, but changing it to ids is buggy.
     leader(a, as(b, Id)) :- 
-        eql(a, _), 
+        eql(a, a), // constraint a to be an e-class id
         b = min b1 : { eql(a, b), b1 = as(b, number) }.
 \end{verbatim}
 
-\subsection{Optimizing leader relations with subsumptions}
+The leader relation has a similar purpose 
+ as the \verb|find| operation of 
+ the union-find data structure,
+ as both return the canonical representation of an \eclass id
+ and can be rather efficiently maintained 
+ under updates to the congruence relations.
+However, 
+ the union-find data structure is significantly more efficiently,
+ since it does not instantiate all the \verb|(id, canonical-id)|
+ pairs, which the leader relation does.
+Therefore,
+ when an update to the congruence relation happens,
+ the leader relation may update all the $O(N)$ pairs
+ in worst case.
+Note
+ there are two intricacies to this statement.
+First, in the encoding presented in this section,
+ no tuples are updated in-place.
+Rather, new tuples are populated and
+ the old tuples will not be removed.
+\autoref{sec:subsumption} will introduce a way 
+ to delete old tuples via subsumption.
+Second, the updates to the leader relation 
+ is not immediately performed 
+ when the congruence relation is updated.
+Rather,
+ the leader relation is re-computed iteration by iteration
+ in a batched fashion.
+This may amortize the cost of updating the relation.
+Overall,
+ the declarative nature of Datalog makes it more complicated
+ to reason about the run-time behavior, 
+ in particular the time complexity, of the leader relation.
+That being said,
+ the declarativeness makes reasoning about the correctness easier.
+
+With the leader relation, 
+ we populate canonicalized \enodes 
+ for each \enode:
+\begin{verbatim}
+    add(x1, y1, c1) :- add(x, y, c), leader(x, x1), leader(y, y1), leader(c, c1).
+    num(x, c1) :- add(x, c), leader(c, c1).
+\end{verbatim}
+Compared to the na\"ive encoding,
+ this does not populate the whole term space,
+ but only the canonical terms.
+
+\subsection{Optimizing leader relations with subsumptions}\label{sec:subsumption}
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
