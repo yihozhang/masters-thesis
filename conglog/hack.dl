@@ -56,15 +56,9 @@ add(x1, y1, c1) <= add(x2, y2, c2) :-
 var(x, c1) <= var(x, c2) :-
     leader(c1, c2).
 
-// This rule is very, very slow.
 .decl leader(a : Id, b : Id)
-.decl ids(a : Id)
-ids(a) :- add(a, _, _).
-ids(a) :- add(_, a, _).
-ids(a) :- add(_, _, a).
-ids(a) :- var(_, a).
-leader(a, as(b, Id)) :- ids(a), a = FIND(a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
-leader(a, b) :- ids(a), a != FIND(a), leader(FIND(a), b).
+leader(a, as(b, Id)) :- eql(a, a), a = FIND(a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+leader(a, b) :- eql(a, a), a != FIND(a), leader(FIND(a), b).
 leader(x, y1) <= leader(x, y2) :-
     eql(y1, y2),
     y2 = FIND(y1).

@@ -1,12 +1,12 @@
-naive: naive.dl
+naive: naive.dl N.in
 	mkdir -p naive
 	souffle -Dnaive naive.dl
 
-leader: leader.dl
+leader: leader.dl N.in
 	mkdir -p leader
 	souffle --disable-transformers=SemanticChecker -Dleader leader.dl 
 
-subsumption: subsumption.dl
+subsumption: subsumption.dl N.in
 	mkdir -p subsumption
 	souffle --disable-transformers=SemanticChecker -Dsubsumption subsumption.dl
 

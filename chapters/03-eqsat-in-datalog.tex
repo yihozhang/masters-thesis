@@ -1,6 +1,6 @@
 \chapter{Encoding E-graphs in Existing Datalog Systems}
 
-\section{Introduction}
+% \section{Introduction}
 
 In \autoref{chapter/nonrel-em},
  we discussed optimizations to make classical \ematching faster. 
@@ -115,10 +115,10 @@ However, I did not pursue this approach for a long time,
  or is obsure and difficult to use.
 
 Through out this chapter, we will use a very classical equality saturation program,
- namely associativity and commutativity of the $+$ operator, as our example.
+ namely associativity and commutativity (AC rules) of the $+$ operator, as our example.
 The (pseudo)code in \autoref{fig:eqsat-example} shows how this can be defined in a library like \egg.
 As a baseline, it takes less than one second for \egg to conclude that
- $\sum_{i=1\ldots 8}v_i$ is in the same \eclass as $\sum_{i=8\ldots 1}v_i$.
+ $\sum_{i=1}^{8}v_i$ is in the same \eclass as $\sum_{i=8}^{1}v_i$.
 For our Datalog encoding,
  we did not expect it to be as efficient as highly specialized \egraph frameworks like \egg.
 In fact, even the best encodings presented in this chapter
@@ -457,7 +457,7 @@ If the term space is not explicitly represented,
                    eql(x1, x2), eql(y1, y2).
 \end{verbatim}
 
-\subsection{An Encoding with the Leader Relation}
+\subsection{An Encoding with the Leader Relation}\label{sec:leader}
 
 The na\"ive encoding is not really an \egraph.
 It is more like an explicit way of encoding the congruence relation
@@ -536,13 +536,108 @@ With the leader relation,
  for each \enode:
 \begin{verbatim}
     add(x1, y1, c1) :- add(x, y, c), leader(x, x1), leader(y, y1), leader(c, c1).
-    num(x, c1) :- add(x, c), leader(c, c1).
+    num(x, c1) :- num(x, c), leader(c, c1).
 \end{verbatim}
 Compared to the na\"ive encoding,
  this does not populate the whole term space,
- but only the canonical terms.
+ but only a space that include all \enodes that are once canonical.
+As a result,
+ it may contain \enodes that are not necessarily canonical (but used to).
+This means extra spaces are needed for these non-canonical \enodes,
+ and redundant matching may be performed on them.
+Moreover, the leader relation is monotonically computed,
+ meaning that the leader relation may 
+ record all the historical leaders of an \eclass id.
+Yet this is still far less work than our na\"ive encoding, 
+ where we represent every term explicitly.
+In terms of the actual performance,
+ this encoding is capable of saturate 
+ the \egraph with initial expression $\sum_{i=1}^N$
+ under AC rules for $N=5$ in 0.37 second
+ and $N=6$ in two minutes, 
+ while the na\"ive encoding does not terminate in three minutes.
 
-\subsection{Optimizing leader relations with subsumptions}\label{sec:subsumption}
+As a final note,
+ compared to the na\"ive encoding,
+ this encoding is no longer stratified:
+ \verb|leader| aggregaets over \verb|eql|
+ and populates \verb|add|;
+ \verb|add| is used in rewrite rules,
+ which updates \verb|eql|.
+Therefore, \verb|leader| can update the relation it aggregates over,
+ which is not sound in general.
+Starting at this section,
+ all the encodings rely on the monotonicity of \egraphs to justify the soundness.
+
+\subsection{Optimizing the leader relation with subsumptions}\label{sec:subsumption}
+
+One of the inefficiencies of the encoding presented in \autoref{sec:leader} is 
+ from the redundant \enodes and leader entries 
+ that was once up-to-date (but no longer).
+Ideally, one will want to get rid of these stale \enodes and leader entries,
+ yet plain Datalog does not removal of tuples for the sake of monotonicity.
+Fortunately,
+ subsumption allows us to remove subsumed tuples given a partial order.
+Particularly, 
+ since we define the leader of an \eclass id to be the smallest id 
+ that is equivalent to it,
+ the partial order over \eclass ids can be straightforwardly given by $<$ 
+ within the same equivalence class.
+Therefore, the following rule can be added to remove stale leader entries 
+ when a ``better'' leader is found:
+\begin{verbatim}
+    leader(x, y1) <= leader(x, y2) :-
+        as(y1, number) <= as(y2, number).
+\end{verbatim}
+Similarly, to canonicalize \enodes:
+\begin{verbatim}
+    add(x1, y1, c1) <= add(x2, y2, c2) :-
+        leader(x1, x2), leader(y1, y2), leader(c1, c2).
+    var(x, c1) <= var(x, c2) :-
+        leader(c1, c2).
+\end{verbatim}
+
+However, the first rule, which canonicalize \verb|add|, 
+ is extremely slow in Souffl\'e due to poor query planning.
+It will perform a cross product over the \verb|add|$\times$\verb|add|,
+ which is not acceptable.
+Therefore, we need to instead specify a manual query plan for this rule:
+\begin{verbatim}
+    add(x1, y1, c1) <= add(x2, y2, c2) :-
+        leader(x1, x2), leader(y1, y2), leader(c1, c2).
+        .plan 0:(1, 3, 4, 5, 2), 
+              1:(1, 3, 4, 5, 2), 
+              2:(1, 3, 4, 5, 2), 
+              3:(1, 3, 4, 5, 2), 
+              4:(1, 3, 4, 5, 2), 
+              5:(1, 3, 4, 5, 2)
+\end{verbatim}
+The following query plan is specified:
+\begin{verbatim}
+                            Join
+                      +-------+------+
+                      |              |
+                      |              |
+                    Join       leader(c1, c2)
+               +------+------+
+               |             |
+               |             |
+             Join      leader(y1, y2)
+        +-----+----+
+        |          |
+        |          |
+add(x1, y1, c1)  leader(x1, x2)
+\end{verbatim}
+Since the leader relation is (almost) an bijection,
+ this join plan can be executed in (almost) linear time.
+These two rules decreases the runtime from two minutes 
+ to 20 seconds for $N=6$ in the above benchmark, 
+ yielding a 6$\times$ speedup.
+
+\subsection{Efficient computation of leaders using reflections}
+
+leader is slow because it does aggregation blah blah
+use find, and only the canonical will do a find
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
