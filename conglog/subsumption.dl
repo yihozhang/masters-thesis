@@ -53,9 +53,13 @@ add(x1, y1, c1) <= add(x2, y2, c2) :-
 var(x, c1) <= var(x, c2) :-
     leader(c1, c2).
 
+.decl ids(a : Id)
+ids(x) :- add(_, _, x).
+ids(x) :- var(_, x).
+
 // This rule is very, very slow.
 .decl leader(a : Id, b : Id)
-leader(a, as(b, Id)) :- eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+leader(a, as(b, Id)) :- ids(a), eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 leader(x, y1) <= leader(x, y2) :-
     as(y1, number) <= as(y2, number).
 

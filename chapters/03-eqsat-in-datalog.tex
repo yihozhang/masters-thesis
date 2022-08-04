@@ -631,28 +631,58 @@ add(x1, y1, c1)  leader(x1, x2)
 Since the leader relation is (almost) an bijection,
  this join plan can be executed in (almost) linear time.
 These two rules decreases the runtime from two minutes 
- to 20 seconds for $N=6$ in the above benchmark, 
+ to 22 seconds for $N=6$ in the above benchmark, 
  yielding a 6$\times$ speedup.
+
+Finally, as a side optimization, 
+ so far we have been using \verb|eql(a, a)| 
+ enumerate through \eclass ids.
+It turns out Souffl\'e's \eqrel{} will 
+ enumerate the \verb|eql| relation (incrementally)
+ for this operation, which is super linear to
+ the size of \eclass ids.
+To get rid of this overhead,
+ we explicitly represent all the ids:\footnote{\\
+     Readers may be curious why we still keep \texttt{eql} in the body.
+     In fact, the author is curious as well---deleting it
+     makes the output unsound. 
+     The author speculates this is to make sure that
+     \texttt{leader} is dependent on \texttt{eql}, 
+     which Souffl\'e cannot infer otherwise.
+     Alas, too many hacks.}
+\begin{verbatim}
+    .decl ids(a : Id)
+    ids(x) :- add(_, _, x).
+    ids(x) :- var(_, x).
+    leader(a, as(b, Id)) :- 
+        ids(a), eql(a, a), 
+        b = min b1 : { eql(a, b), b1 = as(b, number) }.
+\end{verbatim}
+This makes sure enumerating ids will run linearly in the size of \eclass
+ ids and further reduces the run time to 17 seconds.
 
 \subsection{Efficient computation of leaders using reflections}
 
 With the subsumption-based optimiaztion in the last section,
- we are able to keep only canonicalized \enodes and \elcasses,
+ we are able to keep only canonicalized \enodes and \eclasses,
  which makes the rule rewriting even more efficient.
 However, benchmarking the program from the last section
- shows that the majority of time is spent in computing the leader relation.
+ shows that the majority of time is spent in computing the leader relation,
+ even though we have made sure \eclass enumeration takes only linear time.
 Therefore, our last optimization for the Souffl\'e encoding of \egraph
  will focus on rules that compute the leader relation.
 
 Let us begin by revisiting the leader rules:
 \begin{verbatim}
-    leader(a, as(b, Id)) :- eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+    leader(a, as(b, Id)) :- 
+        ids(a), eql(a, a), 
+        b = min b1 : { eql(a, b), b1 = as(b, number) }.
     leader(x, y1) <= leader(x, y2) :-
         as(y1, number) <= as(y2, number).
 \end{verbatim}]
 
 The first rule is extremely slow.
-Inspecting into the generated code of this IR
+Inspecting into the generated IR
  shows that for every \verb|a|, 
  Souffl\'e will enumerate through the \verb|eql| relation indexed by \verb|a|
  to find the smallest id,
