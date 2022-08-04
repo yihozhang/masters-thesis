@@ -642,8 +642,9 @@ It turns out Souffl\'e's \eqrel{} will
  for this operation, which is super linear to
  the size of \eclass ids.
 To get rid of this overhead,
- we explicitly represent all the ids:\footnote{\\
-     Readers may be curious why we still keep \texttt{eql} in the body.
+ we explicitly represent all the ids:\footnote{
+     Readers may be curious why we still keep \texttt{eql} in the body
+     of leader computations.
      In fact, the author is curious as well---deleting it
      makes the output unsound. 
      The author speculates this is to make sure that
@@ -680,7 +681,6 @@ Let us begin by revisiting the leader rules:
     leader(x, y1) <= leader(x, y2) :-
         as(y1, number) <= as(y2, number).
 \end{verbatim}]
-
 The first rule is extremely slow.
 Inspecting into the generated IR
  shows that for every \verb|a|, 
@@ -688,14 +688,60 @@ Inspecting into the generated IR
  to find the smallest id,
  which is a linear operation.
 Moreover,
- Souffl\'e cannot figure our \verb|x: eql(a1, x)| and \verb|x: eql(a2, x)| 
- are the same relation if \verb|a1| and \verb|a2| are in the same \eclass.
+ even though the smallest id stays the same within the same equivalence class,
+ Souffl\'e does not know that.
 As a result,
- an equivalent class of size $n$ will need to recompute \verb|min| $n$ times.
+ an equivalence class of size $n$ will need to recompute \verb|min| $n$ times.
 Therefore, rule can take up to quadratic time at each iteration.
 
-% leader is slow because it does aggregation blah blah
-% use find, and only the canonical will do a find
+To address the second issue, 
+ we follow \citet{zucker-udf-1}, 
+ reflecting the internals of \verb|eqrel| of Souffl\'e out
+ to programs written in Souffl\'e.
+Admittedly, this is very hacky and dangerous,
+ but it gives us the last speedup for our Souffl\'e encoding.
+Firstly, we add support for the \verb|FIND| operation, 
+ which finds the internal canonical representations
+ of members of the \verb|eql| relation, to our program.
+To achieve this, we declare a user-defined functor called \verb|FIND| 
+ in our Souffl\'e program,
+ using Souffl\'e compiler to generate C++ code, 
+ and text-replace each call to \verb|FIND| to an call 
+ to the internal union-find data structure.
+
+\verb|FIND| allows us to save work by
+ only allowing the canonical id to perform aggregation,
+ and any other id \verb|a| should instead derive its leader by consulting the leader
+ of \verb|FIND(a)|.
+This ensures that every \eclass will perform only one aggregation over its members:
+\begin{verbatim}
+    leader(a, as(b, Id)) :- 
+        ids(a), eql(a, a), 
+        a = FIND(a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+    leader(a, b) :- 
+        ids(a), eql(a, a), a != FIND(a), leader(FIND(a), b).
+\end{verbatim}
+This effectively makes the computation of the leader relation in each iteration
+ linear in the size of ids,
+ since every id will be enumerated only once by the \verb|ids| relation
+ and once by the aggregation.
+
+% it's interesting that Souffl\'e does not permit this in its API design,
+% for monotonicity?
+
+Finally, if the internals of Souffl\'e have already provided us 
+ with a canonical representation,
+ why would we even bother to compute leader at all?
+\begin{verbatim}
+    leader(a, FIND(a)) :- ids(a), eql(a, a).
+    leader(x, y1) <= leader(x, y2) :-
+        eql(y1, y2),
+        y2 = FIND(y1).
+\end{verbatim}
+
+This is our ultimate encoding of \egraphs in Souffl\'e, being able to saturate 
+ \(\sum_{i=1}^6 v_i\) under AC rules in under one second, 
+ and \(\sum_{i=1}^7 v_i\) within 20 seconds.
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
