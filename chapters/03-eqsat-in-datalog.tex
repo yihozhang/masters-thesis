@@ -135,13 +135,13 @@ Therefore, in some sense,
  our attempts to encode \egraphs in Datalog is unsatisfactory.
 However, 
  as we will see,
- there are many joyful gems we will not be able to discover without these attempts.
+ there are many shining gems we will not be able to find otherwise.
 
 \begin{lstlisting}[
-language=Rust, 
-style=colouredRust, 
-caption={The example equality saturation program used in this chapter.}
-label={fig:eqsat-example}
+    label=fig:eqsat-example,
+    language=Rust, 
+    style=colouredRust, 
+    caption={The example equality saturation program used in this chapter.}
 ]
 // Enum declaration
 define_language! {
@@ -535,7 +535,8 @@ With the leader relation,
  we populate canonicalized \enodes 
  for each \enode:
 \begin{verbatim}
-    add(x1, y1, c1) :- add(x, y, c), leader(x, x1), leader(y, y1), leader(c, c1).
+    add(x1, y1, c1) :- add(x, y, c), 
+        leader(x, x1), leader(y, y1), leader(c, c1).
     num(x, c1) :- num(x, c), leader(c, c1).
 \end{verbatim}
 Compared to the na\"ive encoding,
@@ -741,7 +742,8 @@ Finally, if the internals of Souffl\'e have already provided us
 
 This is our ultimate encoding of \egraphs in Souffl\'e, being able to saturate 
  \(\sum_{i=1}^6 v_i\) under AC rules in under one second, 
- and \(\sum_{i=1}^7 v_i\) within 20 seconds.
+ and \(\sum_{i=1}^7 v_i\) within 20 seconds, 
+ which all other encodings presented in this section times out.
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
