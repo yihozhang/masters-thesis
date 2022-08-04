@@ -56,22 +56,23 @@ add(x1, y1, c1) <= add(x2, y2, c2) :-
 var(x, c1) <= var(x, c2) :-
     leader(c1, c2).
 
+.decl ids(a : Id)
+ids(x) :- add(_, _, x).
+ids(x) :- var(_, x).
+
 .decl leader(a : Id, b : Id)
 
-leader(a, a) :- eql(a, a), a = FIND(a).
-leader(a, b) :- eql(a, a), a != FIND(a), leader(FIND(a), b).
-leader(x, y1) <= leader(x, y2) :-
-    leader(x, y1) <= leader(x, y2) :-
-    as(y1, number) <= as(y2, number)..
+leader(a, FIND(a)) :- ids(a), eql(a, a).
+// leader(a, b) :- eql(a, a), a != FIND(a), leader(FIND(a), b).
 leader(x, y1) <= leader(x, y2) :-
     eql(y1, y2),
     y2 = FIND(y1).
 
 // leader(a, as(b, Id)) :- eql(a, a), a = FIND(a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
 // leader(a, b) :- eql(a, a), a != FIND(a), leader(FIND(a), b).
-leader(x, y1) <= leader(x, y2) :-
-    eql(y1, y2),
-    y1 >= y2.
+// leader(x, y1) <= leader(x, y2) :-
+//     eql(y1, y2),
+//     y1 >= y2.
 
 .decl class(a : Id)
 class(b) :- leader(_, b).

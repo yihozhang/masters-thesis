@@ -12,4 +12,4 @@ subsumption: subsumption.dl N.in
 
 hack: hack.dl
 	mkdir -p hack
-	souffle --disable-transformers=SemanticChecker -Dhack hack.dl
+	./compile.sh hack.dl
