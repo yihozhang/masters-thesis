@@ -636,8 +636,36 @@ These two rules decreases the runtime from two minutes
 
 \subsection{Efficient computation of leaders using reflections}
 
-leader is slow because it does aggregation blah blah
-use find, and only the canonical will do a find
+With the subsumption-based optimiaztion in the last section,
+ we are able to keep only canonicalized \enodes and \elcasses,
+ which makes the rule rewriting even more efficient.
+However, benchmarking the program from the last section
+ shows that the majority of time is spent in computing the leader relation.
+Therefore, our last optimization for the Souffl\'e encoding of \egraph
+ will focus on rules that compute the leader relation.
+
+Let us begin by revisiting the leader rules:
+\begin{verbatim}
+    leader(a, as(b, Id)) :- eql(a, a), b = min b1 : { eql(a, b), b1 = as(b, number) }.
+    leader(x, y1) <= leader(x, y2) :-
+        as(y1, number) <= as(y2, number).
+\end{verbatim}]
+
+The first rule is extremely slow.
+Inspecting into the generated code of this IR
+ shows that for every \verb|a|, 
+ Souffl\'e will enumerate through the \verb|eql| relation indexed by \verb|a|
+ to find the smallest id,
+ which is a linear operation.
+Moreover,
+ Souffl\'e cannot figure our \verb|x: eql(a1, x)| and \verb|x: eql(a2, x)| 
+ are the same relation if \verb|a1| and \verb|a2| are in the same \eclass.
+As a result,
+ an equivalent class of size $n$ will need to recompute \verb|min| $n$ times.
+Therefore, rule can take up to quadratic time at each iteration.
+
+% leader is slow because it does aggregation blah blah
+% use find, and only the canonical will do a find
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
