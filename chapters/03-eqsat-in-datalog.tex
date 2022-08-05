@@ -296,7 +296,7 @@ Instead,
  so that all stale \enodes are subsumed 
  by their canonical version and 
  let subsumptions to clean up the stale \enodes.
-We will discuss this in details in \autoref{todo}.
+We will discuss this in details in \autoref{sec:subsumption}.
  
 \subsubsection*{User-defined functors}
 While Souffl\'e provides a rich set of primitive operators,
@@ -310,7 +310,7 @@ Some of the encodings use the user-defined functors
  to make \eqrel{} more flexible \citep{zucker-udf-1,zucker-udf-2}.
 Compared to the standard usage, 
  we use the user-defined functors in a rather wild way, 
- following \citep{zucker-udf-1} (\autoref{todo}).
+ following \citep{zucker-udf-1} (\autoref{sec:hack}).
 
 \subsubsection*{Aggregations}
 Finally, Souffl\'e supports stratified aggregations, 
@@ -361,7 +361,7 @@ This can be prohibitively expensive,
 
 TODO (summary of the section)
 
-\subsection{A Nai\"ve Encoding}
+\subsection{A Nai\"ve Encoding}\label{sec:naive}
 
 % We start with a very nai\"ve encoding of \egraphs.
 Our first encoding is inspired by the denotation of \egraphs:
@@ -663,7 +663,7 @@ To get rid of this overhead,
 This makes sure enumerating ids will run linearly in the size of \eclass
  ids and further reduces the run time to 17 seconds.
 
-\subsection{Efficient computation of leaders using reflections}
+\subsection{Efficient computation of leaders using reflections}\label{sec:hack}
 
 With the subsumption-based optimiaztion in the last section,
  we are able to keep only canonicalized \enodes and \eclasses,
@@ -747,7 +747,79 @@ This is our ultimate encoding of \egraphs in Souffl\'e, being able to saturate
 
 \section{Encoding E-graphs in Rel}\label{section/rel}
 
-\section{Encoding E-graphs in }
+The Souffl\'e encoding of \egraphs is concise and efficient.
+However, it relies on some of the critical features of Souffl\'e,
+ such as subsumptions and built-in equivalence relations,
+ without which the encoding will be orders of magnititude slower 
+ (e.g., the na\"ive encoding in \autoref{sec:naive}).
+Moreover, the design of the Souffl\'e encoding is also limited 
+ by some of the restrictions Souffl\'e imposes.
+For example,
+ strict monotonicity means that tuples existing in the last iteration
+ will stay here unless subsumption explicitly removed it.
+
+In this section, we consider this same problem of encoding \egraphs in Datalog
+ from a quite different spot in the design space.
+Rel does not support subsumptions nor built-in equivalence relations,
+ yet it is not monotonic by default.
+In particular, it does not check for monotonicity during the compilation, 
+ and the evaluation algorithm by default does not perform semi-na\"ive evaluation
+ nor keep old tuples.
+Instead, it iteratively applies the rules to the lastest database instance 
+ to derive the input to the next iteration, 
+ so if a tuple $t$ is computed at iteration $n-1$ but not at iteration $n$, 
+ where the fixpoitn is reached, the resulting database instance will not contain $t$.
+The oversimplified evaluation algorithm is as follow:
+\begin{verbatim}
+    def eval_rules(edb, rules):
+        db = edb
+        do
+            db = apply_rules(rules, db)
+        while db does not change
+\end{verbatim}
+This is a fundamental difference between Rel and Souffl\'e:
+ in Souffl\'e, even if the rules are not monotonic,
+ one has to explicitly use subsumptions to remove an old tuple.
+The oversimplified evaluation algorithm of Souffl\'e is as follows:
+\begin{verbatim}
+    def eval_rules(edb, rules):
+        db = edb
+        do
+            new_db = apply_rules(rules, db)
+            db = db + new_db
+        while delta does not change
+\end{verbatim}
+As we have seen, this can sometimes be a headache 
+ because one need to explicitly remove obsolete tuples.
+In comparison,
+ Rel's non-monotonic semantics allows us to write iterative algorithms that are
+ not monotonic (with regard to tuple inclusion) much easier.
+
+Rel also has an expressive set of language features:
+ relations can be defined in place using comprehension syntax,
+ are easily composible via comma (,) operator (for cartesian product) 
+ and semicolon (;) operator (for union),
+ and can be used as arguments to higher-order functions like \verb|hash|;
+ universal and existential quantifiers can be nested;
+ and there are rich syntactic sugars for relational programming, e.g.,
+ \verb|R[a]| means \verb|b: R(a, b)|.
+% Such language features make Rel a relational programming language where
+%  developers can build high-level applications with complicated business logic,
+%  which is unusual as traditional database languages like SQL 
+%  are believed to be low-level, non-composable, and syntactically cumbersome.
+% Moreover, compared to standard Datalog, 
+%  Rel gives up monotonicity for practicality,
+%  as real-world applications are not necessarily monotonic 
+%  (with regard to set inclusion).
+This section will not attempt to cover all the features of Rel;
+ instead, we will introduce each language feature of Rel as we use them.
+
+
+
+\section{Encoding E-graphs in CHC}
+
+
+\section{Miscellaneous}
 
 thank Bernhard Scholz
 
