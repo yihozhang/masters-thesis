@@ -422,7 +422,7 @@
   numpages   = {14}
 }
 
-@article{denaili,
+@article{denali,
   author     = {Joshi, Rajeev and Nelson, Greg and Zhou, Yunhong},
   title      = {Denali: A Practical Algorithm for Generating Optimal Code},
   year       = {2006},
@@ -1270,4 +1270,181 @@
   keywords  = {Alias analysis, Must analysis, Datalog, data structure},
   location  = {Vienna, Austria},
   series    = {CC 2018}
+}
+
+@inproceedings{eqsat-tv,
+  author = {Stepp, Michael and Tate, Ross and Lerner, Sorin},
+  title = {Equality-Based Translation Validator for {LLVM}},
+  booktitle = {Proceedings of the 23\textsuperscript{rd} international conference on Computer Aided Verification},
+  year = {2011},
+  isbn = {978-3-642-22109-5},
+  pages = {737--742},
+  numpages = {6},
+  location = {Snowbird, UT, USA},
+  publisher = {Springer-Verlag},
+  address = {Berlin, Heidelberg},
+  url = {http://www.cs.cornell.edu/~ross/publications/eqsat/}
+}
+
+@article{carpentry-compiler,
+  author = {Wu, Chenming and Zhao, Haisen and Nandi, Chandrakana and Lipton, Jeffrey I. and Tatlock, Zachary and Schulz, Adriana},
+  title = {Carpentry Compiler},
+  year = {2019},
+  issue_date = {December 2019},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {38},
+  number = {6},
+  issn = {0730-0301},
+  url = {https://doi.org/10.1145/3355089.3356518},
+  doi = {10.1145/3355089.3356518},
+  abstract = {Traditional manufacturing workflows strongly decouple design and fabrication phases. As a result, fabrication-related objectives such as manufacturing time and precision are difficult to optimize in the design space, and vice versa. This paper presents HL-HELM, a high-level, domain-specific language for expressing abstract, parametric fabrication plans; it also introduces LL-HELM, a low-level language for expressing concrete fabrication plans that take into account the physical constraints of available manufacturing processes. We present a new compiler that supports the real-time, unoptimized translation of high-level, geometric fabrication operations into concrete, tool-specific fabrication instructions; this gives users immediate feedback on the physical feasibility of plans as they design them. HELM offers novel optimizations to improve accuracy and reduce fabrication time as well as material costs. Finally, optimized low-level plans can be interpreted as step-by-step instructions for users to actually fabricate a physical product. We provide a variety of example fabrication plans in the carpentry domain that are designed using our high-level language, show how the compiler translates and optimizes these plans to generate concrete low-level instructions, and present the final physical products fabricated in wood.},
+  journal = {ACM Trans. Graph.},
+  month = {nov},
+  articleno = {195},
+  numpages = {14},
+  keywords = {programming languages, design for manufacturing, hardware abstractions, CAD}
+}
+
+@inproceedings{glenside,
+author = {Smith, Gus Henry and Liu, Andrew and Lyubomirsky, Steven and Davidson, Scott and McMahan, Joseph and Taylor, Michael and Ceze, Luis and Tatlock, Zachary},
+title = {Pure Tensor Program Rewriting via Access Patterns (Representation Pearl)},
+year = {2021},
+isbn = {9781450384674},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3460945.3464953},
+doi = {10.1145/3460945.3464953},
+abstract = {Tensor kernels in machine learning (ML) often correspond to pure mathematical expressions, making term rewriting an attractive strategy for optimization and mapping to specialized hardware accelerators. However, existing ML intermediate representations (IRs) tend to either be pure but high-level, making low-level rewrites to hardware targets inexpressible, or low-level but impure, hampering the use of term rewriting altogether. This paper introduces Glenside, a pure IR whose core abstraction—the access pattern—enables low-level, layout-aware, hardware-centric program rewrites. We demonstrate how term rewriting in Glenside can be used to map program fragments to hardware accelerator invocations and automatically discover classic data layout transformations like im2col. Glenside establishes a new foundation for exploring further term rewriting techniques in optimizing low-level tensor programs.},
+booktitle = {Proceedings of the 5th ACM SIGPLAN International Symposium on Machine Programming},
+pages = {21–31},
+numpages = {11},
+keywords = {term rewriting, machine learning compilers},
+location = {Virtual, Canada},
+series = {MAPS 2021}
+}
+
+@article{prov-souffle,
+author = {Zhao, David and Suboti\'{c}, Pavle and Scholz, Bernhard},
+title = {Debugging Large-Scale Datalog: A Scalable Provenance Evaluation Strategy},
+year = {2020},
+issue_date = {June 2020},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {42},
+number = {2},
+issn = {0164-0925},
+url = {https://doi.org/10.1145/3379446},
+doi = {10.1145/3379446},
+abstract = {Logic programming languages such as Datalog have become popular as Domain Specific Languages (DSLs) for solving large-scale, real-world problems, in particular, static program analysis and network analysis. The logic specifications that model analysis problems process millions of tuples of data and contain hundreds of highly recursive rules. As a result, they are notoriously difficult to debug. While the database community has proposed several data provenance techniques that address the Declarative Debugging Challenge for Databases, in the cases of analysis problems, these state-of-the-art techniques do not scale.In this article, we introduce a novel bottom-up Datalog evaluation strategy for debugging: Our provenance evaluation strategy relies on a new provenance lattice that includes proof annotations and a new fixed-point semantics for semi-na\"{\i}ve evaluation. A debugging query mechanism allows arbitrary provenance queries, constructing partial proof trees of tuples with minimal height. We integrate our technique into Souffl\'{e}, a Datalog engine that synthesizes C++ code, and achieve high performance by using specialized parallel data structures. Experiments are conducted with DOOP/DaCapo, producing proof annotations for tens of millions of output tuples. We show that our method has a runtime overhead of 1.31\texttimes{} on average while being more flexible than existing state-of-the-art techniques.},
+journal = {ACM Trans. Program. Lang. Syst.},
+month = {apr},
+articleno = {7},
+numpages = {35},
+keywords = {Static analysis, provenance, datalog}
+}
+
+@article{vsa,
+author = {Wolfman, Steven and Domingos, Pedro and Weld, Daniel},
+year = {2001},
+month = {12},
+pages = {},
+title = {Programming By Demonstration Using Version Space Algebra},
+volume = {53},
+journal = {Machine Learning},
+doi = {10.1023/A:1025671410623}
+}
+
+@article{flashmeta,
+author = {Polozov, Oleksandr and Gulwani, Sumit},
+title = {FlashMeta: A Framework for Inductive Program Synthesis},
+year = {2015},
+issue_date = {October 2015},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {50},
+number = {10},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/2858965.2814310},
+doi = {10.1145/2858965.2814310},
+abstract = {Inductive synthesis, or programming-by-examples (PBE) is gaining prominence with disruptive applications for automating repetitive tasks in end-user programming. However, designing, developing, and maintaining an effective industrial-quality inductive synthesizer is an intellectual and engineering challenge, requiring 1-2 man-years of effort. Our novel observation is that many PBE algorithms are a natural fall-out of one generic meta-algorithm and the domain-specific properties of the operators in the underlying domain-specific language (DSL). The meta-algorithm propagates example-based constraints on an expression to its subexpressions by leveraging associated witness functions, which essentially capture the inverse semantics of the underlying operator. This observation enables a novel program synthesis methodology called data-driven domain-specific deduction (D4), where domain-specific insight, provided by the DSL designer, is separated from the synthesis algorithm. Our FlashMeta framework implements this methodology, allowing synthesizer developers to generate an efficient synthesizer from the mere DSL definition (if properties of the DSL operators have been modeled). In our case studies, we found that 10+ existing industrial-quality mass-market applications based on PBE can be cast as instances of D4. Our evaluation includes reimplementation of some prior works, which in FlashMeta become more efficient, maintainable, and extensible. As a result, FlashMeta-based PBE tools are deployed in several industrial products, including Microsoft PowerShell 3.0 for Windows 10, Azure Operational Management Suite, and Microsoft Cortana digital assistant.},
+journal = {SIGPLAN Not.},
+month = {oct},
+pages = {107–126},
+numpages = {20},
+keywords = {Inductive program synthesis, programming by examples, search-based synthesis, domain-specific languages, frameworks, deductive inference}
+}
+
+@article{blaze,
+author = {Wang, Xinyu and Dillig, Isil and Singh, Rishabh},
+title = {Program Synthesis Using Abstraction Refinement},
+year = {2017},
+issue_date = {January 2018},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+number = {POPL},
+url = {https://doi.org/10.1145/3158151},
+doi = {10.1145/3158151},
+abstract = {We present a new approach to example-guided program synthesis based on counterexample-guided abstraction refinement. Our method uses the abstract semantics of the underlying DSL to find a program P whose abstract behavior satisfies the examples. However, since program P may be spurious with respect to the concrete semantics, our approach iteratively refines the abstraction until we either find a program that satisfies the examples or prove that no such DSL program exists. Because many programs have the same input-output behavior in terms of their abstract semantics, this synthesis methodology significantly reduces the search space compared to existing techniques that use purely concrete semantics. While synthesis using abstraction refinement (SYNGAR) could be implemented in different settings, we propose a refinement-based synthesis algorithm that uses abstract finite tree automata (AFTA). Our technique uses a coarse initial program abstraction to construct an initial AFTA, which is iteratively refined by constructing a proof of incorrectness of any spurious program. In addition to ruling out the spurious program accepted by the previous AFTA, proofs of incorrectness are also useful for ruling out many other spurious programs. We implement these ideas in a framework called Blaze, which can be instantiated in different domains by providing a suitable DSL and its corresponding concrete and abstract semantics. We have used the Blaze framework to build synthesizers for string and matrix transformations, and we compare Blaze with existing techniques. Our results for the string domain show that Blaze compares favorably with FlashFill, a domain-specific synthesizer that is now deployed in Microsoft PowerShell. In the context of matrix manipulations, we compare Blaze against Prose, a state-of-the-art general-purpose VSA-based synthesizer, and show that Blaze results in a 90x speed-up over Prose. In both application domains, Blaze also consistently improves upon the performance of two other existing techniques by at least an order of magnitude.},
+journal = {Proc. ACM Program. Lang.},
+month = {dec},
+articleno = {63},
+numpages = {30},
+keywords = {Abstract Interpretation, Program Synthesis, Counterexample Guided Abstraction Refinement, Tree Automata}
+}
+
+@article{dace,
+author = {Wang, Xinyu and Dillig, Isil and Singh, Rishabh},
+title = {Program Synthesis Using Abstraction Refinement},
+year = {2017},
+issue_date = {January 2018},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+number = {POPL},
+url = {https://doi.org/10.1145/3158151},
+doi = {10.1145/3158151},
+abstract = {We present a new approach to example-guided program synthesis based on counterexample-guided abstraction refinement. Our method uses the abstract semantics of the underlying DSL to find a program P whose abstract behavior satisfies the examples. However, since program P may be spurious with respect to the concrete semantics, our approach iteratively refines the abstraction until we either find a program that satisfies the examples or prove that no such DSL program exists. Because many programs have the same input-output behavior in terms of their abstract semantics, this synthesis methodology significantly reduces the search space compared to existing techniques that use purely concrete semantics. While synthesis using abstraction refinement (SYNGAR) could be implemented in different settings, we propose a refinement-based synthesis algorithm that uses abstract finite tree automata (AFTA). Our technique uses a coarse initial program abstraction to construct an initial AFTA, which is iteratively refined by constructing a proof of incorrectness of any spurious program. In addition to ruling out the spurious program accepted by the previous AFTA, proofs of incorrectness are also useful for ruling out many other spurious programs. We implement these ideas in a framework called Blaze, which can be instantiated in different domains by providing a suitable DSL and its corresponding concrete and abstract semantics. We have used the Blaze framework to build synthesizers for string and matrix transformations, and we compare Blaze with existing techniques. Our results for the string domain show that Blaze compares favorably with FlashFill, a domain-specific synthesizer that is now deployed in Microsoft PowerShell. In the context of matrix manipulations, we compare Blaze against Prose, a state-of-the-art general-purpose VSA-based synthesizer, and show that Blaze results in a 90x speed-up over Prose. In both application domains, Blaze also consistently improves upon the performance of two other existing techniques by at least an order of magnitude.},
+journal = {Proc. ACM Program. Lang.},
+month = {dec},
+articleno = {63},
+numpages = {30},
+keywords = {Abstract Interpretation, Program Synthesis, Counterexample Guided Abstraction Refinement, Tree Automata}
+}
+
+@misc{vsa-eq-fta,
+  doi = {10.48550/ARXIV.2107.12568},
+  
+  url = {https://arxiv.org/abs/2107.12568},
+  
+  author = {Koppel, James},
+  
+  keywords = {Programming Languages (cs.PL), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Version Space Algebras are Acyclic Tree Automata},
+  
+  publisher = {arXiv},
+  
+  year = {2021},
+  
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+
+@inproceedings{chase-revisited,
+author = {Deutsch, Alin and Nash, Alan and Remmel, Jeff},
+title = {The Chase Revisited},
+year = {2008},
+isbn = {9781605581521},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1376916.1376938},
+doi = {10.1145/1376916.1376938},
+abstract = {We revisit the standard chase procedure, studying its properties and applicability to classical database problems. We settle (in the negative) the open problem of decidability of termination of the standard chase, and we provide sufficient termination conditions which are strictly less over-conservative than the best previously known. We investigate the adequacy of the standard chase for checking query containment under constraints, constraint implication and computing certain answers in data exchange, gaining a deeper understanding by separating the algorithm from its result. We identify the properties of the chase result that are essential to the above applications, and we introduce the more general notion of F-universal model set, which supports query and constraint languages that are closed under a class F of mappings. By choosing F appropriately, we extend prior results to existential first-order queries and ∀∃-firstorder constraints. We show that the standard chase is incomplete for finding universal model sets, and we introduce the extended core chase which is complete, i.e. finds an F-universal model set when it exists. A key advantage of the new chase is that the same algorithm can be applied for all mapping classes F of interest, simply by modifying the set of constraints given as input. Even when restricted to the typical input in prior work, the new chase supports certain answer computation and containment/implication tests in strictly more cases than the incomplete standard chase.},
+booktitle = {Proceedings of the Twenty-Seventh ACM SIGMOD-SIGACT-SIGART Symposium on Principles of Database Systems},
+pages = {149–158},
+numpages = {10},
+keywords = {chase},
+location = {Vancouver, Canada},
+series = {PODS '08}
 }

@@ -1,25 +1,149 @@
 \chapter{Related works}
 
-\section{Congruence closure}
+\section{E-graphs and data structures for program representation}
 
-\section{Datalog}
+\Egraphs are first introduced in Greg Nelson's seminal thesis \citep{nelson-thesis}
+ in the 1970s 
+ as a way of effectively deciding the theory of equalities.
+A more efficient algorithm is introduced by \citet{tarjan-congruence} 
+ and the time complexity of this algorithm is analyzed.
+\Egraphs are then used at the core of 
+ various theorem provers and solvers \citep{simplify, z3, cvc4}.
+In the 2000s, 
+ \egraphs are repurposed for program optimization \citet{eqsat,denali}.
+The technique, known as equality saturation, 
+ repeatedly performs non-destructive rewriting on the \egraphs 
+ to grow a compact space of equivalent programs.
+An extraction procedure is then applied to extract the optimal program.
+In essense, equality saturation mitigates the phase-ordering problem by keeping 
+ all programs.
+This inspires later work on using \egraphs for
+ translation validation \citep{eqsat-tv}, 
+ floating-point arithematic \citep{herbie},
+ semantic code search \citep{semsearch},
+ and computer-aided design \citep{carpentry-compiler}.
+However, a general framework for \egraphs is not yet available,
+ and developing applications using \egraphs is a tedious effort.
+It is not until early 2020s that a generic framework for \egraphs, 
+ called \texttt{egg}, is developed \citep{egg}.
+As a result, many projects sprang up building domain-specific projects using \egraphs,
+ including rewrite rule synthesis \citep{ruler}, machine learning compiler \citep{tensat,glenside},
+ relational query optimization \citep{spores}, and
+ digital signal processing vectorization \citep{diospyros}.
 
-Flix, subsumption
 
-Datafun
 
-Rel, provenance semiring, datalogo
+Many works on \egraphs focus on improving the efficiency and usability of \egraphs.
+Some of these works are subsumed by the relational \egraphs.
+For example, \citep{efficient-ematching} studies 
+ the incremental maintenance problem of the \ematching procedure
+ and one of its standard extension called multi-patterns.
+\citet{tensat} also proposed an algorithm 
+ to extend \egraph frameworks with multi-patterns for equality saturations.
+In relational \egraphs, multi-patterns are supported naturally \citep{relational-ematching},
+ and incremental maintenance can be achieved using semi-na\"ive evaluation,
+ a standard database technique \citep{datalog-survey}.
+For some other works, 
+ the problem of finding and understanding its relational dual 
+ is still open to future research.
+For instance,
+ applications like SMT solvers not only want to know if two terms are equivalent, 
+ but also why they are equivalent.
+Techniques are developed to generate proofs for equivalences in \egraphs \citep{proof-producing}.
+It is speculated that proofs for congruence closure in relational form 
+ may just be database provenance \citep{prov-semiring,prov-souffle}.
+Moreover,
+ scheduling is a critical component of equality saturation \citep{egg}, 
+ and a good scheduling algorithm is a key enabler of scalable equality saturations.
+However, 
+ for relational languages like Datalog,
+ the scheduling problem is less studied,
+ because Datalog programs are usually run until fixpoint,
+ while the fixpoint for equality saturation is usually infinitary.
+It is therefore a future direction to study the scheduling problem for relational \egraphs.
+% The wide variety of e-graph applications is also placing new
+%  demands on the capability of e-graph frameworks. 
+% For example,
+%  many \egraph--based applications 
+%  use a standard extension to e-matching called multi-patterns \citep{tensat,efficient-ematching}. 
+% Efficient support for
+%  multi-patterns requires complicated modification of the basic backtracking algorithm provided. 
+% % Most existing frameworks either do
+% %  not support multi-patterns or support them inefficiently. 
+% Practical applications may also interleave equational reasoning
+%  with non-equational ones. 
+% However, non-equational reasoning like
+%  logical implication is fairly non-trivial and potentially inefficient in
+%  existing e-graph frameworks like egg.
 
-bloom: Logic and lattices for distributed programming
+The connection between \egraphs and relational databases.
+ is first studied in our earlier work on relational \ematching\citep{relational-ematching}.
+In relational \ematching, 
+ we proposed to view an \egraph as a relational database,
+ which allows us to make \ematching orders of magnititude faster
+ and prove desired theoretical properties.
+However, to use this technique,
+ one has to keep both the \egraph and its relational representation 
+ and convert back and forth, which limits its practical adoptions.
+We build on this work, 
+ which only takes a static relational snapshot of \egraph each time,
+ and explore how \egraphs as a relational database will behave dynamically.
+This saves us from the labor of keeping and syncing between the two \egraph representations
+ and further exploits the benefits of the relational \ematching approach.
 
-\section{Chase}
+Other data structures for compact program representation 
+ have also been long studied in the literature for decades,
+ version space algebras (VSAs) \citep{vsa,flashmeta} 
+ and finite tree automata \citep{blaze, dace} in particular.
+Recently, it is shown that both \egraphs and VSAs are special cases of finite tree automata \citep{vsa-eq-fta}.
+A natural question is therefore if we can encode VSAs and finite tree automata relationally
+ and how we can possibly benefit from such an encoding for tasks 
+ like program synthesis and program optimization.
 
-Database exchange, certain answer, query optimization, ...
+\section{Relational databases and Datalog}
 
-\section{Satisfiability Modulo Theories}
+Our work is closely related to works on Datalog and relational database.
+Relational \egraphs are directly inspired by work on the chase 
+ and work on recursive aggregates for Datalog.
+Data dependencies describe dependencies between columns in a relational database, 
+ and the chase is a family of iterative algorithms
+ for reasoning about data dependencies \citep{chase-revisited, bench-chase}.
+We showed that congruence and rewrites in equality saturation 
+ can be described using data dependencies, 
+ and therefore equality saturation can be effectively viewed as a chase algorithm.
+As a chase, equality saturation has nice properties that are worth further study:
+While there may be many finite universal models to data dependencies in the chase,
+ in equality saturation,
+ there will be at most one finite universal model, 
+ which is the core.
+Moreover,
+ equality saturation terminates 
+ if and only if there is a finite universal model of the given dependencies, 
+ which equality saturation will output,
+In contrast,
+ the (non-core) chase does not necessarily terminate 
+ even when a finite universal solution of the input dependencies exists,
+ or such a finite solution is very expensive to compute (with the core chase \citep{chase-revisited}).
+As a future direction,
+ we would like to further understand equality saturation using the theories developed 
+ in database research.
 
-Our design of the interface is inspired by SMT.
+% Flix, subsumption
 
-\section{logic programming}
+% Datafun
 
-Constraint Handling Logic (where you can encode union find)
+% Rel, provenance semiring, datalogo
+
+% bloom: Logic and lattices for distributed programming
+
+% \section{Chase}
+
+% Database exchange, certain answer, query optimization, ...
+
+% \section{Satisfiability Modulo Theories}
+
+% Our design of the interface is inspired by SMT.
+
+% \section{Logic programming}
+
+% Constraint Handling Logic (where you can encode union find)
