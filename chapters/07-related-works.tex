@@ -104,7 +104,7 @@ A natural question is therefore if we can encode VSAs and finite tree automata r
 
 Our work is closely related to works on Datalog and relational database.
 Relational \egraphs are directly inspired by work on the chase 
- and work on recursive aggregates for Datalog.
+ and work on monotonic aggregates for Datalog.
 Data dependencies describe dependencies between columns in a relational database, 
  and the chase is a family of iterative algorithms
  for reasoning about data dependencies \citep{chase-revisited, bench-chase}.
@@ -124,10 +124,18 @@ In contrast,
  the (non-core) chase does not necessarily terminate 
  even when a finite universal solution of the input dependencies exists,
  or such a finite solution is very expensive to compute (with the core chase \citep{chase-revisited}).
-As a future direction,
- we would like to further understand equality saturation using the theories developed 
+A future direction is 
+ to understand equality saturation using the theories developed 
  in database research.
 
+Many applications using \egraphs rely on domain-specific analyses.
+To express these analyses in a generic \egraph framework, 
+ \egg proposed a framework called \eclass analyses, 
+ which maintains a lattice associated with each \eclass monotonically.
+Our work on the relational dual of \eclass analyses 
+ is directly inspired by work on Flix \citep{flix}.
+
+% egglog extends them blah blah
 % Flix, subsumption
 
 % Datafun
