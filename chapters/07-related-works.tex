@@ -3,9 +3,9 @@
 \section{E-graphs and data structures for program representation}
 
 \Egraphs are first introduced in Greg Nelson's seminal thesis \citep{nelson-thesis}
- in the 1970s 
+ in late 1970s 
  as a way of effectively deciding the theory of equalities.
-A more efficient algorithm is introduced by \citet{tarjan-congruence} 
+A more efficient algorithm is later introduced by \citet{tarjan-congruence} 
  and the time complexity of this algorithm is analyzed.
 \Egraphs are then used at the core of 
  various theorem provers and solvers \citep{simplify, z3, cvc4}.
@@ -22,19 +22,35 @@ This inspires later work on using \egraphs for
  floating-point arithematic \citep{herbie},
  semantic code search \citep{semsearch},
  and computer-aided design \citep{carpentry-compiler}.
-However, a general framework for \egraphs is not yet available,
- and developing applications using \egraphs is a tedious effort.
-It is not until early 2020s that a generic framework for \egraphs, 
+However, a generic framework for \egraphs is not yet available,
+ and developing \egraphs--based applications
+ requires implementing \egraphs from scratch and is therefore a tedious effort.
+Recently, a generic framework for \egraphs, 
  called \texttt{egg}, is developed \citep{egg}.
 As a result, many projects sprang up building domain-specific projects using \egraphs,
  including rewrite rule synthesis \citep{ruler}, machine learning compiler \citep{tensat,glenside},
  relational query optimization \citep{spores}, and
  digital signal processing vectorization \citep{diospyros}.
 
+The connection between \egraphs and relational databases.
+ is first studied in our earlier work on relational \ematching\citep{relational-ematching}.
+In relational \ematching, 
+ we proposed to view an \egraph as a relational database,
+ which allows us to make \ematching orders of magnititude faster
+ and prove desired theoretical properties.
+However, to use this technique,
+ one has to keep both the \egraph and its relational representation 
+ and convert back and forth, which limits its practical adoptions.
+We build on this work, 
+ which only takes a static relational snapshot of \egraph each time,
+ and explore how \egraphs as a relational database will behave dynamically.
+This saves us from the labor of keeping and syncing between the two \egraph representations
+ and further exploits the benefits of the relational \ematching approach.
 
 
-Many works on \egraphs focus on improving the efficiency and usability of \egraphs.
-Some of these works are subsumed by the relational \egraphs.
+Many works on improving \egraphs focus on the efficiency and usability of \egraphs.
+% Some of these works are subsumed by the relational \egraphs.
+Relational \egraphs bring a new perspective to some of these works.
 For example, \citep{efficient-ematching} studies 
  the incremental maintenance problem of the \ematching procedure
  and one of its standard extension called multi-patterns.
@@ -58,53 +74,25 @@ Moreover,
 However, 
  for relational languages like Datalog,
  the scheduling problem is less studied,
- because Datalog programs are usually run until fixpoint,
+ because Datalog programs are usually run to fixpoint,
  while the fixpoint for equality saturation is usually infinitary.
 It is therefore a future direction to study the scheduling problem for relational \egraphs.
-% The wide variety of e-graph applications is also placing new
-%  demands on the capability of e-graph frameworks. 
-% For example,
-%  many \egraph--based applications 
-%  use a standard extension to e-matching called multi-patterns \citep{tensat,efficient-ematching}. 
-% Efficient support for
-%  multi-patterns requires complicated modification of the basic backtracking algorithm provided. 
-% % Most existing frameworks either do
-% %  not support multi-patterns or support them inefficiently. 
-% Practical applications may also interleave equational reasoning
-%  with non-equational ones. 
-% However, non-equational reasoning like
-%  logical implication is fairly non-trivial and potentially inefficient in
-%  existing e-graph frameworks like egg.
-
-The connection between \egraphs and relational databases.
- is first studied in our earlier work on relational \ematching\citep{relational-ematching}.
-In relational \ematching, 
- we proposed to view an \egraph as a relational database,
- which allows us to make \ematching orders of magnititude faster
- and prove desired theoretical properties.
-However, to use this technique,
- one has to keep both the \egraph and its relational representation 
- and convert back and forth, which limits its practical adoptions.
-We build on this work, 
- which only takes a static relational snapshot of \egraph each time,
- and explore how \egraphs as a relational database will behave dynamically.
-This saves us from the labor of keeping and syncing between the two \egraph representations
- and further exploits the benefits of the relational \ematching approach.
 
 Other data structures for compact program representation 
  have also been long studied in the literature for decades,
- version space algebras (VSAs) \citep{vsa,flashmeta} 
- and finite tree automata \citep{blaze, dace} in particular.
+ in particular version space algebras (VSAs) \citep{vsa,flashmeta} 
+ and finite tree automata \citep{blaze, dace}.
 Recently, it is shown that both \egraphs and VSAs are special cases of finite tree automata \citep{vsa-eq-fta}.
-A natural question is therefore if we can encode VSAs and finite tree automata relationally
+A natural question is therefore if we can encode 
+ VSAs, finite tree automata, and operations over them in a relational approach,
  and how we can possibly benefit from such an encoding for tasks 
  like program synthesis and program optimization.
 
 \section{Relational databases and Datalog}
 
 Our work is closely related to works on Datalog and relational database.
-Relational \egraphs are directly inspired by work on the chase 
- and work on monotonic aggregates for Datalog.
+Relational \egraphs are directly inspired by work on the chase.
+%  and work on monotonic aggregates for Datalog.
 Data dependencies describe dependencies between columns in a relational database, 
  and the chase is a family of iterative algorithms
  for reasoning about data dependencies \citep{chase-revisited, bench-chase}.
@@ -130,10 +118,21 @@ A future direction is
 
 Many applications using \egraphs rely on domain-specific analyses.
 To express these analyses in a generic \egraph framework, 
- \egg proposed a framework called \eclass analyses, 
- which maintains a lattice associated with each \eclass monotonically.
-Our work on the relational dual of \eclass analyses 
- is directly inspired by work on Flix \citep{flix}.
+ \egg proposed a framework called \eclass analyses.
+%  which maintains a lattice associated with each \eclass monotonically.
+An \eclass analysis value can be thought as an aggregation of 
+ information in the corresponding \eclass's \enodes and their children's \eclass analyses.
+Since \eclass analyses are interdependent,
+ our proposed relational dual of \eclass analyses 
+ is inspired by the literature on recursive aggregates for Datalog 
+ \citep{mono-agg,bloom-lattice,datalogo,prov-semiring,flix}.
+Since \eclass analyses maintains a lattice associated with each \eclass monotonically,
+ this naturally gives the lattice semantics proposed by Flix \citep{flix}.
+Our relational \egraphs extends Flix by allowing multiple atoms in the head. 
+
+
+% TODO: introduce this query to hi(e1, x), hi(e2, x) :- lo(e3, x)
+%   Flix \citep{flix}.
 
 % egglog extends them blah blah
 % Flix, subsumption

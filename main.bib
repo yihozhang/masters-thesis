@@ -1052,16 +1052,22 @@
 }
 
 @inproceedings{datalogo,
-  author    = {Mahmoud Abo Khamis and
-               Hung Q. Ngo and
-               Reinhard Pichler and
-               Dan Suciu and
-               Yisu Remy Wang},
-  title     = {Convergence of Datalog over (Pre-) Semirings},
-  booktitle = {PODS'22: Proceedings of the 40th {ACM} {SIGMOD-SIGACT-SIGAI} Symposium
-               on Principles of Database Systems.}
+author = {Abo Khamis, Mahmoud and Ngo, Hung Q. and Pichler, Reinhard and Suciu, Dan and Wang, Yisu Remy},
+title = {Convergence of Datalog over (Pre-) Semirings},
+year = {2022},
+isbn = {9781450392600},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3517804.3524140},
+doi = {10.1145/3517804.3524140},
+abstract = {Recursive queries have been traditionally studied in the framework of datalog, a language that restricts recursion to monotone queries over sets, which is guaranteed to converge in polynomial time in the size of the input. But modern big data systems require recursive computations beyond the Boolean space. In this paper we study the convergence of datalog when it is interpreted over an arbitrary semiring. We consider an ordered semiring, define the semantics of a datalog program as a least fixpoint in this semiring, and study the number of steps required to reach that fixpoint, if ever. We identify algebraic properties of the semiring that correspond to certain convergence properties of datalog programs. Finally, we describe a class of ordered semirings on which one can use the semi-naive evaluation algorithm on any datalog program.},
+booktitle = {Proceedings of the 41st ACM SIGMOD-SIGACT-SIGAI Symposium on Principles of Database Systems},
+pages = {105–117},
+numpages = {13},
+keywords = {fixpoint, semirings, datalog},
+location = {Philadelphia, PA, USA},
+series = {PODS '22}
 }
-
 @inproceedings{souffle,
   author    = {Herbert Jordan and
                Bernhard Scholz and
@@ -1447,4 +1453,38 @@ numpages = {10},
 keywords = {chase},
 location = {Vancouver, Canada},
 series = {PODS '08}
+}
+
+@inproceedings{mono-agg,
+author = {Ross, Kenneth A. and Sagiv, Yehoshua},
+title = {Monotonic Aggregation in Deductive Databases},
+year = {1992},
+isbn = {0897915194},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/137097.137852},
+doi = {10.1145/137097.137852},
+abstract = {We propose a semantics for aggregates in deductive databases based on a notion of minimality. Unlike some previous approaches, we form a minimal model of a program component including aggregate operators, rather than insisting that the aggregate apply to atoms that have been fully determined, or that aggregate functions are rewritten in terms of negation. In order to guarantee the existence of such a minimal model we need to insist that the domains over which we are aggregating are complete lattices, and that the program is in a sense monotonic. Our approach generalizes previous approaches based on the well-founded semantics and various forms of stratification. We are also able to handle a large variety of monotonic (or pseudo-monotonic) aggregate functions.},
+booktitle = {Proceedings of the Eleventh ACM SIGACT-SIGMOD-SIGART Symposium on Principles of Database Systems},
+pages = {114–126},
+numpages = {13},
+location = {San Diego, California, USA},
+series = {PODS '92}
+}
+
+@inproceedings{agg-semantics,
+author = {Van Gelder, Allen},
+title = {The Well-Founded Semantics of Aggregation},
+year = {1992},
+isbn = {0897915194},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/137097.137854},
+doi = {10.1145/137097.137854},
+abstract = {Common aggregation predicates have natural definitions in logic, either as first order sentences (min, max, etc.), or with elementary induction over a data structure that represents the relation (sum, count, etc.). The well-founded semantics for logic programs provides an interpretation of such definitions. The interpretation of first-order aggregates seems to be quite natural and intuitively satisfying, even in the presence of recursion through aggregation. Care is needed to get useful results on inductive aggregates, however. A basic building block is the “subset” predicate, which states that a data structure represents a subset of an IDB predicate, and which is definable in the well-founded semantics. The analogous “superset” is also definable, and their combination yields a “generic” form of findall. Surprisingly, findall must be used negatively to obtain useful approximations when the exact relation is not yet known.Extensions to the semantics, restrictions on the input, and other supplementary requirements proposed in earlier studies appear to be unnecessary for the purpose of attaching a meaning to a program that involves recursion through aggregation. For example, any reasonable definition of “shortest paths” tolerates negative weight edges, correctly computes shortest paths that exist, and leave tuples undefined where negative-weight cycles cause the shortest path not to exist. Other examples exhibit similarly robust behavior, when defined carefully. Connections with the generic model of computation are discussed briefly.},
+booktitle = {Proceedings of the Eleventh ACM SIGACT-SIGMOD-SIGART Symposium on Principles of Database Systems},
+pages = {127–138},
+numpages = {12},
+location = {San Diego, California, USA},
+series = {PODS '92}
 }
