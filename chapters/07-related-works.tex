@@ -1,6 +1,6 @@
 \chapter{Related works}
 
-\section{E-graphs and data structures for program representation}
+\section{E-graphs}
 
 \Egraphs are first introduced in Greg Nelson's seminal thesis \citep{nelson-thesis}
  in late 1970s 
@@ -51,7 +51,7 @@ This saves us from the labor of keeping and syncing between the two \egraph repr
 Many works on improving \egraphs focus on the efficiency and usability of \egraphs.
 % Some of these works are subsumed by the relational \egraphs.
 Relational \egraphs bring a new perspective to some of these works.
-For example, \citep{efficient-ematching} studies 
+For example, \citet{efficient-ematching} studied
  the incremental maintenance problem of the \ematching procedure
  and one of its standard extension called multi-patterns.
 \citet{tensat} also proposed an algorithm 
@@ -59,6 +59,13 @@ For example, \citep{efficient-ematching} studies
 In relational \egraphs, multi-patterns are supported naturally \citep{relational-ematching},
  and incremental maintenance can be achieved using semi-na\"ive evaluation,
  a standard database technique \citep{datalog-survey}.
+Many applications extend the expressiveness of \egraphs 
+ by writing domain-specific analyses in a general purpose language.
+For example, to reason about lambda calculus in \egg, 
+ a user may want to implement an analysis that
+ manually tracks the set of free and bound variables \citep{egg}
+ in Rust.
+Such analyses can be written as rules in pure relational \egraphs.
 For some other works, 
  the problem of finding and understanding its relational dual 
  is still open to future research.
@@ -76,7 +83,7 @@ However,
  the scheduling problem is less studied,
  because Datalog programs are usually run to fixpoint,
  while the fixpoint for equality saturation is usually infinitary.
-It is therefore a future direction to study the scheduling problem for relational \egraphs.
+A future direction is to study the scheduling problem for relational \egraphs.
 
 Other data structures for compact program representation 
  have also been long studied in the literature for decades,
@@ -91,15 +98,24 @@ A natural question is therefore if we can encode
 \section{Relational databases and Datalog}
 
 Our work is closely related to works on Datalog and relational database.
-Relational \egraphs are directly inspired by work on the chase.
-%  and work on monotonic aggregates for Datalog.
-Data dependencies describe dependencies between columns in a relational database, 
- and the chase is a family of iterative algorithms
+Relational \egraphs are directly inspired by work on data dependencies and the chase.
+Equality generating dependencies (EGDs) are data dependencies of the form 
+ $\forall \vec{x}.\lambda(\vec{x}) \rightarrow x_i=x_j$,
+ which asserts the equality between terms under conditions given by predicate $\lambda$.
+EGDs generalizes the congruences in equality saturation, 
+ e.g., the congruence property of binary operator \textit{add} can be written as
+ $\forall x,y,z_1,z_2.\textit{add}(x, y, z_1), \textit{add}(x, y, z_2)\rightarrow z_1=z_2$.
+Tuple generating dependencies (TGDs) are another kind of data dependencies of the form
+ $\forall \vec{x}, \lambda(\vec{x})\rightarrow \exists \vec{y}, \rho(\vec{x}, \vec{y})$,
+ which essentially generalizes Datalog rules with existential quantifiers in the body.
+TGDs generalizes rewrite rules in equality saturation.
+For example, the associativity is expressed as TGD
+ $\forall x,y,xy,z,xyz. \textit{add}(x, y, xy), \textit{add}(xy, z, xyz)\rightarrow \exists yz.\textit{add}(y, z, yz), \textit{add}(x, yz, xyz)$.
+The chase is a family of iterative algorithms
  for reasoning about data dependencies \citep{chase-revisited, bench-chase}.
-We showed that congruence and rewrites in equality saturation 
- can be described using data dependencies, 
- and therefore equality saturation can be effectively viewed as a chase algorithm.
-As a chase, equality saturation has nice properties that are worth further study:
+Therefore,
+ equality saturation can be effectively viewed as a chase algorithm.
+As a chase procedure, equality saturation has many interesting properties that are worth further study:
 While there may be many finite universal models to data dependencies in the chase,
  in equality saturation,
  there will be at most one finite universal model, 
@@ -120,32 +136,32 @@ Many applications using \egraphs rely on domain-specific analyses.
 To express these analyses in a generic \egraph framework, 
  \egg proposed a framework called \eclass analyses.
 %  which maintains a lattice associated with each \eclass monotonically.
-An \eclass analysis value can be thought as an aggregation of 
+An \eclass analysis can be thought of as an aggregation of 
  information in the corresponding \eclass's \enodes and their children's \eclass analyses.
-Since \eclass analyses are interdependent,
- our proposed relational dual of \eclass analyses 
- is inspired by the literature on recursive aggregates for Datalog 
+\Eclass analyses are interdependent,
+ because the \eclass analysis of one \eclass depends on its children's \eclass analyses.
+Therefore,
+ \eclass analyses can be formulated as recursive aggregates in Datalog.
+However, unconstrained aggregates within recursions are dangerous, 
+ as it can lead to non-monotonic programs and there may not be (stable) models,
+ so in practice aggregate stratification is encorced.
+Several approaches are proposed to loosen the aggregate stratification requirement 
  \citep{mono-agg,bloom-lattice,datalogo,prov-semiring,flix}.
-Since \eclass analyses maintains a lattice associated with each \eclass monotonically,
- this naturally gives the lattice semantics proposed by Flix \citep{flix}.
-Our relational \egraphs extends Flix by allowing multiple atoms in the head. 
+Among these approaches,
+ the \eclass analyses naturally matches the lattice semantics proposed by Flix \citep{flix},
+ as each \eclass analysis monotonically maintains a lattice, which is associated with each \eclass,
+In Flix, relations are optionally annotated with a lattice,
+ which aggregates over values passed it according to the lattice join operation.
+% This is precisely the semantics of \eclass analyses in relational form.
+Our relational \egraphs extends Flix by allowing multiple atoms in the head.
+A similar lattice-based approach is studied 
+ in the Bloom$^\text{L}$ language \citep{bloom-lattice}.
+
+% WCOJ, index selection
+% Semi-naive
 
 
-% TODO: introduce this query to hi(e1, x), hi(e2, x) :- lo(e3, x)
-%   Flix \citep{flix}.
-
-% egglog extends them blah blah
-% Flix, subsumption
-
-% Datafun
-
-% Rel, provenance semiring, datalogo
-
-% bloom: Logic and lattices for distributed programming
-
-% \section{Chase}
-
-% Database exchange, certain answer, query optimization, ...
+% Not gonna write for now
 
 % \section{Satisfiability Modulo Theories}
 
