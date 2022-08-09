@@ -58,7 +58,7 @@ For example, \citet{efficient-ematching} studied
  to extend \egraph frameworks with multi-patterns for equality saturations.
 In relational \egraphs, multi-patterns are supported naturally \citep{relational-ematching},
  and incremental maintenance can be achieved using semi-na\"ive evaluation,
- a standard database technique \citep{datalog-survey}.
+ which is a standard technique for evaluating Datalog programs \citep{seminaive}.
 Many applications extend the expressiveness of \egraphs 
  by writing domain-specific analyses in a general purpose language.
 For example, to reason about lambda calculus in \egg, 
@@ -157,16 +157,45 @@ Our relational \egraphs extends Flix by allowing multiple atoms in the head.
 A similar lattice-based approach is studied 
  in the Bloom$^\text{L}$ language \citep{bloom-lattice}.
 
-% WCOJ, index selection
-% Semi-naive
+Following relational \ematching \citep{relational-ematching}, 
+ we use worst-case optimal join for solving queries over relational \egraphs.
+Different from relational \ematching,
+ which only needs to consider static snapshots of a relational database
+ (i.e., no writes),
+ we have to also consider insertions and updates to the database.
+Several previous works considered 
+ adopting worst-case optimal joins for practical systems.
+Two critical dimensions in the design space is the design of indexes
+ and query planning.
+For indices,
+ EmptyHeaded only considers scenarios with static dataset \citep{emptyheaded}
+ and therefore their indexes are read-optimized and need to be precomputed.
+Our context for using worst-case optimal join requires to update the database
+ and is therefore more similar to LogicBlox.
+LogicBlox is a commercial database system that uses leapfrog triejoin (LFTJ) \citep{lftj}, 
+ which is worst-case optimal,
+ for its query processing \citep{logicblox}.
+To support both LFTJ and efficient updates, 
+ LogicBlox uses write-optimizied B-trees for indexes.
+Different indexes are created and maintained 
+ when they are used by query plans generated from the query optimizer.
+Recently, 
+ \citet{umbra-wcoj} implements a worst-case optimal join 
+ inside the Umbra database system.
+In their design,
+ the indices are built on-the-fly during join processing
+ and are optimized for fast building.
+This design allows efficient updates to databases 
+ since no additional indices need to be maintained during updates.
 
-
-% Not gonna write for now
-
-% \section{Satisfiability Modulo Theories}
-
-% Our design of the interface is inspired by SMT.
-
-% \section{Logic programming}
-
-% Constraint Handling Logic (where you can encode union find)
+In terms of query optimization,
+ LogicBlox uses a sampling-based technique to pick a good query plan.
+EmptyHeaded uses generalized hypertree decomposition (GHD),
+ which allows it to provide guarantees even stronger than 
+ those provided by standard worst-case optimal joins.
+\citep{umbra-wcoj} uses cardinality information to optimize its query plans,
+ and allows hybrid query plans that use binary joins like hash joins
+ when it is deemed that worst-case optimal join does not offer a benefit.
+Currently, the query optimizer of our relational \egraph is relatively simple,
+ and we hope to study and adopt techniques used in other database systems 
+ that use worst-case optimal joins.
