@@ -15,7 +15,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{listings, listings-rust}
-
+\usepackage{amsthm}
 \usepackage{xcolor}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
@@ -66,7 +66,9 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
+\newtheorem{example}{Example}
 
+\usepackage{stmaryrd}
 \setcounter{tocdepth}{1}  % Print the chapter and sections to the toc
 
 \renewcommand{\chapterautorefname}{Chapter}
@@ -93,20 +95,38 @@
 
 % \setcounter{page}{-1}
 \abstract{%
-
+This thesis presents my experience improving the performance and expressiveness of \egraphs
+ with both relational and non-relational approaches.
+\autoref{chapter/nonrel-em} presents a non-relational optimization algorithm for \ematching
+ and studied its properties.
+Motivated by the insufficiency of the non-relational approach, 
+ we turn to study ways to encode \egraphs inside \autoref{chapter/datalog}.
+We also describe a prototype language for relational \egraphs 
+ and its semantics (\autoref{chapter/egglog}).
+\autoref{chapter/related-works} gives a survey of related works.
 }
  
 \tableofcontents
 % \listoffigures
 % \listoftables  % I have no tables
 
-\acknowledgments{% \vskip2pc
-  % {\narrower\noindent
-  % The author wishes to express sincere appreciation to
-  % University of Washington, where he has had the opportunity
-  % to work with the \TeX\ formatting system,
-  % and to the author of \TeX, Donald Knuth, {\it il miglior fabbro}.
-  % \par}
+\acknowledgments{\vskip2pc
+  {\narrower\noindent
+  This thesis summarizes the work done during my master
+  on building and understanding relational \egraphs.
+  It builds upon previous work on relational \ematching done during my undergrad.
+  Both my master and undergrad are done at UW,
+  and after my master's journey, 
+  I will work as a PhD student, also at UW, to continue the work 
+  presented in this thesis.
+
+  I want to thank my advisor Zachary Tatlock for his guidance 
+  during the development of this thesis and for his mentorship over the past years.
+  I would also like to thank my collaborators for many insightful discussions.
+  Among them are Max Willsey, Remy Wang, Philip Zucker, Eli Rosenthal.
+  Finally, I want to thank my family and friends 
+  for their support.
+  \par}
 }
 
 \dedication{\begin{center}to Jiawei\end{center}}
@@ -117,7 +137,7 @@
 \input{chapters/02-non-relational.tex}
 \input{chapters/03-eqsat-in-datalog.tex}
 % egg-lite
-% \input{chapters/04-gogi.tex}
+\input{chapters/04-egglog.tex}
 % \input{chapters/05-formal.tex}
 % \input{chapters/06-eval.tex}
 \input{chapters/07-related-works.tex}

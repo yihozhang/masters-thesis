@@ -65,7 +65,7 @@ Like relational e-matching,
  it is able to improve e-matching asymptotically in some cases, 
  but it does not require transforming the input \egraph to a relational database.
 And it is very simple.
-For what it's worth, 
+For what it is worth, 
  this optimization (instead of relational e-matching) is what is currently
  implemented in egg.
 
@@ -135,7 +135,7 @@ The optimization is therefore straightforward:
 And this is easy, because we already know what the (only) satisfying
  term should look like!
 
-Let's first look at the classical e-matching algorithm 
+Let us first look at the classical e-matching algorithm 
  (reproduced from \citet[Figure~3]{relational-ematching}, with a typo fix).
 
 \begin{align*}
@@ -169,7 +169,7 @@ The algorithm is straightforward:
   \tightlist
   \item
     if this variable is fresh in the domain of the substitution, then
-    it's safe to extend the substitutions with \(\{x\mapsto c\}\), or
+    it is safe to extend the substitutions with \(\{x\mapsto c\}\), or
   \item
     if this variable is not fresh, we keep only these substitutions that
     are consistent with the mapping \(\{x\mapsto c\}\).
@@ -273,7 +273,7 @@ The relational version of it is
  \(Q(r, \alpha,\beta)\gets R_f(r, \alpha, x),R_g(x,\alpha,\beta)\).
 An efficient plan with hash joins will index both \(\alpha\) and \(x\).
 However,
- our trick can't use the \(\alpha\) in \(f\) to prune the
+ our trick cannot use the \(\alpha\) in \(f\) to prune the
  \(\alpha\) in \(g\), because there could be multiple satisfying
  \(g\)-nodes (due to the unbound variable \(\beta\)).
 In this case, our
@@ -313,7 +313,7 @@ Moreover,
  that makes it very hard
  to do advanced optimizations, 
  e.g., one that uses cardinality information.
-It's also limited in the kind of join it is able to
+It is also limited in the kind of join it is able to
  (conceptually) perform (only hash joins).
 However, 
  it integrates well
@@ -331,7 +331,7 @@ For example,
  pattern \(f(g(\alpha), h(\alpha, \beta))\), it will be most efficient to
  enumerate the \(h\)-node and lookup \([\sigma]g(\alpha)\) later.
 If however we first enumerate \(g(\alpha)\),
-we still can't avoid enumerating \(h(\alpha,\beta)\) later on.
+we still cannot avoid enumerating \(h(\alpha,\beta)\) later on.
 
 If we assume the cost of enumerating each node is the same,
  this problem can be viewed as finding the smallest connected component (CC) in the

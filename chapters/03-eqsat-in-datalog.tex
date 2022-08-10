@@ -1,4 +1,4 @@
-\chapter{Encoding E-graphs in Existing Datalog Systems}
+\chapter{Encoding E-graphs in Existing Datalog Systems}\label{chapter/datalog}
 
 % \section{Introduction}
 
@@ -22,7 +22,7 @@ While \ematching is performed on the relaitonal representation,
 Therefore,
  both representations are needed and should be kept in sync
  for relational \ematching to work.
-This can have nontrivial overhead \citep{relational-ematching}.
+This can have nontrivial overheads \citep{relational-ematching}.
 
 A natural question to ask is, 
  if keeping both representation is expensive, 
@@ -61,7 +61,7 @@ This chapter introduces my experience encoding \egraph rewrites
 Souffl\'e and Rel are different in many aspects, with different targeted use cases:
  Souffl\'e focuses on applications like program analyses
  and has a semantics very similar to the original Datalog,
- with mild extensions like algebraic data types (ADTs),
+ with ``mild'' extensions like algebraic data types (ADTs),
  built-in support for equivalence relations, and the choice operator.
 One of the most aggressive extension is perhaps
  the newly added subsumption,
@@ -74,8 +74,8 @@ While spiritually inspired by Datalog,
 As an example, 
  queries in Rel support universal quantifiers and existential quantifiers in arbitrary positions
  (as long as the domain of the quantified variables are finitely enumerable).
-Moreover,
- one important distinction between Souffl\'e and Rel is
+
+One important distinction between Souffl\'e and Rel is
  that Rel supports recursive aggregates out of box.
 Rigourous theories are developed 
  for sound programming with recursive aggregates in Rel \citep{datalogo-convergence},
@@ -90,7 +90,8 @@ I use recursive aggregates in both encodings:
 Despite the wide use of recursive aggregates, the encoding is still sound,
  because it is semantically clear that rewrites in an \egraph is monotonic.
 Moreover, in the encoding,
- tuples are only removed when they are subsumed by a more canonicalized version of them.
+ tuples are only removed when they are subsumed by a more canonicalized version of them,
+ which intuitively provides a justification for the soundness.
 
 A key ingredient to making \egraph efficient is 
  to keep only the canonical tuples.
@@ -103,7 +104,7 @@ For Rel, every iteration starts from scratch,
  to recompute all the facts in the current iteration while excluding the removed tuples,
  which is indirect.
 Despite demonostrating the feasibility of encoding \egraphs in Datalog, 
- both encodings are practically very slow.
+ both encodings are practically orders-of-magnititude slower than \egg.
 Constraint-Handlign Rules (CHR) \citep{chr} is a potential solution to this problem,
  as its rules allows more flexible removal of tuples.
 Moreover,
@@ -129,13 +130,13 @@ Moreover,
  for each of our encodings,
  it is either the case that there are more or less overheads 
  that will not been seen in a sensible \egraph impelementation,
- or we have to do some non-trivial hacking into the Datalog engine that 
- the engine impelementers will be surprised about.
+ or we have to do some delicate hacking into the Datalog engine that 
+ the engine impelementers may be surprised about.
 Therefore, in some sense,
  our attempts to encode \egraphs in Datalog is unsatisfactory.
 However, 
  as we will see,
- there are many shining gems we will not be able to find otherwise.
+ there are many shining gems we find during this journey.
 
 \begin{lstlisting}[
     label=fig:eqsat-example,
@@ -167,7 +168,8 @@ While sticking to the dogma of monotonicity,
  Souffl\'e has been extended with a diverse range of extensions
  to both make it easier to program program analyses tasks
  and faster to run these tasks.
-These extensions are amenable to the core theory of Datalog 
+These extensions are amenable to the core theory of Datalog,
+ e.g., monotonicity andsemi-na\"ive evalution.
  (suppose the user does not break the assumptions)\footnote{With the exception
  of termination guarantees of pure Datalog. 
  Similar to programs in many other practical Datalog engines, 
@@ -225,7 +227,7 @@ While directly writing these equivalence relations as
  transitive, reflexive, symmetric rules are highly inefficient,
  data structures like union find \citep{unionfind} can 
  make reasoning about equivalence orders of magnititude faster.
-Motivated by this, Souffl\'e provides a built-in support for 
+Souffl\'e provides a built-in support for 
  equivalence relations named \eqrel. 
 A relation declared as \eqrel{} will
  always satisfy the equivalence rules 
@@ -309,8 +311,8 @@ To declare a user-defined functor,
 Some of the encodings use the user-defined functors 
  to make \eqrel{} more flexible \citep{zucker-udf-1,zucker-udf-2}.
 Compared to the standard usage, 
- we use the user-defined functors in a rather wild way, 
- following \citep{zucker-udf-1} (\autoref{sec:hack}).
+ we use user-defined functors in a rather wild way, 
+ following \citet{zucker-udf-1} (see \autoref{sec:hack}).
 
 \subsubsection*{Aggregations}
 Finally, Souffl\'e supports stratified aggregations, 
@@ -335,10 +337,10 @@ However, in the third iteration,
  which breaks monotonicity.
 
 That being said, there are Datalog programs that break monotonicity,
- yet are still monotonic, at least semantically (e.g., one with subsumptions).
-Moreover, in our encoding, because it is semantically clear that 
- \egraphs are growing in a monotonic way, we use recursive aggregations 
- throughout.
+ yet are still (semantically) monotonic (e.g., one with subsumptions).
+We use recursive aggregations 
+ throughout in our encoding, because it is semantically clear that 
+ \egraphs are growing in a monotonic way.
 Souffl\'e does not support recursive aggregations by default,
  so we pass the \verb|--disable-transformers=SemanticChecker|
  flag to Souffl\'e to disable the semantic check.
@@ -346,20 +348,18 @@ By doing this,
  we entered the dangerous land of Souffl\'e 
  since all the assumptions checked by the semantic checker
  could be violated.
-Moreover,
+This could also have performance implications:
+each single aggregation is fully computed using linear scan every time 
+ instead of incrementally maintained,
  since the design of Souffl\'e does not expect
- recursive use of aggregations,
- aggregations are computed using linear scan.
+ recursive use of aggregations.
 When aggregations are stratified,
  this is fine because all the aggregations are ``one-shot'',
  while when aggregations are used recursively, 
  this means that the aggregations
- are maintained non-incrementally 
- and will repeatedly perform linear scans.
+ will require repeated linear scans of aggregated relations.
 This can be prohibitively expensive, 
  and we mitigate this issue with more hacking into Souff\'e's internals.
-
-TODO (summary of the section)
 
 \subsection{A Nai\"ve Encoding}\label{sec:naive}
 
@@ -395,7 +395,7 @@ For example,
 % However, this is not correct.
 One approach is to take the hash function of its children \eclass ids,
  yet it may lead to collision (with a relatively small probability).
-Instead, we took inspiration from skolemization and use ADTs 
+Instead, we took inspiration from the skolemized chase \citep{bench-chase} and use ADTs 
  to represent the ``natural'' \eclass id of the \enode,
  e.g., the id of $x+y$ is \verb|$Add(x, y)|.
 \begin{verbatim}
@@ -438,12 +438,12 @@ Alternatively,
     add(x, y, c1) :- add(x, y, c), eql(c, c1).
     num(x, c1) :- num(x, c), eql(c, c1).
 \end{verbatim}
-As an (acyclic) \egraph can represent exponentially many terms,
+As an \egraph can represent exponentially many terms,
  this could be even slower.
 Finally, after fixing the above missed firing, there is one last missing piece:
  \verb|eql| is not a congruence relation yet.
 For it to be congruent,
- the following rules need to be added (assume we've populated the entire term space):
+ the following rules need to be added (assuming our encoding populates the entire term space):
 \begin{verbatim}
     eql(c1, c2) :- add(x, y, c1), add(x, y, c2).
     eql(c1, c2) :- num(x, c1), num(x, c2).
@@ -479,12 +479,13 @@ Therefore,
  a natural idea is to also do canonicalization in the Datalog encoding.
 
 To canonicalize, we first need to pick a canonical id for each \eclass.
-There are several ways of doing it.
-The design choices we considered include using timestamps and hash values.
-While timestamps are more or less hacky and hash functions may 
- cause collisions\footnote{Nonetheless, we use hash functions in our Rel encoding,
- given the probability of collision is very low.}
-Here, we pick the canonical id to be the min of all ids in this \eclass,
+% There are several ways of doing it.
+% The design choices we considered include using timestamps and hash values.
+% Timestamps are hacky and hash functions may 
+%  cause collisions\footnote{Nonetheless, we use hash functions in our Rel encoding,
+%  given the probability of collision is very low.}.
+Here, we pick the canonical id to be the min of all ids (converted from the pointer to the ADT) 
+ in this \eclass,
  which we call the leader. 
 The relation that maps an arbitrary id to its leader can be straightforwardly defined
  as follows:
@@ -639,12 +640,12 @@ Finally, as a side optimization,
  so far we have been using \verb|eql(a, a)| 
  enumerate through \eclass ids.
 It turns out Souffl\'e's \eqrel{} will 
- enumerate the \verb|eql| relation (incrementally)
+ enumerate the (delta of the) \verb|eql| relation
  for this operation, which is super linear to
  the size of \eclass ids.
 To get rid of this overhead,
  we explicitly represent all the ids:\footnote{
-     Readers may be curious why we still keep \texttt{eql} in the body
+     Readers may be curious why we still keep the \texttt{eql} atom
      of leader computations.
      In fact, the author is curious as well---deleting it
      makes the output unsound. 
@@ -681,7 +682,7 @@ Let us begin by revisiting the leader rules:
         b = min b1 : { eql(a, b), b1 = as(b, number) }.
     leader(x, y1) <= leader(x, y2) :-
         as(y1, number) <= as(y2, number).
-\end{verbatim}]
+\end{verbatim}
 The first rule is extremely slow.
 Inspecting into the generated IR
  shows that for every \verb|a|, 
@@ -696,15 +697,16 @@ As a result,
 Therefore, rule can take up to quadratic time at each iteration.
 
 To address the second issue, 
- we follow \citet{zucker-udf-1}, 
+ I follow \citet{zucker-udf-1}, 
  reflecting the internals of \verb|eqrel| of Souffl\'e out
  to programs written in Souffl\'e.
 Admittedly, this is very hacky and dangerous,
  but it gives us the last speedup for our Souffl\'e encoding.
-Firstly, we add support for the \verb|FIND| operation, 
+To implement this optimization, 
+ we first add support for the \verb|FIND| operation, 
  which finds the internal canonical representations
  of members of the \verb|eql| relation, to our program.
-To achieve this, we declare a user-defined functor called \verb|FIND| 
+A user-defined functor called \verb|FIND| is declared
  in our Souffl\'e program,
  using Souffl\'e compiler to generate C++ code, 
  and text-replace each call to \verb|FIND| to an call 
@@ -761,11 +763,11 @@ For example,
 In this section, we consider this same problem of encoding \egraphs in Datalog
  from a quite different spot in the design space.
 Rel does not support subsumptions nor built-in equivalence relations,
- yet it is not monotonic by default.
-In particular, it does not check for monotonicity during the compilation, 
+ yet it eases general-purpose programming by sacrificing monotonicity.
+Rel does not check for monotonicity during the compilation, 
  and the evaluation algorithm by default does not perform semi-na\"ive evaluation
  nor keep old tuples.
-Instead, it iteratively applies the rules to the lastest database instance 
+Instead, Rel iteratively applies the rules to the lastest database instance 
  to derive the input to the next iteration, 
  so if a tuple $t$ is computed at iteration $n-1$ but not at iteration $n$, 
  where the fixpoitn is reached, the resulting database instance will not contain $t$.

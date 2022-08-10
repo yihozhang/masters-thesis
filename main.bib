@@ -1560,3 +1560,21 @@ month = {sep},
 pages = {259–262},
 numpages = {4}
 }
+
+@inproceedings{ascent,
+author = {Sahebolamri, Arash and Gilray, Thomas and Micinski, Kristopher},
+title = {Seamless Deductive Inference via Macros},
+year = {2022},
+isbn = {9781450391832},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3497776.3517779},
+doi = {10.1145/3497776.3517779},
+abstract = {We present an approach to integrating state-of-art bottom-up logic programming within the Rust ecosystem, demonstrating it with Ascent, an extension of Datalog that performs well against comparable systems. Rust’s powerful macro system permits Ascent to be compiled uniformly with the Rust code it’s embedded in and to interoperate with arbitrary user-defined components written in Rust, addressing a challenge in real-world use of logic programming languages: the fact that logical programs are parts of bigger software systems and need to interoperate with other components written in imperative programming languages. We leverage Rust’s trait system to extend Datalog semantics with non-powerset lattices, much like Flix, and with user-defined data types much like Formulog and Souffle. We use Ascent to re-implement the Rust borrow checker, a static analysis required by the Rust compiler. We evaluate our performance against Datafrog, Flix, and Souffl\'{e} using the borrow checker and other benchmarks, observing comparable performance to Datafrog and Souffl\'{e}, and speedups of around two orders of magnitude compared to Flix.},
+booktitle = {Proceedings of the 31st ACM SIGPLAN International Conference on Compiler Construction},
+pages = {77–88},
+numpages = {12},
+keywords = {Program Analysis, Logic Programming, Ascent, Datalog, Rust, Static Analysis},
+location = {Seoul, South Korea},
+series = {CC 2022}
+}
