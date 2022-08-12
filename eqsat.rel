@@ -4,9 +4,9 @@
 
 def N = 7
 
-def expr_prep = hash[{:num, range[1, N, 1]}]
-def expr_prep = hash[{:add, expr_prep:num[2], expr_prep:num[1]}]
-def expr_prep = hash[{:add, expr_prep:num[n+1], expr_prep:add[expr_prep:num[n], _] from n where n<N}]
+def expr_prep = hash[{:var, range[1, N, 1]}]
+def expr_prep = hash[{:add, expr_prep:var[1], expr_prep:var[2]}]
+def expr_prep = hash[{:add, expr_prep:add[_, expr_prep:var[n]], expr_prep:var[n+1] from n where n<N}]
 
 // def expr = from x, y, xy where expr_prep(x, y, xy)
 def expr = expr_prep
@@ -45,8 +45,9 @@ To workaround that, we may need rules like
 def merge = id1, id2: rels(a, b, id1) and rels(a, b, id2) and id1 != id2 from a, b
  **/
 def rels:add = find[x], find[y], find[xy] from x, y, xy where expr:add(x, y, xy)
-def rels:num = v, find[c] from v, c where expr:num(v, c)
+def rels:var = v, find[c] from v, c where expr:var(v, c)
 def merge = id1, id2: expr:add(x, y, id1), rels_todo:add(x, y, id2) from x, y
+def merge = id1, id2: rels:add(x, y, id1), rels:add(x, y, id2) and id1 != id2 from x, y
 
 // comm
 def expr = hash[{:add, (x, y: rels:add(y, x, _))}]
@@ -70,5 +71,5 @@ def link = l in last[expr]: to[min[
   (fr[find[b]] from a, b where l = find[a] and merge(b, a))]]
 
 def show[c] = concat["(", concat[show[x], concat["+", concat[show[y], ")"]]]] from x, y where expr:add(x, y, c)
-def show[c] = s: string(x, s) and expr:num(x, c) from x
+def show[c] = s: string(x, s) and expr:var(x, c) from x
 

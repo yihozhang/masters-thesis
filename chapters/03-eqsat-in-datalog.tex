@@ -816,12 +816,196 @@ Rel also has an expressive set of language features:
 This section will not attempt to cover all the features of Rel;
  instead, we will introduce each language feature of Rel as we use them.
 
+\subsection{Representing terms}
 
+The first issue we address is the representation of terms in Rel:
+ for a relation $R$, 
+ we say \enode $f(x_1,\ldots, x_n)$ with id $i$ is in $R$ 
+ if $R(:f, x_1,\ldots,x_n, i)$.
+$:f$ is a compile-time literal that is compiled into the metadata of the relation,
+ such that $R:f$ is a ``sub-relation'' of $R$ and can be visited as $R[:f]$ 
+ as a normal get-by-key operation.
+We also define the ``natural'' \eclass id of an \enode, 
+ which is also the initial \eclass id of 
+ an \enode to be the hash value of tuple $(:f, x_1,\ldots, x_n)$.
+The following Rel code populates $\sum_{i=1}{n}v_i$
+
+\begin{verbatim}
+    def expr_prep = hash[{:var, range[1, N, 1]}]
+    def expr_prep = hash[{:add, expr_prep:var[1], expr_prep:var[2]}]
+    def expr_prep = hash[{:add, 
+                          expr_prep:add[_, expr_prep:var[n]], 
+                          expr_prep:var[n+1] 
+                          from n where n<N}]
+    def expr = expr_prep
+\end{verbatim}
+
+\verb|hash| is a higher-order function that takes a relation with arity $n$, 
+ and produce a new relation with arity $n+1$, 
+ where the first $n$ columns are from the input relation, 
+ and the last column is the hash value of each tuple.
+
+\subsection{Representing the Union-Find Data Structure}
+
+One critical distinction between the encoding in Rel and in Souffl\'e is 
+ that Rel does not have built-in efficient equivalences.
+Na\"ively encoding the equivalence relation as 
+ a transitive, reflexive, and symmetric relation is possible, but slow.
+It turns out that it is possible to encode the union-find data structure
+ in Rel, by declaratively stating the properties of each component.
+
+There are three key components for a union-find data structure in our encoding: 
+\verb|link|, 
+ which link children and parents in the union-find tree;
+ \verb|find|, which returns the canonical id (i.e., root) for the given id;
+ and finally \verb|merge|, which is a list of pairs 
+ that records the history of operations over the union-find.
+In each iteration, the union-find (namely \verb|find| and \verb|link|)
+ will be built according to \verb|merge| from scratch.
+Similar to our Souffl\'e encoding, 
+ the root is the id with smallest value in an \eclass.
+
+Let us start by defining \verb|find|:
+ the output of \verb|find| will be the minimum of itself 
+ and \verb|find| of its parent.
+This gives the following declarative rule:
+
+\begin{verbatim}
+    def find = a in last[expr]: to[min[fr[a]; fr[find[link[a]]]]]
+\end{verbatim}
+where \verb|last[expr]| gives all the \eclass ids
+ and \verb|fr| and \verb|to| are helper functions to 
+ convert from and to hash values:
+\begin{verbatim}
+    @inline def to = uint128_hash_value_convert
+    @inline def fr = hash_value_uint128_convert
+\end{verbatim}
+
+Similarly, there are three cases for \verb|find|:
+ because of path compression, 
+ the \verb|link| of an id is either itself (when its root),
+ the \verb|find| of its parent,
+ or \verb|find[b]| when the id is equal to \verb|find(a)| 
+ for some merge history \verb|merge(a, b)|.
+This gives the following rule.
+\begin{verbatim}
+    def link = l in last[expr]: to[min[
+        fr[l];
+        fr[find[l]];
+        (fr[find[b]] from a, b where l = find[a] and merge(a, b));
+        (fr[find[b]] from a, b where l = find[a] and merge(b, a))]]
+\end{verbatim}
+
+In fact, \verb|link| and \verb|find| will converge at the fixpoint:
+By definition of \verb|find|, (1) \verb|find[a] <= find[link[a]|
+ and (2) \verb|find[a] <= a|,
+ and by definition of \verb|link|, 
+ (3) \verb|link[a] <= find[a]| and (4) \verb|link[a] <= a|.
+By (3) and (1), we have 
+\begin{verbatim}
+    link[a] <= find[a] <= find[link[a]]
+\end{verbatim}
+By (2), \verb|find[link[a]] <= link[a]|.
+Thus, \verb|link[a] <= find[a] <= link[a]|, which implies \verb|find[a] = link[a]|
+ for all \verb|a|.
+
+\subsection{Representing Rewrites}
+
+Finally, we turn our attention to the actual representation of rewrites.
+This is easier to do than in the Souffl\'e encoding, 
+ because we do not need to worry about removal of obsolete tuples 
+ (e.g., using subsumptions).
+
+We use three relations to represent a term for different purposes.
+All three relations will have the same first $n$ arguments but 
+ differ in their last column, which is used for representing different ids.
+\begin{itemize}
+    \item The last column of \verb|expr| is the natural id of the \enode, 
+    i.e., the hash value of its function symbol and its children;
+    \item The last column of \verb|rels| is the canonical id of that \enode,
+    given by the \verb|find| procedure. 
+    Moreover, \verb|rels| will only contain canonical \enodes.
+    This is the relation we do \ematching on;
+    \item Finally, the last column of \verb|rels_todo| documents
+    \eclass ids that need to be merged later.
+\end{itemize}
+
+We first define \verb|rels|, which is the easiest among the three representations.
+Essentially, \verb|rels| canonicalize each \enode from \verb|expr|:
+\begin{verbatim}
+    def rels:add = find[x], find[y], find[xy] 
+                   from x, y, xy 
+                   where expr:add(x, y, xy)
+    def rels:var = v, find[c] from v, c 
+                   where expr:var(v, c)
+\end{verbatim}
+
+The definition of \verb|expr| and \verb|rels_todo| are query dependent:
+ besides the initially populated tuples in \verb|expr|, 
+ all the tuples in \verb|expr| and \verb|rels_todo| 
+ are directly produced by rewrites.
+First, for each rewrite, we need to insert the (potentially) new \enodes
+ (with its natural ids) into the \verb|expr| relation:
+\begin{verbatim}
+    // comm
+    def expr = hash[{:add, (x, y: rels:add(y, x, _))}]
+
+    // assoc
+    def expr = hash[{:add, (y, z: rels:add(_, y, xy), rels:add(xy, z, _) 
+                                  from xy)}]
+    def expr = hash[{:add, (x, yz: rels:add(y, z, yz), rels:add(x, y, xy), 
+                                   rels:add(xy, z, _) 
+                                   from xy, y, z)}]
+\end{verbatim}
+For commutativity, we populate $x + y$ for each $y + x$ found (in the canonical database).
+Similarly for associativity, we populate $y +z$ and $x+(y+z)$ for each 
+ $(x+y)+z$ found.
+
+For \verb|rels_todo|, we essentially insert into it the \eclass ids 
+ from the left-hand side of the rewrite rules, which will be the new \eclass ids
+ for the right-hand side pattern, processed by the union-find.
+\begin{verbatim}
+    def rels_todo:add(x, y, yx) = rels:add(y, x, yx)
+    def rels_todo:add(x, yz, xy_z) = 
+        rels:add(y, z, yz), 
+        rels:add(x, y, xy), 
+        rels:add(xy, z, xy_z) 
+        from xy, y, z
+\end{verbatim}
+
+We tie the knots and define the \verb|merge| function based on \verb|rels_todo|.
+In particular we merge ids from \verb|rels_todo| 
+ with the natural id (which is known to be in the id).
+\begin{verbatim}
+    def merge = id1, id2: expr:add(x, y, id1), rels_todo:add(x, y, id2) from x, y
+\end{verbatim}
+
+But we are not done yet: equivalences may be introduced by canonicalization.
+Suppose \verb|add(a, b, c)| and \verb|add(d, e, f)| are present in the database
+ and later \verb|d| is canonicalized to \verb|a| and \verb|e| to \verb|b|.
+This will effectively makes the canonical database \verb|rels| to have
+ two ``canonical'' ids for the same \enode, which we need to merge:
+
+\begin{verbatim}
+    def merge = id1, id2: rels:add(x, y, id1), 
+                          rels:add(x, y, id2),
+                          id1 != id2 
+                          from x, y
+\end{verbatim}
+
+% This concludes our Rel encoding, 
+%  which is substantially different from the encoding in Souffl\'e.
+% % Personally, I think I was more operational-minded 
+% %  when writing the 
 
 \section{Miscellaneous}
 
-thank Bernhard Scholz
-
-thank Rel
-
-thank Phil for his blog posts
+This chapter summarizes the work done during the first half of my master.
+Among my collaborators,
+ I would particularly like to thank Philip Zucker 
+ for his inspirational blog post on this topic
+ and for insightful discussions.
+I want to also thank 
+ Martin Bravenboer for introducing me to the Rel language
+ and later for his guidance during my internship at RelationalAI.
+It is truly an honor to work with my colleagues at RelationalAI.
