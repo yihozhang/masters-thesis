@@ -1,0 +1,74 @@
+@inline def to = uint128_hash_value_convert
+@inline def fr = hash_value_uint128_convert
+@inline def hash_val[R] = last[hash[R]]
+
+def N = 7
+
+def expr_prep = hash[{:num, range[1, N, 1]}]
+def expr_prep = hash[{:add, expr_prep:num[2], expr_prep:num[1]}]
+def expr_prep = hash[{:add, expr_prep:num[n+1], expr_prep:add[expr_prep:num[n], _] from n where n<N}]
+
+// def expr = from x, y, xy where expr_prep(x, y, xy)
+def expr = expr_prep
+/**
+Note that at some point rels:add[a, b] may point to more than one value.
+
+Initially
+
+	expr:add(2, 1, 3) (A1)
+	rels:add(4, 5, x) (A2)
+
+apply canonicalization to A1
+	
+	rels:add(5, 4, 3) (A3)
+
+apply comm-rewrite to A2
+	
+	expr:add(5, 4, hash) (A4)
+	rels_todo:add(5, 4, x) (A5)
+
+apply canonicalization to A4
+
+	rels:add(5, 4, hash) (A6)
+
+Now A6 and A3 are both keyed on (5, 4).
+Later, the following merges are produced:
+
+	merge(hash, x)
+    merge(3, x)
+
+By transitivity, hash and 3 will be equivalent and 
+one of the tuple will be subsumed, but only later
+in the stage.
+
+To workaround that, we may need rules like
+def merge = id1, id2: rels(a, b, id1) and rels(a, b, id2) and id1 != id2 from a, b
+ **/
+def rels:add = find[x], find[y], find[xy] from x, y, xy where expr:add(x, y, xy)
+def rels:num = v, find[c] from v, c where expr:num(v, c)
+def merge = id1, id2: expr:add(x, y, id1), rels_todo:add(x, y, id2) from x, y
+
+// comm
+def expr = hash[{:add, (x, y: rels:add(y, x, _))}]
+def rels_todo:add(x, y, yx) = rels:add(y, x, yx)
+
+// assoc
+def expr = hash[{:add, (y, z: rels:add(_, y, xy), rels:add(xy, z, _) from xy)}]
+def expr = hash[{:add, (x, yz: rels:add(y, z, yz), rels:add(x, y, xy), rels:add(xy, z, _) from xy, y, z)}]
+def rels_todo:add(x, yz, xy_z) = rels:add(y, z, yz), rels:add(x, y, xy), rels:add(xy, z, xy_z) from xy, y, z
+
+// def output:find = show[x], show[y] from x, y where find(x, y)
+// def output:expr = show[last[expr]]
+def output:exprsize = count[expr]
+def output:eclasssize = count[last[rels]]
+def output:rels = show[last[rels]]
+def find = a in last[expr]: to[min[fr[a]; fr[find[link[a]]]]]
+def link = l in last[expr]: to[min[
+  fr[l];
+  fr[find[l]];
+  (fr[find[b]] from a, b where l = find[a] and merge(a, b));
+  (fr[find[b]] from a, b where l = find[a] and merge(b, a))]]
+
+def show[c] = concat["(", concat[show[x], concat["+", concat[show[y], ")"]]]] from x, y where expr:add(x, y, c)
+def show[c] = s: string(x, s) and expr:num(x, c) from x
+
