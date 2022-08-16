@@ -720,7 +720,9 @@
       \@Programtext
       \par\vskip\z@ plus1fill\relax
       \@Program\par
-      \par\vskip\z@ plus1fill\relax
+      \par\vskip\z@ plus4fill\relax
+      Approved by \rule{8cm}{0.15mm}
+      \par\vskip\z@ plus1fill\relax 
     \end{center}
      \vspace{2pc}\relax
   \let\titlepage\relax}
